@@ -27,40 +27,42 @@ public class SocketCliente
 		
 	}
 	
-	public ArrayList<Foto> recibirFotos(String sql)
+	public Foto recibirFoto()
 	{
-		ArrayList<Foto> fotos_inicio = new ArrayList<>();
-		
+		Foto foto = null;
 		try 
 		{
 			Socket socket = new Socket("88.9.156.211", 51350);
 			OutputStream outputStream = socket.getOutputStream();
 			PrintStream mensaje = new PrintStream(outputStream);	
 			
-			mensaje.println(1);
-			mensaje.println(sql);
+			mensaje.println(2);
 			
 			InputStream inputStream = socket.getInputStream();
 			InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
 			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 			
-			int num_fotos = Integer.parseInt(bufferedReader.readLine());
+			int tamaino = Integer.parseInt(bufferedReader.readLine());
+			String path = bufferedReader.readLine();
+			String fecha = bufferedReader.readLine();
+				
+			System.out.println(tamaino+" "+path+" "+fecha);
+				
+			byte[] imagenAr = new byte[10000];
+				
+			inputStream.read(imagenAr);
+			System.out.println(imagenAr[0]);
+			BufferedImage imagen = ImageIO.read(new ByteArrayInputStream(imagenAr));
+			ImageIO.write(imagen, "jpg", new File(path));
 			
-			for(int i = 0; i < num_fotos; i++)
-			{
-				int tamaino = Integer.parseInt(bufferedReader.readLine());
-				String path = bufferedReader.readLine();
-				String fecha = bufferedReader.readLine();
-				
-				byte[] imagenAr = new byte[tamaino];
-				
-				inputStream.read(imagenAr);
-				BufferedImage imagen = ImageIO.read(new ByteArrayInputStream(imagenAr));
-				ImageIO.write(imagen, "jpg", new File(path));
-				
-				fotos_inicio.add(new Foto(path, fecha));
-			}
+			foto = new Foto(path, fecha);
 			
+			System.out.println("foto recibida");
+			
+			imagen.flush();
+			inputStreamReader.close();
+			inputStream.close();
+			outputStream.close();
 			socket.close();
 			
 		}
@@ -69,7 +71,7 @@ public class SocketCliente
 			e.printStackTrace();
 		}
 		
-		return fotos_inicio;
+		return foto;
 	}
 	
 	public void enviarFoto(Foto foto)
@@ -104,6 +106,56 @@ public class SocketCliente
 			e1.printStackTrace();
 		}
 	}
-
+	
+	public int peticionSqlFotos(String sql)
+	{
+		int num_fotos = -1;
+		try 
+		{
+			Socket socket = new Socket("88.9.156.211", 51350);
+			OutputStream outputStream = socket.getOutputStream();
+			PrintStream mensaje = new PrintStream(outputStream);
+			
+			mensaje.println(1);
+			mensaje.println(sql);
+			
+			InputStream inputStream = socket.getInputStream();
+			InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+			
+			num_fotos = Integer.parseInt(bufferedReader.readLine());
+			
+			socket.close();
+		} 
+		catch (UnknownHostException e1) 
+		{
+			e1.printStackTrace();
+		} 
+		catch (IOException e1) 
+		{
+			e1.printStackTrace();
+		}
+		
+		return num_fotos;
+	}
+	
+	public static void main(String[] args)
+	{
+		SocketCliente socketCliente = new SocketCliente();
+		
+		ArrayList<Foto> fotos = new ArrayList<>();
+		
+		int num_fotos = socketCliente.peticionSqlFotos("yeah");
+		
+		System.out.println(num_fotos);
+		
+		for(int i = 0; i < num_fotos; i++)
+		{
+			Foto foto = socketCliente.recibirFoto();
+			fotos.add(foto);
+		}
+		
+		System.out.println(fotos.get(1).getPath());
+	}
 }
 	

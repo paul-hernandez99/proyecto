@@ -138,6 +138,7 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 	{
 		SocketCliente socketCliente = new SocketCliente();
 		String sql = GeneradorComandosSql.recibir_fotos_inicio(ventanaPrincipal.getUsuario());
-		fotos = socketCliente.recibirFotos(sql);
+		int num_fotos = socketCliente.peticionSqlFotos(sql);
+		
 	}
 }
