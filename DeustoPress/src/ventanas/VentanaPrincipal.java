@@ -59,8 +59,8 @@ public class VentanaPrincipal extends JFrame
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 570, 418);
 	
-		JLabel lblimage = new JLabel(new ImageIcon("Imagenes/deusto.png"));
-		panelLogin = new JLabel(new ImageIcon("Imagenes/Wallpaper.jpg"));
+		JLabel lblimage = new JLabel(new ImageIcon("Imagenes/System/deusto.png"));
+		panelLogin = new JLabel(new ImageIcon("Imagenes/System/Wallpaper.jpg"));
 		panelLogin.setLayout(null);
 		lblimage.setBounds(256, 16, 277, 75);
 		panelLogin.add(lblimage);

@@ -4,12 +4,18 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.Socket;
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import foto.Foto;
 import interfaces.IPanelUsuarios;
+import socket.SocketCliente;
+import sql.GeneradorComandosSql;
 import ventanas.CrearEntrada;
 import ventanas.VentanaPrincipal;
 
@@ -18,6 +24,7 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 	private VentanaPrincipal ventanaPrincipal;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel;
+	private ArrayList<Foto> fotos;
 	
 	public PanelUser(VentanaPrincipal ventana) 
 	{
@@ -30,6 +37,8 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		JLabel lblImage = new JLabel(new ImageIcon("Imagenes/Usuario.png"));
 		lblImage.setBounds(445, 22, 54, 54);
 		add(lblImage);
+		
+		cargarFotos();
 		
 		lblNewLabel_1 = new JLabel();
 		lblNewLabel_1.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
@@ -123,5 +132,12 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 	{
 		lblNewLabel_1.setText(ventanaPrincipal.getUsuario().getNombreUsuario());
 		lblNewLabel.setText("Bienvenido: "+ventanaPrincipal.getUsuario().getNombreReal());
+	}
+	
+	public void cargarFotos()
+	{
+		SocketCliente socketCliente = new SocketCliente();
+		String sql = GeneradorComandosSql.recibir_fotos_inicio(ventanaPrincipal.getUsuario());
+		fotos = socketCliente.recibirFotos(sql);
 	}
 }

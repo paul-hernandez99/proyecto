@@ -248,8 +248,10 @@ public class Utilidades
 		String year = Integer.toString(calendar.get(Calendar.YEAR));
 		String month = Integer.toString(calendar.get(Calendar.MONTH)+1);
 		String day = Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
+		String hora = Integer.toString(calendar.get(Calendar.HOUR_OF_DAY));
+		String minuto = Integer.toString(calendar.get(Calendar.MINUTE));
 		
-		String fecha = day+"/"+month+"/"+year;
+		String fecha = hora+":"+minuto+" "+day+"/"+month+"/"+year;
 		
 		return fecha;
 	}

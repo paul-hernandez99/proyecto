@@ -1,6 +1,0 @@
-phernand;lqaz1875;Paul;16/12/2018;0
-jon;jon;Jon;17/12/2018;1;1
-	jrajoe;ofenogseno;5;17/12/2018;Entradas/jrajoe.txt;3;0;1
-		24/9/2019;Comentarios/0.txt;phernand
-		24/9/2019;Comentarios/1.txt;phernand
-		25/9/2019;Comentarios/2.txt;phernand
