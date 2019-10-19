@@ -5,8 +5,9 @@ import java.awt.Label;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import SQLite.SelectData;
 import exceptions.Exceptions;
-import sqlite.SelectData;
 import usuarios.Administrador;
 import usuarios.Usuario;
 import usuarios.UsuarioNormal;

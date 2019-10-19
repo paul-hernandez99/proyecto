@@ -1,32 +1,62 @@
 package usuarios;
 
-import java.util.ArrayList;
-import entrada.Entrada;
-import utilidades.Utilidades;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 
-public class UsuarioNormal extends Usuario 
+public class UsuarioNormal extends Usuario
 {
-	private ArrayList <Entrada> entradas;
+	private String fechaNacimiento;
+	
+	private int edad;
+	
 	
 	public UsuarioNormal()
 	{
 		super();
 	}
 	
-	public UsuarioNormal(String nombreUsuario, String contraseña, String nombreReal, String fechaDeAlta) 
+	public UsuarioNormal(String nombreUsuario, String contraseña, String nombreReal, String email, String fechaNacimiento) 
 	{
-		super(nombreUsuario, contraseña, nombreReal, fechaDeAlta);
-		this.entradas = new ArrayList<Entrada>();
+		super(nombreUsuario, contraseña, nombreReal, email);
+		this.fechaNacimiento = fechaNacimiento;
+		this.edad = this.calcularEdad();
+	}
+	
+	
+	private int calcularEdad()
+	{
+		Period period = Period.between(fecNacToLocalDate(), LocalDate.now());
+		return period.getYears();
+	}
+	
+	private LocalDate fecNacToLocalDate()
+	{
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		return LocalDate.parse(fechaNacimiento, dateFormat);
 	}
 
-	public ArrayList<Entrada> getEntradas() 
+	
+	public String getFechaNacimiento() 
 	{
-		return entradas;
+		return fechaNacimiento;
 	}
 
-	public void setEntradas(ArrayList<Entrada> entradas) 
+	public void setFechaNacimiento(String fechaNacimiento) 
 	{
-		this.entradas = entradas;
-	}	
+		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public int getEdad() 
+	{
+		return edad;
+	}
+
+	public void setEdad(int edad) 
+	{
+		this.edad = edad;
+	}
+	
+	
 	
 }

@@ -1,11 +1,5 @@
 package usuarios;
 
-import java.util.ArrayList;
-
-import comentario.Comentario;
-import entrada.Entrada;
-import utilidades.Utilidades;
-
 public abstract class Usuario 
 {
 	private String nombreUsuario;
@@ -14,20 +8,21 @@ public abstract class Usuario
 	
 	private String nombreReal;
 	
-	private String fechaDeAlta;
+	private String email;
 	
 	public Usuario()
 	{
 		
 	}
 
-	public Usuario(String nombreUsuario, String contraseña, String nombreReal, String fechaDeAlta)
+	public Usuario(String nombreUsuario, String contraseña, String nombreReal, String email)
 	{
 		super();
 		this.nombreUsuario = nombreUsuario;
 		this.contraseña = contraseña;
 		this.nombreReal = nombreReal;
-		this.fechaDeAlta = fechaDeAlta;
+		this.nombreReal = nombreReal;
+		this.email = email;
 	}
 
 	public String getNombreUsuario() 
@@ -60,14 +55,13 @@ public abstract class Usuario
 		this.nombreReal = nombreReal;
 	}
 
-	public String getFechaDeAlta() 
-	{
-		return fechaDeAlta;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setFechaDeAlta(String fechaDeAlta) 
+	public void setEmail(String email) 
 	{
-		this.fechaDeAlta = fechaDeAlta;
+		this.email = email;
 	}
 	
 }
