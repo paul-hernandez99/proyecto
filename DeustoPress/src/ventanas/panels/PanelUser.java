@@ -15,7 +15,7 @@ import javax.swing.SwingConstants;
 import foto.Foto;
 import interfaces.IPanelUsuarios;
 import socket.SocketCliente;
-import sql.GeneradorComandosSql;
+import sqlite.GeneradorComandosSql;
 import ventanas.CrearEntrada;
 import ventanas.VentanaPrincipal;
 
@@ -136,9 +136,7 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 	
 	public void cargarFotos()
 	{
-		SocketCliente socketCliente = new SocketCliente();
 		String sql = GeneradorComandosSql.recibir_fotos_inicio(ventanaPrincipal.getUsuario());
-		int num_fotos = socketCliente.peticionSqlFotos(sql);
 		
 	}
 }
