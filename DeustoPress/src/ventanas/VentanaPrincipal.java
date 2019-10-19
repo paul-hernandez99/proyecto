@@ -26,6 +26,9 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.SwingConstants;
 
 public class VentanaPrincipal extends JFrame 
 {
@@ -56,16 +59,17 @@ public class VentanaPrincipal extends JFrame
 
 	public VentanaPrincipal() 
 	{
+		setBackground(Color.WHITE);
+		
 		usuarios = Utilidades.leerUsuarios("Usuarios.txt");
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 570, 418);
-	
-		JLabel lblimage = new JLabel(new ImageIcon("Imagenes/System/deusto.png"));
-		panelLogin = new JLabel(new ImageIcon("Imagenes/System/Wallpaper.jpg"));
+		panelLogin = new JLabel(new ImageIcon("Imagenes/System/Wallpaper.png"));
+		panelLogin.setVerticalAlignment(SwingConstants.NORTH);
+		panelLogin.setForeground(Color.WHITE);
+		panelLogin.setBackground(Color.WHITE);
 		panelLogin.setLayout(null);
-		lblimage.setBounds(256, 16, 277, 75);
-		panelLogin.add(lblimage);
 		setContentPane(panelLogin);
 		
 		JButton btnOk = new JButton("OK");
@@ -100,11 +104,19 @@ public class VentanaPrincipal extends JFrame
 		passwordField = new JPasswordField();
 		passwordField.setBounds(183, 192, 218, 26);
 		panelLogin.add(passwordField);
-		
-		JLabel lblBienvenidoADeustopress = new JLabel("Bienvenido a DeustoPress:");
-		lblBienvenidoADeustopress.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		lblBienvenidoADeustopress.setBounds(42, 48, 210, 20);
-		panelLogin.add(lblBienvenidoADeustopress);
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				btnOk.setBounds(((getBounds().width-570)/2)+150, ((getBounds().height-418)/2)+270, 102, 36);
+				btnCancel.setBounds(((getBounds().width-570)/2)+315, ((getBounds().height-418)/2)+270, 102, 36);
+				lblUsuario.setBounds(((getBounds().width-570)/2)+81, ((getBounds().height-418)/2)+134, 69, 20);
+				passwordField.setBounds(((getBounds().width-570)/2)+183, ((getBounds().height-418)/2)+192, 218, 26);
+				textField.setBounds(((getBounds().width-570)/2)+183, ((getBounds().height-418)/2)+131, 218, 26);
+				lblPassword.setBounds(((getBounds().width-570)/2)+81, ((getBounds().height-418)/2)+195, 80, 20);
+	
+
+			}
+		});
 		
 		btnOk.addActionListener(new ActionListener() 
 		{
@@ -185,6 +197,7 @@ public class VentanaPrincipal extends JFrame
 			}
 		}
 	}
+	
 	
 	public void cargarUsuarios()
 	{

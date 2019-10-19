@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>Imagenes/System/Wallpaper.png</name>
+			<type>1</type>
+			<location>C:/Users/PC/Desktop/iepa/proyecto/DeustoPress/Imagenes/System/Wallpaper.png</location>
+		</link>
+	</linkedResources>
 </projectDescription>
