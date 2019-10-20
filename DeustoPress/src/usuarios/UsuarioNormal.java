@@ -7,9 +7,8 @@ import java.time.format.DateTimeFormatter;
 public class UsuarioNormal extends Usuario
 {
 	private String fechaNacimiento;
-	
 	private int edad;
-	
+	private int id;
 	
 	public UsuarioNormal()
 	{
@@ -23,6 +22,13 @@ public class UsuarioNormal extends Usuario
 		this.edad = this.calcularEdad();
 	}
 	
+	public UsuarioNormal(int id, String nombreUsuario, String contraseña, String nombreReal, String email, String fechaNacimiento, int edad) 
+	{
+		super(nombreUsuario, contraseña, nombreReal, email);
+		this.fechaNacimiento = fechaNacimiento;
+		this.edad = edad;
+		this.id = id;
+	}
 	
 	private int calcularEdad()
 	{
@@ -56,7 +62,14 @@ public class UsuarioNormal extends Usuario
 	{
 		this.edad = edad;
 	}
-	
-	
-	
+
+	public int getId() 
+	{
+		return id;
+	}
+
+	public void setId(int id) 
+	{
+		this.id = id;
+	}
 }

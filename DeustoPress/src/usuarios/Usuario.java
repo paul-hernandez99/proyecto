@@ -3,11 +3,8 @@ package usuarios;
 public abstract class Usuario 
 {
 	private String nombreUsuario;
-	
 	private String contraseña;
-	
 	private String nombreReal;
-	
 	private String email;
 	
 	public Usuario()
@@ -20,7 +17,6 @@ public abstract class Usuario
 		super();
 		this.nombreUsuario = nombreUsuario;
 		this.contraseña = contraseña;
-		this.nombreReal = nombreReal;
 		this.nombreReal = nombreReal;
 		this.email = email;
 	}

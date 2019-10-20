@@ -1,7 +1,5 @@
 package foto;
 
-import java.sql.Date;
-
 public class Foto 
 {
 	private String path;

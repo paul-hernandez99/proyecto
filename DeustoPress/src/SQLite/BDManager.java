@@ -1,12 +1,16 @@
 package SQLite;
 
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 
 import foto.Foto;
+import usuarios.Administrador;
 import usuarios.Usuario;
 import usuarios.UsuarioNormal;
 
@@ -34,14 +38,39 @@ public class BDManager
 	    }
 	}
 	
+	private void disconnect()
+	{
+		try
+        {
+            if (this.conn != null)
+            {
+                this.conn.close();
+            }
+        }
+        catch (SQLException ex)
+        {
+            System.out.println("BadAss error closing connection" + ex.getMessage());
+        }
+	}
+	
 	public void saveUser(Usuario user)
 	{
 		this.insertUser(user);
+		if(user instanceof UsuarioNormal)
+		{
+			((UsuarioNormal) user).setId(this.seleccionarIdUsuario(user));
+		}
 	}
 	
 	public void savePhoto(Foto foto)
 	{
 		this.insertPhoto(foto);
+	}
+	
+	public ArrayList<Usuario> loadUsers()
+	{
+		ArrayList<Usuario> usuarios = this.selectAllUsers();
+		return usuarios;
 	}
 	
 	private void insertUser(Usuario user)
@@ -75,6 +104,7 @@ public class BDManager
             }
             
             pstmt.executeUpdate();
+            
         }
         catch (SQLException e)
         {
@@ -85,6 +115,82 @@ public class BDManager
 	private void insertPhoto(Foto foto)
 	{
 		
+		
+	}
+	
+	private int seleccionarIdUsuario(Usuario user)
+	{
+		final String sql = "SELECT id FROM Usuarios WHERE username = "+user.getNombreUsuario();
+		
+		this.connect();
+		
+		int id = -1;
+		
+        try
+        		(
+        				Statement stmt  = conn.createStatement();
+                        ResultSet rs    = stmt.executeQuery(sql)
+                )
+        {
+           id = rs.getInt("id");
+        }
+        catch (SQLException e)
+        {
+            System.out.println("BadAss error executing insert. " + e.getMessage());
+        }
+        
+        this.disconnect();
+        
+        return id;
+	}
+	
+	private ArrayList<Usuario> selectAllUsers()
+	{
+		final String sql = "SELECT * FROM Usuarios";
+
+		ArrayList<Usuario> users = new ArrayList<>();
+		
+		this.connect();
+		
+        try
+                (
+                        Statement stmt  = conn.createStatement();
+                        ResultSet rs    = stmt.executeQuery(sql)
+                )
+        {
+            while (rs.next())
+            {
+            	int id = rs.getInt("id");
+            	int type = rs.getInt("type");
+            	String username = rs.getString("username");
+            	String password = rs.getString("password");
+            	String name = rs.getString("name");
+            	String email = rs.getString("email");
+            	
+            	if(type == 0)
+            	{
+            		String fec_nac = rs.getString("fec_nac");
+                	int edad = rs.getInt("edad");
+                	
+                	UsuarioNormal usuarioNormal = new UsuarioNormal(id, username, password, name, email, fec_nac, edad);
+                	users.add(usuarioNormal);
+            	}
+            	else
+            	{
+            		Administrador administrador = new Administrador(username, password, name, email);
+            		users.add(administrador);
+            	}
+            	
+            }
+            
+            this.disconnect();
+        } 
+        catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return users;
 	}
 	
 }

@@ -1,35 +1,38 @@
 package ventanas;
 
 import java.awt.EventQueue;
-import java.awt.Label;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-
+import SQLite.BDManager;
 import exceptions.Exceptions;
 import usuarios.Administrador;
 import usuarios.Usuario;
-import usuarios.UsuarioNormal;
-import utilidades.Utilidades;
 import ventanas.panels.PanelAdmin;
 import ventanas.panels.PanelUser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.awt.event.MouseEvent;
 import javax.swing.SwingConstants;
 
+//Mirar diferentes layouts (La de tres franjas puede estar bien), crear un panel con un color neutro para el login
+//y para el registro (cuando se le de al boton que aparezcan las cosas del registro).
 public class VentanaPrincipal extends JFrame 
 {
 	private JTextField textField;
@@ -59,25 +62,24 @@ public class VentanaPrincipal extends JFrame
 
 	public VentanaPrincipal() 
 	{
+		BDManager bdManager = new BDManager();
+		usuarios = bdManager.loadUsers();
+		
 		setBackground(Color.WHITE);
-		
-		//usuarios = Utilidades.leerUsuarios("Usuarios.txt");
-		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 570, 418);
+		
 		panelLogin = new JLabel(new ImageIcon("Imagenes/System/Wallpaper.png"));
-		panelLogin.setVerticalAlignment(SwingConstants.NORTH);
-		panelLogin.setForeground(Color.WHITE);
-		panelLogin.setBackground(Color.WHITE);
 		panelLogin.setLayout(null);
+		panelLogin.setVerticalAlignment(SwingConstants.NORTH);
 		setContentPane(panelLogin);
 		
-		JButton btnOk = new JButton("OK");
-		btnOk.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		btnOk.setBackground(new Color(102, 204, 255));
-		btnOk.setForeground(new Color(255, 255, 255));
-		btnOk.setBounds(150, 270, 102, 36);
-		panelLogin.add(btnOk);
+		JButton btnSignIn = new JButton("Sign In");
+		btnSignIn.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
+		btnSignIn.setBackground(new Color(102, 204, 255));
+		btnSignIn.setForeground(new Color(255, 255, 255));
+		btnSignIn.setBounds(150, 270, 102, 36);
+		panelLogin.add(btnSignIn);
 		
 		JButton btnCancel = new JButton("Salir");
 		btnCancel.setForeground(new Color(255, 255, 255));
@@ -85,6 +87,13 @@ public class VentanaPrincipal extends JFrame
 		btnCancel.setBackground(new Color(102, 204, 255));
 		btnCancel.setBounds(315, 270, 102, 36);
 		panelLogin.add(btnCancel);
+		
+		JButton btnSignUp = new JButton("Sign Up");
+		btnSignUp.setForeground(new Color(255, 255, 255));
+		btnSignUp.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
+		btnSignUp.setBackground(new Color(102, 204, 255));
+		btnSignUp.setBounds(480, 270, 102, 36);
+		panelLogin.add(btnSignUp);
 		
 		JLabel lblUsuario = new JLabel("Usuario:");
 		lblUsuario.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
@@ -104,11 +113,14 @@ public class VentanaPrincipal extends JFrame
 		passwordField = new JPasswordField();
 		passwordField.setBounds(183, 192, 218, 26);
 		panelLogin.add(passwordField);
-		addMouseMotionListener(new MouseMotionAdapter() {
+		addMouseMotionListener(new MouseMotionAdapter() 
+		{
 			@Override
-			public void mouseMoved(MouseEvent e) {
-				btnOk.setBounds(((getBounds().width-570)/2)+150, ((getBounds().height-418)/2)+270, 102, 36);
+			public void mouseMoved(MouseEvent e) 
+			{
+				btnSignIn.setBounds(((getBounds().width-570)/2)+150, ((getBounds().height-418)/2)+270, 102, 36);
 				btnCancel.setBounds(((getBounds().width-570)/2)+315, ((getBounds().height-418)/2)+270, 102, 36);
+				btnSignUp.setBounds(((getBounds().width-570)/2)+480, ((getBounds().height-418)/2)+270, 102, 36);
 				lblUsuario.setBounds(((getBounds().width-570)/2)+81, ((getBounds().height-418)/2)+134, 69, 20);
 				passwordField.setBounds(((getBounds().width-570)/2)+183, ((getBounds().height-418)/2)+192, 218, 26);
 				textField.setBounds(((getBounds().width-570)/2)+183, ((getBounds().height-418)/2)+131, 218, 26);
@@ -118,8 +130,9 @@ public class VentanaPrincipal extends JFrame
 			}
 		});
 		
-		btnOk.addActionListener(new ActionListener() 
+		btnSignIn.addActionListener(new ActionListener() 
 		{
+			@Override
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				String user = textField.getText();
@@ -162,9 +175,20 @@ public class VentanaPrincipal extends JFrame
 		
 		btnCancel.addActionListener(new ActionListener() 
 		{
+			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
 				VentanaPrincipal.this.dispose();
+			}
+		});
+		
+		btnSignUp.addActionListener(new ActionListener() 
+		{
+			
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				
 			}
 		});
 	}

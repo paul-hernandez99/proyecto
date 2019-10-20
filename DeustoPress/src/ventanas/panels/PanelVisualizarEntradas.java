@@ -344,9 +344,9 @@ public class PanelVisualizarEntradas extends JLabel
 		{
 			if(usuario instanceof UsuarioNormal)
 			{
-				for(Entrada entrada: ((UsuarioNormal) usuario).getEntradas())
+				//for(Entrada entrada: ((UsuarioNormal) usuario).getEntradas())
 				{
-					lm.addElement(entrada);
+					//lm.addElement(entrada);
 				}
 			}
 		}
@@ -361,11 +361,11 @@ public class PanelVisualizarEntradas extends JLabel
 		{
 			if(usuario instanceof UsuarioNormal)
 			{
-				for(Entrada entrada: ((UsuarioNormal) usuario).getEntradas())
+				//for(Entrada entrada: ((UsuarioNormal) usuario).getEntradas())
 				{
-					if(entrada.getAutor().getNombreUsuario().toUpperCase().contains(autor))
+					//if(entrada.getAutor().getNombreUsuario().toUpperCase().contains(autor))
 					{
-						lm.addElement(entrada);
+						//lm.addElement(entrada);
 					}
 				}
 			}
@@ -381,11 +381,11 @@ public class PanelVisualizarEntradas extends JLabel
 		{
 			if(usuario instanceof UsuarioNormal)
 			{
-				for(Entrada entrada: ((UsuarioNormal) usuario).getEntradas())
+				//for(Entrada entrada: ((UsuarioNormal) usuario).getEntradas())
 				{
-					if(entrada.getEtiqueta().toUpperCase().contains(etiqueta))
+					//if(entrada.getEtiqueta().toUpperCase().contains(etiqueta))
 					{
-						lm.addElement(entrada);
+						//lm.addElement(entrada);
 					}
 				}
 			}
@@ -404,11 +404,11 @@ public class PanelVisualizarEntradas extends JLabel
 		{
 			if(usuario instanceof UsuarioNormal)
 			{
-				for(Entrada entrada: ((UsuarioNormal) usuario).getEntradas())
+				//for(Entrada entrada: ((UsuarioNormal) usuario).getEntradas())
 				{
-					if(entrada.getFechaCreacion().equals(fecha))
+					//if(entrada.getFechaCreacion().equals(fecha))
 					{
-						lm.addElement(entrada);
+						//lm.addElement(entrada);
 					}
 				}
 			}
