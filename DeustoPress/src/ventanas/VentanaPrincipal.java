@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import SQLite.SelectData;
+
 import exceptions.Exceptions;
 import usuarios.Administrador;
 import usuarios.Usuario;
@@ -61,7 +61,7 @@ public class VentanaPrincipal extends JFrame
 	{
 		setBackground(Color.WHITE);
 		
-		usuarios = Utilidades.leerUsuarios("Usuarios.txt");
+		//usuarios = Utilidades.leerUsuarios("Usuarios.txt");
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 570, 418);
@@ -196,14 +196,6 @@ public class VentanaPrincipal extends JFrame
 				throw new Exceptions("Contraseña incorrecta");
 			}
 		}
-	}
-	
-	
-	public void cargarUsuarios()
-	{
-		SelectData selectdata = new SelectData();
-		
-		usuarios = selectdata.selectUsers();
 	}
 
 	public JLabel getPanelLogin() 
