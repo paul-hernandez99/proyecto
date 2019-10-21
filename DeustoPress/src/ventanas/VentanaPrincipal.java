@@ -67,7 +67,7 @@ public class VentanaPrincipal extends JFrame
 		
 		setBackground(Color.WHITE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 570, 418);
+		setBounds(670, 2, 600, 1000);
 		
 		panelLogin = new JLabel(new ImageIcon("Imagenes/System/Wallpaper.png"));
 		panelLogin.setLayout(null);
