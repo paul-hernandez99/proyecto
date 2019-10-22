@@ -33,6 +33,7 @@ import java.awt.Graphics;
 import java.awt.KeyboardFocusManager;
 import java.awt.TextField;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -77,7 +78,6 @@ public class VentanaPrincipal extends JFrame
 				try 
 				{
 					VentanaPrincipal frame = new VentanaPrincipal();
-					frame.getIntro().requestFocusInWindow();
 					frame.setVisible(true);
 				} 
 				catch (Exception e) 
@@ -134,8 +134,26 @@ public class VentanaPrincipal extends JFrame
 	{
 		username = new JTextField();
 		username.setFont(new Font("Tahoma", Font.ITALIC, 16));
+		username.setFocusable(false);
 		username.setText("Username");
 		panel1.add(username);
+		
+		username.addMouseMotionListener(new MouseMotionListener() {
+			
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				// TODO Auto-generated method stub
+				username.setFocusable(true);
+			}
+
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			
+		});
 		
 		username.addFocusListener(new FocusListener() 
 		{
@@ -153,11 +171,42 @@ public class VentanaPrincipal extends JFrame
 			}
 		});
 		
+		
 		password = new JTextField();
 		password.setFont(new Font("Tahoma", Font.ITALIC, 16));
+		password.setFocusable(false);
 		password.setText("Password");
 		panel1.add(password);
 		
+		password.addMouseMotionListener(new MouseMotionListener() {
+			
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				// TODO Auto-generated method stub
+				password.setFocusable(true);
+			}
+			
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		password.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				// TODO Auto-generated method stub
+				password.setText("");
+			}
+		});
 	}
 	
 	private void createButtons()
