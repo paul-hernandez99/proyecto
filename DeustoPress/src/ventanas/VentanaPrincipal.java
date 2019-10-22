@@ -41,6 +41,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicToggleButtonUI;
 
 //Mirar diferentes layouts (La de tres franjas puede estar bien), crear un panel con un color neutro para el login
 //y para el registro (cuando se le de al boton que aparezcan las cosas del registro).
@@ -76,6 +77,7 @@ public class VentanaPrincipal extends JFrame
 				try 
 				{
 					VentanaPrincipal frame = new VentanaPrincipal();
+					frame.getIntro().requestFocusInWindow();
 					frame.setVisible(true);
 				} 
 				catch (Exception e) 
@@ -132,11 +134,8 @@ public class VentanaPrincipal extends JFrame
 	{
 		username = new JTextField();
 		username.setFont(new Font("Tahoma", Font.ITALIC, 16));
-		username.setEnabled(false);
 		username.setText("Username");
 		panel1.add(username);
-		
-		username.add
 		
 		username.addFocusListener(new FocusListener() 
 		{
