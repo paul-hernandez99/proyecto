@@ -14,32 +14,58 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.KeyboardFocusManager;
+import java.awt.TextField;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 
 //Mirar diferentes layouts (La de tres franjas puede estar bien), crear un panel con un color neutro para el login
 //y para el registro (cuando se le de al boton que aparezcan las cosas del registro).
+
+
 public class VentanaPrincipal extends JFrame 
 {
-	private JTextField textField;
-	private JPasswordField passwordField;
 	private ArrayList<Usuario> usuarios;
 	private Usuario usuario;
-	private JLabel panelLogin;
+	
+	private JPanel panelLogin;
+	private JPanel panel1;
+	private JLabel logo;
+	private JLabel intro;
+	
+	private JTextField username;
+	private JTextField password;
+	
+	private JButton btnSignIn;
+	private JButton btnSignUp;
+	private JButton btnCancel;
+	
+	private TextField dia;
+	private TextField mes;
+	private TextField year;
 	
 	public static void main(String[] args) 
 	{
@@ -64,85 +90,98 @@ public class VentanaPrincipal extends JFrame
 	{
 		BDManager bdManager = new BDManager();
 		usuarios = bdManager.loadUsers();
+		this.getContentPane().setBackground(Color.WHITE);
+		this.setBounds(670, 60, 600, 900);
 		
-		setBackground(Color.WHITE);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(670, 2, 600, 1000);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.createPanel();
+		this.createIcon();
+		this.createIntro();
+		this.createJtextfields();
+		this.createButtons();
+		this.aux();
 		
-		panelLogin = new JLabel(new ImageIcon("Imagenes/System/Wallpaper.png"));
-		panelLogin.setLayout(null);
-		panelLogin.setVerticalAlignment(SwingConstants.NORTH);
-		setContentPane(panelLogin);
+	}
+	
+	private void createPanel()
+	{
+		panel1 = new JPanel();
+		panel1.setBackground(Color.WHITE);
+		Border border = BorderFactory.createLineBorder(new Color(153, 240, 153),3);
+		panel1.setBorder(border);
+		panel1.setLayout(null);
+		this.add(panel1);
+	}
+	
+	private void createIcon()
+	{
+		logo = new JLabel(new ImageIcon("Imagenes/System/Wallpaper.png"));
+		this.add(logo);
+		logo.requestFocusInWindow();
 		
-		JButton btnSignIn = new JButton("Sign In");
-		btnSignIn.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		btnSignIn.setBackground(new Color(102, 204, 255));
-		btnSignIn.setForeground(new Color(255, 255, 255));
-		btnSignIn.setBounds(150, 270, 102, 36);
-		panelLogin.add(btnSignIn);
+	}
+	
+	private void createIntro()
+	{
+		intro = new JLabel("Welcome to Beermeet:");
+		intro.setFont(new Font("Gill Sans MT", Font.BOLD, 20));
+		this.add(intro);
+	}
+	
+	private void createJtextfields()
+	{
+		username = new JTextField();
+		username.setFont(new Font("Tahoma", Font.ITALIC, 16));
+		username.setEnabled(false);
+		username.setText("Username");
+		panel1.add(username);
 		
-		JButton btnCancel = new JButton("Salir");
-		btnCancel.setForeground(new Color(255, 255, 255));
-		btnCancel.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		btnCancel.setBackground(new Color(102, 204, 255));
-		btnCancel.setBounds(315, 270, 102, 36);
-		panelLogin.add(btnCancel);
+		username.add
 		
-		JButton btnSignUp = new JButton("Sign Up");
-		btnSignUp.setForeground(new Color(255, 255, 255));
-		btnSignUp.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		btnSignUp.setBackground(new Color(102, 204, 255));
-		btnSignUp.setBounds(480, 270, 102, 36);
-		panelLogin.add(btnSignUp);
-		
-		JLabel lblUsuario = new JLabel("Usuario:");
-		lblUsuario.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		lblUsuario.setBounds(81, 134, 69, 20);
-		panelLogin.add(lblUsuario);
-		
-		JLabel lblPassword = new JLabel("Password:");
-		lblPassword.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		lblPassword.setBounds(81, 195, 80, 20);
-		panelLogin.add(lblPassword);
-		
-		textField = new JTextField();
-		textField.setBounds(183, 131, 218, 26);
-		panelLogin.add(textField);
-		textField.setColumns(10);
-		
-		passwordField = new JPasswordField();
-		passwordField.setBounds(183, 192, 218, 26);
-		panelLogin.add(passwordField);
-		addMouseMotionListener(new MouseMotionAdapter() 
+		username.addFocusListener(new FocusListener() 
 		{
 			@Override
-			public void mouseMoved(MouseEvent e) 
+			public void focusLost(FocusEvent e) 
 			{
-				btnSignIn.setBounds(((getBounds().width-570)/2)+150, ((getBounds().height-418)/2)+270, 102, 36);
-				btnCancel.setBounds(((getBounds().width-570)/2)+315, ((getBounds().height-418)/2)+270, 102, 36);
-				btnSignUp.setBounds(((getBounds().width-570)/2)+480, ((getBounds().height-418)/2)+270, 102, 36);
-				lblUsuario.setBounds(((getBounds().width-570)/2)+81, ((getBounds().height-418)/2)+134, 69, 20);
-				passwordField.setBounds(((getBounds().width-570)/2)+183, ((getBounds().height-418)/2)+192, 218, 26);
-				textField.setBounds(((getBounds().width-570)/2)+183, ((getBounds().height-418)/2)+131, 218, 26);
-				lblPassword.setBounds(((getBounds().width-570)/2)+81, ((getBounds().height-418)/2)+195, 80, 20);
-	
-
+				
+				
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) 
+			{
+				username.setText("");
 			}
 		});
+		
+		password = new JTextField();
+		password.setFont(new Font("Tahoma", Font.ITALIC, 16));
+		password.setText("Password");
+		panel1.add(password);
+		
+	}
+	
+	private void createButtons()
+	{
+		btnSignIn = new JButton("Sign In");
+		btnSignIn.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
+		btnSignIn.setBackground(new Color(255, 102, 102));
+		btnSignIn.setForeground(new Color(255, 255, 255));
+		panel1.add(btnSignIn);
 		
 		btnSignIn.addActionListener(new ActionListener() 
 		{
 			@Override
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				String user = textField.getText();
-				String pass = passwordField.getText();
+				String user = username.getText();
+				String pass = password.getText();
 				
 				try 
 				{
 					comprobarUsuario(user, pass);
-					textField.setText(null);
-					passwordField.setText(null);
+					username.setText(null);
+					password.setText(null);
 					for (Usuario a : usuarios) 
 					{
 						if (a.getContraseña().equals(pass))
@@ -172,15 +211,11 @@ public class VentanaPrincipal extends JFrame
 			}
 		});
 		
-		
-		btnCancel.addActionListener(new ActionListener() 
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) 
-			{
-				VentanaPrincipal.this.dispose();
-			}
-		});
+		btnSignUp = new JButton("Sign Up");
+		btnSignUp.setForeground(new Color(255, 255, 255));
+		btnSignUp.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
+		btnSignUp.setBackground(new Color(255, 102, 102));
+		panel1.add(btnSignUp);
 		
 		btnSignUp.addActionListener(new ActionListener() 
 		{
@@ -191,9 +226,55 @@ public class VentanaPrincipal extends JFrame
 				
 			}
 		});
+		
+		btnCancel = new JButton("Exit");
+		btnCancel.setForeground(new Color(255, 255, 255));
+		btnCancel.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
+		btnCancel.setBackground(new Color(153, 240, 153));
+		panel1.add(btnCancel);
+		
+		btnCancel.addActionListener(new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				VentanaPrincipal.this.dispose();
+			}
+		});
 	}
 	
-	public void comprobarUsuario(String usuario, String password) throws Exceptions
+	private void aux()
+	{
+		dia = new TextField();
+		dia.setFont(new Font("Tahoma", Font.ITALIC, 16));
+		dia.setText("day");
+		
+		mes = new TextField();
+		mes.setFont(new Font("Tahoma", Font.ITALIC, 16));
+		mes.setText("month");
+		
+		year = new TextField();
+		year.setFont(new Font("Tahoma", Font.ITALIC, 16));
+		year.setText("year");
+		
+		this.addComponentListener(new ComponentAdapter() 
+		{
+			public void componentResized(ComponentEvent evt)
+			{
+				panel1.setBounds(((getBounds().width)/2)-175, 445, 350, 360);
+				logo.setBounds(((getBounds().width)/2)-185, 0, 370, 370);
+				intro.setBounds(((getBounds().width)/2)-115, 390, 230, 30);
+				username.setBounds(((panel1.getBounds().width)/2)-110, 40, 220, 30);
+				password.setBounds(((panel1.getBounds().width)/2)-110, 100, 220, 30);
+				btnSignIn.setBounds(((panel1.getBounds().width)/2)-50, 180, 100, 40);
+				btnSignUp.setBounds(((panel1.getBounds().width)/2)-50, 240, 100, 40);
+				btnCancel.setBounds(((panel1.getBounds().width)/2)-50, 300, 100, 40);
+			}
+		});
+		
+	}
+	
+	private void comprobarUsuario(String usuario, String password) throws Exceptions
 	{
 		boolean encontrado = false;
 		Usuario user = null;
@@ -208,26 +289,27 @@ public class VentanaPrincipal extends JFrame
 		}
 		if(!encontrado)
 		{
-			textField.setText("");
-			passwordField.setText("");
+			username.setText("");
+			this.password.setText("");
 			throw new Exceptions("Usuario no existente");
 		}
 		else
 		{
 			if(!user.getContraseña().equals(password))
 			{
-				passwordField.setText("");
+				this.password.setText("");
 				throw new Exceptions("Contraseña incorrecta");
 			}
 		}
 	}
 
-	public JLabel getPanelLogin() 
+
+	public JPanel getPanelLogin() 
 	{
 		return panelLogin;
 	}
 
-	public void setPanelLogin(JLabel panelLogin) 
+	public void setPanelLogin(JPanel panelLogin) 
 	{
 		this.panelLogin = panelLogin;
 	}
@@ -251,5 +333,117 @@ public class VentanaPrincipal extends JFrame
 	{
 		this.usuario = usuario;
 	}
+
+	public JPanel getPanel1() 
+	{
+		return panel1;
+	}
+
+	public void setPanel1(JPanel panel1) 
+	{
+		this.panel1 = panel1;
+	}
+
+	public JLabel getLogo() 
+	{
+		return logo;
+	}
+
+	public void setLogo(JLabel logo) 
+	{
+		this.logo = logo;
+	}
+
+	public JLabel getIntro() 
+	{
+		return intro;
+	}
+
+	public void setIntro(JLabel intro) 
+	{
+		this.intro = intro;
+	}
+
+	public JTextField getUsername() 
+	{
+		return username;
+	}
+
+	public void setUsername(JTextField username) 
+	{
+		this.username = username;
+	}
+
+	public JTextField getPassword() 
+	{
+		return password;
+	}
+
+	public void setPassword(JTextField password) 
+	{
+		this.password = password;
+	}
+
+	public JButton getBtnSignIn() 
+	{
+		return btnSignIn;
+	}
+
+	public void setBtnSignIn(JButton btnSignIn) 
+	{
+		this.btnSignIn = btnSignIn;
+	}
+
+	public JButton getBtnSignUp() 
+	{
+		return btnSignUp;
+	}
+
+	public void setBtnSignUp(JButton btnSignUp) 
+	{
+		this.btnSignUp = btnSignUp;
+	}
+
+	public JButton getBtnCancel() 
+	{
+		return btnCancel;
+	}
+
+	public void setBtnCancel(JButton btnCancel) 
+	{
+		this.btnCancel = btnCancel;
+	}
+
+	public TextField getDia() 
+	{
+		return dia;
+	}
+
+	public void setDia(TextField dia) 
+	{
+		this.dia = dia;
+	}
+
+	public TextField getMes() 
+	{
+		return mes;
+	}
+
+	public void setMes(TextField mes) 
+	{
+		this.mes = mes;
+	}
+
+	public TextField getYear() 
+	{
+		return year;
+	}
+
+	public void setYear(TextField year) 
+	{
+		this.year = year;
+	}
+	
+	
 	
 }
