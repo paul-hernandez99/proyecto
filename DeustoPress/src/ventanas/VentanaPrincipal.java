@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -36,6 +37,9 @@ public class VentanaPrincipal extends JFrame
 	private Usuario usuario;
 	
 	private JPanel panel;
+	private JPanel contentPane;
+	
+	private JScrollPane jScrollPane;
 	
 	private JLabel logo;
 	private JLabel intro;
@@ -80,29 +84,37 @@ public class VentanaPrincipal extends JFrame
 		this.setBounds(670, 60, 600, 900);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
-		this.createPanel();
+		this.createPanels();
 		this.createIcon();
 		this.createJlabels();
 		this.createJtextfields();
 		this.createButtons();
-		this.aux();
+		this.setElementsSizePosition();
 		
 	}
 	
-	private void createPanel()
+	private void createPanels()
 	{
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
+		contentPane.setLayout(null);
+		
 		panel = new JPanel();
 		panel.setBackground(Color.WHITE);
 		Border border = BorderFactory.createLineBorder(new Color(153, 240, 153),3);
 		panel.setBorder(border);
 		panel.setLayout(null);
-		this.add(panel);
+		contentPane.add(panel);
+		
+		jScrollPane = new JScrollPane(contentPane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		this.add(jScrollPane);
 	}
 	
 	private void createIcon()
 	{
 		logo = new JLabel(new ImageIcon("Imagenes/System/Wallpaper.png"));
-		this.add(logo);
+		contentPane.add(logo);
 		
 	}
 	
@@ -110,7 +122,7 @@ public class VentanaPrincipal extends JFrame
 	{
 		intro = new JLabel("Welcome to Beermeet:");
 		intro.setFont(new Font("Gill Sans MT", Font.BOLD, 20));
-		this.add(intro);
+		contentPane.add(intro);
 		
 		registration = new JLabel("Registration info:");
 		registration.setFont(new Font("Gill Sans MT", Font.BOLD, 20));
@@ -281,6 +293,7 @@ public class VentanaPrincipal extends JFrame
 		btnSignIn.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
 		btnSignIn.setBackground(new Color(255, 102, 102));
 		btnSignIn.setForeground(new Color(255, 255, 255));
+		btnSignIn.setFocusable(false);
 		panel.add(btnSignIn);
 		
 		btnSignIn.addActionListener(new ActionListener() 
@@ -329,6 +342,7 @@ public class VentanaPrincipal extends JFrame
 		btnSignUp.setForeground(new Color(255, 255, 255));
 		btnSignUp.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
 		btnSignUp.setBackground(new Color(255, 102, 102));
+		btnSignUp.setFocusable(false);
 		panel.add(btnSignUp);
 		
 		btnSignUp.addActionListener(new ActionListener() 
@@ -353,6 +367,7 @@ public class VentanaPrincipal extends JFrame
 		btnCancel.setForeground(new Color(255, 255, 255));
 		btnCancel.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
 		btnCancel.setBackground(new Color(153, 240, 153));
+		btnCancel.setFocusable(false);
 		panel.add(btnCancel);
 		
 		btnCancel.addActionListener(new ActionListener() 
@@ -365,15 +380,15 @@ public class VentanaPrincipal extends JFrame
 		});
 	}
 	
-	private void aux()
+	private void setElementsSizePosition()
 	{
-		this.addComponentListener(new ComponentAdapter() 
+		contentPane.addComponentListener(new ComponentAdapter() 
 		{
 			public void componentResized(ComponentEvent evt)
 			{
-				panel.setBounds(((getBounds().width)/2)-175, 445, 350, 360);
-				logo.setBounds(((getBounds().width)/2)-185, 0, 370, 370);
-				intro.setBounds(((getBounds().width)/2)-115, 390, 230, 30);
+				panel.setBounds(((contentPane.getBounds().width)/2)-175, 445, 350, 360);
+				logo.setBounds(((contentPane.getBounds().width)/2)-185, 0, 370, 370);
+				intro.setBounds(((contentPane.getBounds().width)/2)-115, 390, 230, 30);
 				username.setBounds(((panel.getBounds().width)/2)-110, 30, 220, 30);
 				password.setBounds(((panel.getBounds().width)/2)-110, 80, 220, 30);
 				btnSignIn.setBounds(((panel.getBounds().width)/2)-50, 180, 100, 40);
