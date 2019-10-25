@@ -6,25 +6,26 @@ import java.time.format.DateTimeFormatter;
 
 public class UsuarioNormal extends Usuario
 {
+	private int id;
 	private String fechaNacimiento;
 	private int edad;
-	private int id;
+	private String descripcion;
 	
 	public UsuarioNormal()
 	{
 		super();
 	}
 	
-	public UsuarioNormal(String nombreUsuario, String contraseña, String nombreReal, String email, String fechaNacimiento) 
+	public UsuarioNormal(String nombreUsuario, String contraseña, String nombreReal, String apellidos, String email, String fechaNacimiento) 
 	{
-		super(nombreUsuario, contraseña, nombreReal, email);
+		super(nombreUsuario, contraseña, nombreReal, apellidos, email);
 		this.fechaNacimiento = fechaNacimiento;
 		this.edad = this.calcularEdad();
 	}
 	
-	public UsuarioNormal(int id, String nombreUsuario, String contraseña, String nombreReal, String email, String fechaNacimiento, int edad) 
+	public UsuarioNormal(int id, String nombreUsuario, String contraseña, String nombreReal, String apellidos, String email, String fechaNacimiento, int edad) 
 	{
-		super(nombreUsuario, contraseña, nombreReal, email);
+		super(nombreUsuario, contraseña, nombreReal, apellidos, email);
 		this.fechaNacimiento = fechaNacimiento;
 		this.edad = edad;
 		this.id = id;
@@ -72,4 +73,16 @@ public class UsuarioNormal extends Usuario
 	{
 		this.id = id;
 	}
+
+	public String getDescripcion() 
+	{
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) 
+	{
+		this.descripcion = descripcion;
+	}
+	
+	
 }

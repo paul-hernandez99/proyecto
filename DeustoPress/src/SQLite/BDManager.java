@@ -76,7 +76,7 @@ public class BDManager
 	private void insertUser(Usuario user)
 	{
 		
-		String sql = "INSERT INTO Usuarios(type, username, password, name, email, fec_nac, edad) VALUES(?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO Usuarios(type, username, password, name, surnames, email, fec_nac, edad) VALUES(?,?,?,?,?,?,?)";
 
 		this.connect();
 		
@@ -88,19 +88,20 @@ public class BDManager
             pstmt.setString(2, user.getNombreUsuario());
             pstmt.setString(3, user.getContraseña());
             pstmt.setString(4, user.getNombreReal());
-            pstmt.setString(5, user.getEmail());
+            pstmt.setString(5, user.getApellidos());
+            pstmt.setString(6, user.getEmail());
             
             if(user instanceof UsuarioNormal)
             {
+            	pstmt.setInt(1, 0);
             	pstmt.setString(6, ((UsuarioNormal) user).getFechaNacimiento());
             	pstmt.setInt(7, ((UsuarioNormal) user).getEdad());
-            	pstmt.setInt(1, 0);
             }
             else
             {
+            	pstmt.setInt(1, 1);
             	pstmt.setNull(6, Types.LONGNVARCHAR);
             	pstmt.setNull(7, Types.INTEGER);
-            	pstmt.setInt(1, 1);
             }
             
             pstmt.executeUpdate();
@@ -165,6 +166,7 @@ public class BDManager
             	String username = rs.getString("username");
             	String password = rs.getString("password");
             	String name = rs.getString("name");
+            	String apellidos = rs.getString("apellidos");
             	String email = rs.getString("email");
             	
             	if(type == 0)
@@ -172,15 +174,14 @@ public class BDManager
             		String fec_nac = rs.getString("fec_nac");
                 	int edad = rs.getInt("edad");
                 	
-                	UsuarioNormal usuarioNormal = new UsuarioNormal(id, username, password, name, email, fec_nac, edad);
+                	UsuarioNormal usuarioNormal = new UsuarioNormal(id, username, password, name, apellidos, email, fec_nac, edad);
                 	users.add(usuarioNormal);
             	}
             	else
             	{
-            		Administrador administrador = new Administrador(username, password, name, email);
+            		Administrador administrador = new Administrador(username, password, name, apellidos, email);
             		users.add(administrador);
             	}
-            	
             }
             
             this.disconnect();

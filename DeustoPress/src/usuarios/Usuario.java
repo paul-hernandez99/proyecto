@@ -5,6 +5,7 @@ public abstract class Usuario
 	private String nombreUsuario;
 	private String contraseña;
 	private String nombreReal;
+	private String apellidos;
 	private String email;
 	
 	public Usuario()
@@ -12,12 +13,13 @@ public abstract class Usuario
 		
 	}
 
-	public Usuario(String nombreUsuario, String contraseña, String nombreReal, String email)
+	public Usuario(String nombreUsuario, String contraseña, String nombreReal, String apellidos, String email)
 	{
 		super();
 		this.nombreUsuario = nombreUsuario;
 		this.contraseña = contraseña;
 		this.nombreReal = nombreReal;
+		this.apellidos = apellidos;
 		this.email = email;
 	}
 
@@ -49,6 +51,16 @@ public abstract class Usuario
 	public void setNombreReal(String nombreReal) 
 	{
 		this.nombreReal = nombreReal;
+	}
+
+	public String getApellidos() 
+	{
+		return apellidos;
+	}
+
+	public void setApellidos(String apellidos) 
+	{
+		this.apellidos = apellidos;
 	}
 
 	public String getEmail() {

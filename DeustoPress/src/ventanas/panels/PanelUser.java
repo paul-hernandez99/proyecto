@@ -21,9 +21,13 @@ import ventanas.VentanaPrincipal;
 public class PanelUser extends JLabel implements IPanelUsuarios
 {
 	private VentanaPrincipal ventanaPrincipal;
+	
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel;
-	private ArrayList<Foto> fotos;
+	
+	private ArrayList<Foto> fotos_inicio;
+	private ArrayList<Foto> fotos_perfil;
+	private ArrayList<Foto> fotos_usuarios;
 	
 	public PanelUser(VentanaPrincipal ventana) 
 	{
