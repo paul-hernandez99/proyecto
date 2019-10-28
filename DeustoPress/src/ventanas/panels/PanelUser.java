@@ -1,10 +1,15 @@
 package ventanas.panels;
 
 import java.awt.Color;
+import java.awt.FileDialog;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -125,6 +130,20 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 				ventanaPrincipal.revalidate();
 			}
 		});
+	}
+	public void seleccionarFoto()
+	{
+		FileDialog dialog = new FileDialog(ventanaPrincipal,"Select Image to upload", FileDialog.LOAD);
+		 dialog.setVisible(true);
+		 if(dialog.getFile() != null)
+		 {
+			 String type = dialog.getFile().substring(dialog.getFile().length() - 4);
+			 
+			 Path path_source = new File(dialog.getDirectory() + dialog.getFile()).toPath();
+			 Path path_target = new File("Imagenes/1"+type).toPath();
+			 
+			 Files.copy(path_source, path_target, StandardCopyOption.REPLACE_EXISTING);
+		 }
 	}
 
 	@Override
