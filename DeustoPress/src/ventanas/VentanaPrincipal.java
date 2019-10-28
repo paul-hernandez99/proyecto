@@ -48,6 +48,7 @@ public class VentanaPrincipal extends JFrame
 	private JTextField username;
 	private JPasswordField password;
 	private JTextField name;
+	private JTextField apellidos;
 	private JTextField email;
 	private JTextField day;
 	private JTextField month;
@@ -414,10 +415,11 @@ public class VentanaPrincipal extends JFrame
 		String username = this.username.getText();
 		String password = this.password.getText();
 		String name = this.name.getText();
+		String apellidos = this.apellidos.getText();
 		String email = this.email.getText();
 		String fecNac = this.day.getText() +"-"+ this.month.getText() +"-"+ this.year.getText();
 		
-		UsuarioNormal usuario = new UsuarioNormal(username, password, name, email, fecNac);
+		UsuarioNormal usuario = new UsuarioNormal(username, password, name, apellidos, email, fecNac);
 		
 		BDManager bdManager = new BDManager();
 		bdManager.saveUser(usuario);

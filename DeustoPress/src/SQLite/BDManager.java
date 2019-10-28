@@ -62,15 +62,33 @@ public class BDManager
 		}
 	}
 	
-	public void savePhoto(Foto foto)
-	{
-		this.insertPhoto(foto);
-	}
-	
 	public ArrayList<Usuario> loadUsers()
 	{
 		ArrayList<Usuario> usuarios = this.selectAllUsers();
 		return usuarios;
+	}
+	
+	public ArrayList<Foto> loadInicioPhotos(int id_user)
+	{
+		final String sql = "SELECT * FROM Fotos A "
+			 	+ "JOIN (SELECT id_followed FROM Usuarios A JOIN User_User B ON ? = B.id_follower) B"
+			 	+ "ON A.id_user = B.id_followed";
+		
+		ArrayList<Foto> fotos = this.selectPhotos(id_user, sql);
+		return fotos;
+	}
+	
+	public ArrayList<Foto> loadUsersPhotos(int id_user)
+	{
+		final String sql = "SELECT * FROM Fotos WHERE id_user = ?";
+		ArrayList<Foto> fotos = this.selectPhotos(id_user, sql);
+		return fotos;
+	}
+	
+	public void savePhoto(Foto foto)
+	{
+		this.insertPhoto(foto);
+		this.selectCodPhoto(foto);
 	}
 	
 	private void insertUser(Usuario user)
@@ -113,27 +131,20 @@ public class BDManager
         }
 	}
 	
-	private void insertPhoto(Foto foto)
-	{
-		
-		
-	}
-	
 	private int seleccionarIdUsuario(Usuario user)
 	{
-		final String sql = "SELECT id FROM Usuarios WHERE username = "+user.getNombreUsuario();
-		
-		this.connect();
+		final String sql = "SELECT id FROM Usuarios WHERE username = ?";
 		
 		int id = -1;
 		
         try
         		(
-        				Statement stmt  = conn.createStatement();
-                        ResultSet rs    = stmt.executeQuery(sql)
+        				PreparedStatement pstmt = conn.prepareStatement(sql);
                 )
         {
-           id = rs.getInt("id");
+        	pstmt.setString(1, user.getNombreUsuario());
+        	ResultSet rs    = pstmt.executeQuery();
+        	id = rs.getInt("id");
         }
         catch (SQLException e)
         {
@@ -194,4 +205,87 @@ public class BDManager
         return users;
 	}
 	
+	private ArrayList<Foto> selectPhotos(int id, String sql)
+	{
+
+		ArrayList<Foto> fotos = new ArrayList<>();
+		
+		this.connect();
+		
+        try
+                (
+                        PreparedStatement pstmt = conn.prepareStatement(sql);
+                )
+        {
+        	pstmt.setInt(1, id);
+        	ResultSet rs  = pstmt.executeQuery();
+        	
+            while (rs.next())
+            {
+            	int cod = rs.getInt("cod");
+            	int id_user = rs.getInt("id_user");
+            	String path = rs.getString("path");
+            	String fec = rs.getString("fec");
+            	
+            	fotos.add(new Foto(cod, id_user, path, fec));	
+            }
+        } 
+        catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        this.disconnect();
+        
+        return fotos;
+	}
+	
+	private void insertPhoto(Foto foto)
+	{
+		final String sql = "INSERT INTO Fotos(id_user, url, fec) VALUES (?,?,?)";
+
+		this.connect();
+		
+        try
+        		(
+                        PreparedStatement pstmt = conn.prepareStatement(sql)
+                )
+        {
+            pstmt.setInt(1, foto.getId_user());
+            pstmt.setString(2, foto.getPath());
+            pstmt.setString(3, foto.getFec());
+            
+            pstmt.executeUpdate();
+            
+        }
+        catch (SQLException e)
+        {
+            System.out.println("BadAss error executing insert. " + e.getMessage());
+        }
+	}
+	
+	private int selectCodPhoto(Foto foto)
+	{
+		final String sql = "SELECT cod FROM Fotos WHERE path = ?";
+		
+		int cod = -1;
+		
+        try
+        		(
+        				PreparedStatement pstmt = conn.prepareStatement(sql);
+                )
+        {
+        	pstmt.setString(1, foto.getPath());
+        	ResultSet rs = pstmt.executeQuery();
+            cod = rs.getInt("cod");
+        }
+        catch (SQLException e)
+        {
+            System.out.println("BadAss error executing insert. " + e.getMessage());
+        }
+        
+        this.disconnect();
+        
+        return cod;
+	}
 }
