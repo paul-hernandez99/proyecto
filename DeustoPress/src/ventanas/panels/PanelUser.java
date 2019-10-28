@@ -14,7 +14,6 @@ import javax.swing.SwingConstants;
 
 import foto.Foto;
 import interfaces.IPanelUsuarios;
-import socket.SocketCliente;
 import ventanas.CrearEntrada;
 import ventanas.VentanaPrincipal;
 

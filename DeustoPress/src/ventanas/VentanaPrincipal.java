@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.BorderFactory;
@@ -30,9 +31,11 @@ import java.awt.Font;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseEvent;
 import javax.swing.border.Border;
-//Comprobar registro user
+
 public class VentanaPrincipal extends JFrame 
 {
+	private BDManager bdManager;
+	
 	private ArrayList<Usuario> usuarios;
 	private Usuario usuario;
 	
@@ -43,7 +46,8 @@ public class VentanaPrincipal extends JFrame
 	
 	private JLabel logo;
 	private JLabel intro;
-	private JLabel registration;
+	private JLabel info;
+	private JLabel infoFecha;
 	
 	private JTextField username;
 	private JPasswordField password;
@@ -56,7 +60,11 @@ public class VentanaPrincipal extends JFrame
 	
 	private JButton btnSignIn;
 	private JButton btnSignUp;
-	private JButton btnCancel;
+	private JButton btnExit;
+	private JButton btnConfirm;
+	private JButton btnBack;
+	
+	private boolean singUpMenu = false;
 	
 	public static void main(String[] args) 
 	{
@@ -79,10 +87,10 @@ public class VentanaPrincipal extends JFrame
 
 	public VentanaPrincipal() 
 	{
-		BDManager bdManager = new BDManager();
+		bdManager = new BDManager();
 		usuarios = bdManager.loadUsers();
 		this.getContentPane().setBackground(Color.WHITE);
-		this.setBounds(670, 60, 600, 900);
+		this.setBounds(670, 60, 600, 920);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		this.createPanels();
@@ -124,10 +132,17 @@ public class VentanaPrincipal extends JFrame
 		intro = new JLabel("Welcome to Beermeet:");
 		intro.setFont(new Font("Gill Sans MT", Font.BOLD, 20));
 		contentPane.add(intro);
+
+		info = new JLabel("Login:", SwingConstants.CENTER);
+		info.setFont(new Font("Gill Sans MT", Font.BOLD, 18));
+		info.setBounds(100, 10, 150, 30);
+		panel.add(info);
 		
-		registration = new JLabel("Registration info:");
-		registration.setFont(new Font("Gill Sans MT", Font.BOLD, 20));
-		panel.add(registration);
+		infoFecha = new JLabel("*Enter your birth date (dd-mm-yyyy)");
+		infoFecha.setFont(new Font("Gill Sans MT", Font.BOLD,10));
+		infoFecha.setVisible(false);
+		infoFecha.setBounds(65, 284, 180, 10);
+		panel.add(infoFecha);
 	}
 	
 	private void createJtextfields()
@@ -136,6 +151,7 @@ public class VentanaPrincipal extends JFrame
 		username.setFont(new Font("Tahoma", Font.ITALIC, 16));
 		username.setFocusable(false);
 		username.setText("Username");
+		username.setBounds(65, 50, 220, 30);
 		panel.add(username);
 		
 		username.addMouseMotionListener(new MouseMotionListener() 
@@ -169,8 +185,9 @@ public class VentanaPrincipal extends JFrame
 		password.setFocusable(false);
 		password.setEchoChar((char)0);
 		password.setText("Password");
+		password.setBounds(65, 100, 220, 30);
 		panel.add(password);
-		
+
 		password.addMouseMotionListener(new MouseMotionListener() 
 		{
 			@Override
@@ -199,8 +216,21 @@ public class VentanaPrincipal extends JFrame
 		name = new JTextField();
 		name.setFont(new Font("Tahoma", Font.ITALIC, 16));
 		name.setVisible(false);
-		name.setText("name");
+		name.setText("Name");
+		name.setBounds(65, 150, 220, 30);
 		panel.add(name);
+		
+		name.addMouseMotionListener(new MouseMotionListener() 
+		{
+			@Override
+			public void mouseMoved(MouseEvent e) 
+			{
+				name.setFocusable(true);
+			}
+			
+			@Override
+			public void mouseDragged(MouseEvent e) {}
+		});
 		
 		name.addFocusListener(new FocusListener() 
 		{
@@ -217,8 +247,21 @@ public class VentanaPrincipal extends JFrame
 		email = new JTextField();
 		email.setFont(new Font("Tahoma", Font.ITALIC, 16));
 		email.setVisible(false);
-		email.setText("email");
+		email.setText("Email");
+		email.setBounds(65, 200, 220, 30);
 		panel.add(email);
+		
+		email.addMouseMotionListener(new MouseMotionListener() 
+		{
+			@Override
+			public void mouseMoved(MouseEvent e) 
+			{
+				email.setFocusable(true);
+			}
+			
+			@Override
+			public void mouseDragged(MouseEvent e) {}
+		});
 		
 		email.addFocusListener(new FocusListener() 
 		{
@@ -233,10 +276,23 @@ public class VentanaPrincipal extends JFrame
 		});
 		
 		day = new JTextField();
-		day.setFont(new Font("Tahoma", Font.ITALIC, 16));
+		day.setFont(new Font("Tahoma", Font.ITALIC, 15));
 		day.setVisible(false);
-		day.setText("day");
+		day.setText("Day");
+		day.setBounds(65, 250, 40, 30);
 		panel.add(day);
+		
+		day.addMouseMotionListener(new MouseMotionListener() 
+		{
+			@Override
+			public void mouseMoved(MouseEvent e) 
+			{
+				day.setFocusable(true);
+			}
+			
+			@Override
+			public void mouseDragged(MouseEvent e) {}
+		});
 		
 		day.addFocusListener(new FocusListener() 
 		{
@@ -251,10 +307,23 @@ public class VentanaPrincipal extends JFrame
 		});
 		
 		month = new JTextField();
-		month.setFont(new Font("Tahoma", Font.ITALIC, 16));
+		month.setFont(new Font("Tahoma", Font.ITALIC, 12));
 		month.setVisible(false);
-		month.setText("month");
+		month.setText("Month");
+		month.setBounds(155, 250, 40, 30);
 		panel.add(month);
+		
+		month.addMouseMotionListener(new MouseMotionListener() 
+		{
+			@Override
+			public void mouseMoved(MouseEvent e) 
+			{
+				month.setFocusable(true);
+			}
+			
+			@Override
+			public void mouseDragged(MouseEvent e) {}
+		});
 		
 		month.addFocusListener(new FocusListener() 
 		{
@@ -269,10 +338,23 @@ public class VentanaPrincipal extends JFrame
 		});
 		
 		year = new JTextField();
-		year.setFont(new Font("Tahoma", Font.ITALIC, 16));
+		year.setFont(new Font("Tahoma", Font.ITALIC, 15));
 		year.setVisible(false);
-		year.setText("year");
+		year.setText("Year");
+		year.setBounds(245, 250, 40, 30);
 		panel.add(year);
+		
+		year.addMouseMotionListener(new MouseMotionListener() 
+		{
+			@Override
+			public void mouseMoved(MouseEvent e) 
+			{
+				year.setFocusable(true);
+			}
+			
+			@Override
+			public void mouseDragged(MouseEvent e) {}
+		});
 		
 		year.addFocusListener(new FocusListener() 
 		{
@@ -285,7 +367,7 @@ public class VentanaPrincipal extends JFrame
 				year.setText("");
 			}
 		});
-		
+	
 	}
 	
 	private void createButtons()
@@ -295,6 +377,7 @@ public class VentanaPrincipal extends JFrame
 		btnSignIn.setBackground(new Color(255, 102, 102));
 		btnSignIn.setForeground(new Color(255, 255, 255));
 		btnSignIn.setFocusable(false);
+		btnSignIn.setBounds(125, 180, 100, 40);
 		panel.add(btnSignIn);
 		
 		btnSignIn.addActionListener(new ActionListener() 
@@ -344,6 +427,7 @@ public class VentanaPrincipal extends JFrame
 		btnSignUp.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
 		btnSignUp.setBackground(new Color(255, 102, 102));
 		btnSignUp.setFocusable(false);
+		btnSignUp.setBounds(125, 240, 100, 40);
 		panel.add(btnSignUp);
 		
 		btnSignUp.addActionListener(new ActionListener() 
@@ -351,32 +435,60 @@ public class VentanaPrincipal extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				registrationJButtonsVisible();
-				
-				btnSignUp.addActionListener(new ActionListener() 
-				{
-					@Override
-					public void actionPerformed(ActionEvent arg0) 
-					{
-						createUser();
-					}
-				});
+				registrationMenuVisible();
 			}
 		});
 		
-		btnCancel = new JButton("Exit");
-		btnCancel.setForeground(new Color(255, 255, 255));
-		btnCancel.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		btnCancel.setBackground(new Color(153, 240, 153));
-		btnCancel.setFocusable(false);
-		panel.add(btnCancel);
+		btnExit = new JButton("Exit");
+		btnExit.setForeground(new Color(255, 255, 255));
+		btnExit.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
+		btnExit.setBackground(new Color(153, 240, 153));
+		btnExit.setFocusable(false);
+		btnExit.setBounds(125, 300, 100, 40);
+		panel.add(btnExit);
 		
-		btnCancel.addActionListener(new ActionListener() 
+		btnExit.addActionListener(new ActionListener() 
 		{
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
 				VentanaPrincipal.this.dispose();
+			}
+		});
+		
+		btnConfirm = new JButton("Confirm");
+		btnConfirm.setForeground(new Color(255, 255, 255));
+		btnConfirm.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
+		btnConfirm.setBackground(new Color(255, 102, 102));
+		btnConfirm.setFocusable(false);
+		btnConfirm.setBounds(125, 320, 100, 40);
+		btnConfirm.setVisible(false);
+		panel.add(btnConfirm);
+		
+		btnConfirm.addActionListener(new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				createUser();
+			}
+		});
+		
+		btnBack = new JButton("Back");
+		btnBack.setForeground(new Color(255, 255, 255));
+		btnBack.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
+		btnBack.setBackground(new Color(153, 240, 153));
+		btnBack.setFocusable(false);
+		btnBack.setBounds(125, 380, 100, 40);
+		btnBack.setVisible(false);
+		panel.add(btnBack);
+		
+		btnBack.addActionListener(new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				loginMenuVisible();
 			}
 		});
 	}
@@ -387,27 +499,18 @@ public class VentanaPrincipal extends JFrame
 		{
 			public void componentResized(ComponentEvent evt)
 			{
-				panel.setBounds(((contentPane.getBounds().width)/2)-175, 445, 350, 360);
+				if(!singUpMenu)
+				{
+					panel.setBounds(((contentPane.getBounds().width)/2)-175, 405, 350, 360);
+				}
+				else
+					panel.setBounds(((contentPane.getBounds().width)/2)-175, 405, 350, 440);
+				
 				logo.setBounds(((contentPane.getBounds().width)/2)-185, 0, 370, 370);
-				intro.setBounds(((contentPane.getBounds().width)/2)-115, 390, 230, 30);
-				username.setBounds(((panel.getBounds().width)/2)-110, 30, 220, 30);
-				password.setBounds(((panel.getBounds().width)/2)-110, 80, 220, 30);
-				btnSignIn.setBounds(((panel.getBounds().width)/2)-50, 180, 100, 40);
-				btnSignUp.setBounds(((panel.getBounds().width)/2)-50, 240, 100, 40);
-				btnCancel.setBounds(((panel.getBounds().width)/2)-50, 300, 100, 40);
+				intro.setBounds(((contentPane.getBounds().width)/2)-115, 350, 230, 30);
 			}
 		});
 		
-	}
-	
-	private void registrationJButtonsVisible()
-	{
-		registration.setVisible(true);
-		name.setVisible(true);
-		email.setVisible(true);
-		day.setVisible(true);
-		month.setVisible(true);
-		year.setVisible(true);
 	}
 	
 	private void createUser()
@@ -421,8 +524,76 @@ public class VentanaPrincipal extends JFrame
 		
 		UsuarioNormal usuario = new UsuarioNormal(username, password, name, apellidos, email, fecNac);
 		
-		BDManager bdManager = new BDManager();
 		bdManager.saveUser(usuario);
+	}
+	
+	private void registrationMenuVisible()
+	{
+		singUpMenu = true;
+		
+		btnSignIn.setVisible(false);
+		btnSignUp.setVisible(false);
+		btnExit.setVisible(false);
+		
+		
+		btnConfirm.setVisible(true);
+		btnBack.setVisible(true);
+		
+		infoFecha.setVisible(true);
+		info.setText("Registration info:");
+		name.setVisible(true);
+		email.setVisible(true);
+		day.setVisible(true);
+		month.setVisible(true);
+		year.setVisible(true);
+		
+		setTexts();
+		
+		panel.setBounds(((contentPane.getBounds().width)/2)-175, 405, 350, 440);
+	}
+	
+	private void loginMenuVisible()
+	{
+		singUpMenu = false;
+		
+		btnSignIn.setVisible(true);
+		btnSignUp.setVisible(true);
+		btnExit.setVisible(true);
+		
+		btnConfirm.setVisible(false);
+		btnBack.setVisible(false);
+		
+		infoFecha.setVisible(false);
+		info.setText("Login:");
+		name.setVisible(false);
+		email.setVisible(false);
+		day.setVisible(false);
+		month.setVisible(false);
+		year.setVisible(false);
+		
+		panel.setBounds(((contentPane.getBounds().width)/2)-175, 405, 350, 360);
+		
+		setTexts();
+	}
+	
+	private void setTexts()
+	{
+		username.setText("Username");
+		password.setText("Password");
+		password.setEchoChar((char)0);
+		name.setText("Name");
+		email.setText("Email");
+		day.setText("Day");
+		month.setText("Month");
+		year.setText("Year");
+		
+		username.setFocusable(false);
+		password.setFocusable(false);
+		name.setFocusable(false);
+		email.setFocusable(false);
+		day.setFocusable(false);
+		month.setFocusable(false);
+		year.setFocusable(false);
 	}
 	
 	private void comprobarUsuario(String usuario, String password) throws Exceptions
@@ -438,10 +609,14 @@ public class VentanaPrincipal extends JFrame
 				break;
 			}
 		}
+		this.password.setText("Password");
+		this.password.setEchoChar((char)0);
+		this.password.setFocusable(false);
+		
 		if(!encontrado)
 		{
-			username.setText("");
-			this.password.setText("");
+			username.setText("Username");
+			username.setFocusable(false);
 			throw new Exceptions("Usuario no existente");
 		}
 		else
