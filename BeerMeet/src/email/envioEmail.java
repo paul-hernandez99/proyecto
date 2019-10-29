@@ -42,9 +42,11 @@ public class envioEmail {
 	}
 	
 	
-	public static void bienvenida(String destinatario, String nombre) {
-	    String asunto = "Bienvenido a BeerMeet";
-	    String cuerpo = "Buenos dias "+nombre+":\n";
+	public static void bienvenida(String destinatario, String nombre, String contraseña) {
+	    String asunto = "Recuperación de contraseña - BeerMet";
+	    String cuerpo = "Buenos dias "+nombre+":\n"
+	    		+ "Nos dirigimos a ustez para que pueda recuperar su contraseña y acceder a la"
+	    		+ " plataforma BeerMet. \n"+ "\n   contraseña de recuperación: "+ contraseña;
  
 	    enviarConGMail(destinatario, asunto, cuerpo);
 	}

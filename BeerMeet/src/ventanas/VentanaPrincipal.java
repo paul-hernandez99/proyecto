@@ -23,6 +23,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
@@ -138,6 +139,18 @@ public class VentanaPrincipal extends JFrame
 		infoFecha.setFont(new Font("Gill Sans MT", Font.BOLD,10));
 		infoFecha.setBounds(65, 284, 180, 10);
 		panel.add(infoFecha);
+		
+		JLabel lblhasOlvidadoTu = new JLabel("\u00BFHas olvidado tu contrase\u00F1a?");
+		lblhasOlvidadoTu.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				lblhasOlvidadoTu.setText("loco");
+			}
+		});
+		lblhasOlvidadoTu.setFont(new Font("Tahoma", Font.ITALIC, 17));
+		lblhasOlvidadoTu.setBounds(184, 817, 229, 20);
+		panel_principal.add(lblhasOlvidadoTu);
+
 	}
 	
 	private void createJtextfields()
