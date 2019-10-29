@@ -95,6 +95,9 @@ public class VentanaPrincipal extends JFrame
 		this.createJtextfields();
 		this.createButtons();
 		this.setElementsSizePosition();
+		
+		this.setTexts();
+		this.loginMenuVisible();
 	}
 	
 	private void createPanels()
@@ -133,7 +136,6 @@ public class VentanaPrincipal extends JFrame
 		
 		infoFecha = new JLabel("*Enter your birth date (dd-mm-yyyy)");
 		infoFecha.setFont(new Font("Gill Sans MT", Font.BOLD,10));
-		infoFecha.setVisible(false);
 		infoFecha.setBounds(65, 284, 180, 10);
 		panel.add(infoFecha);
 	}
@@ -142,8 +144,6 @@ public class VentanaPrincipal extends JFrame
 	{
 		username = new JTextField();
 		username.setFont(new Font("Tahoma", Font.ITALIC, 16));
-		username.setFocusable(false);
-		username.setText("Username");
 		username.setBounds(65, 50, 220, 30);
 		panel.add(username);
 		
@@ -176,9 +176,6 @@ public class VentanaPrincipal extends JFrame
 		
 		password = new JPasswordField();
 		password.setFont(new Font("Tahoma", Font.ITALIC, 16));
-		password.setFocusable(false);
-		password.setEchoChar((char)0);
-		password.setText("Password");
 		password.setBounds(65, 100, 220, 30);
 		panel.add(password);
 
@@ -210,8 +207,6 @@ public class VentanaPrincipal extends JFrame
 		
 		name = new JTextField();
 		name.setFont(new Font("Tahoma", Font.ITALIC, 16));
-		name.setVisible(false);
-		name.setText("Name");
 		name.setBounds(65, 150, 110, 30);
 		panel.add(name);
 		
@@ -242,8 +237,6 @@ public class VentanaPrincipal extends JFrame
 		
 		apellidos = new JTextField();
 		apellidos.setFont(new Font("Tahoma", Font.ITALIC, 16));
-		apellidos.setVisible(false);
-		apellidos.setText("Surnames");
 		apellidos.setBounds(205, 150, 110, 30);
 		panel.add(apellidos);
 		
@@ -274,8 +267,6 @@ public class VentanaPrincipal extends JFrame
 		
 		email = new JTextField();
 		email.setFont(new Font("Tahoma", Font.ITALIC, 16));
-		email.setVisible(false);
-		email.setText("Email");
 		email.setBounds(65, 200, 220, 30);
 		panel.add(email);
 		
@@ -306,8 +297,6 @@ public class VentanaPrincipal extends JFrame
 		
 		day = new JTextField();
 		day.setFont(new Font("Tahoma", Font.ITALIC, 15));
-		day.setVisible(false);
-		day.setText("Day");
 		day.setBounds(65, 250, 40, 30);
 		panel.add(day);
 		
@@ -338,8 +327,6 @@ public class VentanaPrincipal extends JFrame
 		
 		month = new JTextField();
 		month.setFont(new Font("Tahoma", Font.ITALIC, 12));
-		month.setVisible(false);
-		month.setText("Month");
 		month.setBounds(155, 250, 40, 30);
 		panel.add(month);
 		
@@ -370,8 +357,6 @@ public class VentanaPrincipal extends JFrame
 		
 		year = new JTextField();
 		year.setFont(new Font("Tahoma", Font.ITALIC, 15));
-		year.setVisible(false);
-		year.setText("Year");
 		year.setBounds(245, 250, 40, 30);
 		panel.add(year);
 		
@@ -407,7 +392,7 @@ public class VentanaPrincipal extends JFrame
 		btnSignIn = new JButton("Sign In");
 		btnSignIn.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
 		btnSignIn.setBackground(new Color(255, 102, 102));
-		btnSignIn.setForeground(new Color(255, 255, 255));
+		btnSignIn.setForeground(Color.WHITE);
 		btnSignIn.setFocusable(false);
 		btnSignIn.setBounds(125, 180, 100, 40);
 		panel.add(btnSignIn);
@@ -422,9 +407,8 @@ public class VentanaPrincipal extends JFrame
 				
 				try 
 				{
-					comprobarUsuario(user, pass);
-					username.setText(null);
-					password.setText(null);
+					comprobarUsuarioLogin(user, pass);
+					
 					for (Usuario a : usuarios) 
 					{
 						if (a.getContraseña().equals(pass))
@@ -451,7 +435,7 @@ public class VentanaPrincipal extends JFrame
 		});
 		
 		btnSignUp = new JButton("Sign Up");
-		btnSignUp.setForeground(new Color(255, 255, 255));
+		btnSignUp.setForeground(Color.WHITE);
 		btnSignUp.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
 		btnSignUp.setBackground(new Color(255, 102, 102));
 		btnSignUp.setFocusable(false);
@@ -468,7 +452,7 @@ public class VentanaPrincipal extends JFrame
 		});
 		
 		btnExit = new JButton("Exit");
-		btnExit.setForeground(new Color(255, 255, 255));
+		btnExit.setForeground(Color.WHITE);
 		btnExit.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
 		btnExit.setBackground(new Color(153, 240, 153));
 		btnExit.setFocusable(false);
@@ -485,12 +469,11 @@ public class VentanaPrincipal extends JFrame
 		});
 		
 		btnConfirm = new JButton("Confirm");
-		btnConfirm.setForeground(new Color(255, 255, 255));
+		btnConfirm.setForeground(Color.WHITE);
 		btnConfirm.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
 		btnConfirm.setBackground(new Color(255, 102, 102));
 		btnConfirm.setFocusable(false);
 		btnConfirm.setBounds(125, 320, 100, 40);
-		btnConfirm.setVisible(false);
 		panel.add(btnConfirm);
 		
 		btnConfirm.addActionListener(new ActionListener() 
@@ -499,18 +482,15 @@ public class VentanaPrincipal extends JFrame
 			public void actionPerformed(ActionEvent e) 
 			{
 				createUser();
-				
-				goToPanelUser();
 			}
 		});
 		
 		btnBack = new JButton("Back");
-		btnBack.setForeground(new Color(255, 255, 255));
+		btnBack.setForeground(Color.WHITE);
 		btnBack.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
 		btnBack.setBackground(new Color(153, 240, 153));
 		btnBack.setFocusable(false);
 		btnBack.setBounds(125, 380, 100, 40);
-		btnBack.setVisible(false);
 		panel.add(btnBack);
 		
 		btnBack.addActionListener(new ActionListener() 
@@ -545,19 +525,31 @@ public class VentanaPrincipal extends JFrame
 	
 	private void createUser()
 	{
-		String username = this.username.getText();
-		String password = this.password.getText();
-		String name = this.name.getText();
-		String apellidos = this.apellidos.getText();
-		String email = this.email.getText();
-		String fecNac = this.day.getText() +"-"+ this.month.getText() +"-"+ this.year.getText();
+		try 
+		{
+			String username = this.username.getText();
+			String password = this.password.getText();
+			String name = this.name.getText();
+			String apellidos = this.apellidos.getText();
+			String email = this.email.getText();
+			String fecNac = this.day.getText() +"-"+ this.month.getText() +"-"+ this.year.getText();
+			
+			comprobarUsuarioRegistration(username, email);
+			
+			UsuarioNormal usuario = new UsuarioNormal(username, password, name, apellidos, email, fecNac);
+			
+			bdManager.saveUser(usuario);
+			
+			this.usuario = usuario;
+			usuarios.add(usuario);
+			
+			goToPanelUser();
+		} 
+		catch (Exceptions e) 
+		{
+			JOptionPane.showMessageDialog(VentanaPrincipal.this, e.getMessage());
+		}
 		
-		UsuarioNormal usuario = new UsuarioNormal(username, password, name, apellidos, email, fecNac);
-		
-		bdManager.saveUser(usuario);
-		
-		this.usuario = usuario;
-		usuarios.add(usuario);
 	}
 	
 	private void registrationMenuVisible()
@@ -647,7 +639,7 @@ public class VentanaPrincipal extends JFrame
 		revalidate();
 	}
 	
-	private void comprobarUsuario(String usuario, String password) throws Exceptions
+	private void comprobarUsuarioLogin(String usuario, String password) throws Exceptions
 	{
 		boolean encontrado = false;
 		Usuario user = null;
@@ -661,9 +653,9 @@ public class VentanaPrincipal extends JFrame
 			}
 		}
 		username.setFocusable(false);
+		this.password.setFocusable(false);
 		this.password.setText("Password");
 		this.password.setEchoChar((char)0);
-		this.password.setFocusable(false);
 		
 		if(!encontrado)
 		{
@@ -679,9 +671,25 @@ public class VentanaPrincipal extends JFrame
 			}
 		}
 	}
+	
+	private void comprobarUsuarioRegistration(String usuario, String email) throws Exceptions
+	{
 
-	
-	
+		for(Usuario a: usuarios)
+		{
+			if(a.getNombreUsuario().equals(usuario))
+			{
+				username.setText("Username");
+				throw new Exceptions("Nombre de usuario existente");
+			}
+			else if(a.getEmail().equals(email))
+			{
+				this.email.setText("Email");
+				throw new Exceptions("Email existente");
+			}
+		}
+	}
+
 	public JPanel getPanel_principal() 
 	{
 		return panel_principal;

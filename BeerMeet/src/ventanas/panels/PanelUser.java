@@ -12,6 +12,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -35,6 +37,8 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 	private JPanel panelCenter;
 	private JPanel panelEast;
 	private JPanel panelSouth;
+	
+	private JLabel foto;
 	
 	private ArrayList<Foto> fotos_inicio;
 	private ArrayList<Foto> fotos_perfil;
@@ -107,6 +111,13 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		btnSalir.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
 		panelSouth.add(btnSalir);
 		
+		for(Foto photo: fotos_perfil)
+		{
+			foto = new JLabel(new ImageIcon(photo.getPath()));
+		}
+		foto.setVisible(false);
+		panelCenter.add(foto);
+		
 		cargarDatos();
 		
 		btnSubirFoto.addActionListener(new ActionListener() 
@@ -117,11 +128,14 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 				String path = uploadPhotoAndGetPath();
 				String fec = Utilidades.fechaDeAlta();
 				
-				Foto foto = new Foto(id_user, path, fec);
-				
-				bdManager.savePhoto(foto);
-				
-				fotos_perfil.add(foto);
+				if(path != null)
+				{
+					Foto foto = new Foto(id_user, path, fec);
+					
+					bdManager.savePhoto(foto);
+					
+					fotos_perfil.add(foto);
+				}
 			}
 		});
 		
@@ -137,7 +151,7 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				
+				foto.setVisible(true);
 			}
 		});
 		
@@ -156,7 +170,7 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		FileDialog dialog = new FileDialog(ventanaPrincipal,"Select Image to upload", FileDialog.LOAD);
 		dialog.setVisible(true);
 		
-		String path = "";
+		String path = null;
 		
 		if(dialog.getFile() != null)
 		{
