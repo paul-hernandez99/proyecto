@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JPasswordField;
-import javax.swing.JScrollPane;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -40,9 +39,7 @@ public class VentanaPrincipal extends JFrame
 	private Usuario usuario;
 	
 	private JPanel panel;
-	private JPanel contentPane;
-	
-	private JScrollPane jScrollPane;
+	private JPanel panel_principal;
 	
 	private JLabel logo;
 	private JLabel intro;
@@ -89,7 +86,6 @@ public class VentanaPrincipal extends JFrame
 	{
 		bdManager = new BDManager();
 		usuarios = bdManager.loadUsers();
-		this.getContentPane().setBackground(Color.WHITE);
 		this.setBounds(670, 60, 600, 920);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
@@ -99,31 +95,28 @@ public class VentanaPrincipal extends JFrame
 		this.createJtextfields();
 		this.createButtons();
 		this.setElementsSizePosition();
-		
 	}
 	
 	private void createPanels()
 	{
-		contentPane = new JPanel();
-		contentPane.setBackground(Color.WHITE);
-		contentPane.setLayout(null);
+		panel_principal = new JPanel();
+		panel_principal.setBackground(Color.WHITE);
+		panel_principal.setLayout(null);
 		
 		panel = new JPanel();
 		panel.setBackground(Color.WHITE);
 		Border border = BorderFactory.createLineBorder(new Color(153, 240, 153),3);
 		panel.setBorder(border);
 		panel.setLayout(null);
-		contentPane.add(panel);
+		panel_principal.add(panel);
 		
-		jScrollPane = new JScrollPane(contentPane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		
-		this.add(jScrollPane);
+		this.add(panel_principal);
 	}
 	
 	private void createIcon()
 	{
 		logo = new JLabel(new ImageIcon("Imagenes/System/Wallpaper.png"));
-		contentPane.add(logo);
+		panel_principal.add(logo);
 		
 	}
 	
@@ -131,7 +124,7 @@ public class VentanaPrincipal extends JFrame
 	{
 		intro = new JLabel("Welcome to Beermeet:");
 		intro.setFont(new Font("Gill Sans MT", Font.BOLD, 20));
-		contentPane.add(intro);
+		panel_principal.add(intro);
 
 		info = new JLabel("Login:", SwingConstants.CENTER);
 		info.setFont(new Font("Gill Sans MT", Font.BOLD, 18));
@@ -217,7 +210,7 @@ public class VentanaPrincipal extends JFrame
 		name.setFont(new Font("Tahoma", Font.ITALIC, 16));
 		name.setVisible(false);
 		name.setText("Name");
-		name.setBounds(65, 150, 220, 30);
+		name.setBounds(65, 150, 110, 30);
 		panel.add(name);
 		
 		name.addMouseMotionListener(new MouseMotionListener() 
@@ -241,6 +234,37 @@ public class VentanaPrincipal extends JFrame
 			public void focusGained(FocusEvent e) 
 			{
 				name.setText("");
+			}
+		});
+		
+		apellidos = new JTextField();
+		apellidos.setFont(new Font("Tahoma", Font.ITALIC, 16));
+		apellidos.setVisible(false);
+		apellidos.setText("Surnames");
+		apellidos.setBounds(205, 150, 110, 30);
+		panel.add(apellidos);
+		
+		apellidos.addMouseMotionListener(new MouseMotionListener() 
+		{
+			@Override
+			public void mouseMoved(MouseEvent e) 
+			{
+				apellidos.setFocusable(true);
+			}
+			
+			@Override
+			public void mouseDragged(MouseEvent e) {}
+		});
+		
+		apellidos.addFocusListener(new FocusListener() 
+		{
+			@Override
+			public void focusLost(FocusEvent e) {}
+			
+			@Override
+			public void focusGained(FocusEvent e) 
+			{
+				apellidos.setText("");
 			}
 		});
 		
@@ -403,15 +427,11 @@ public class VentanaPrincipal extends JFrame
 					}
 					if (usuario instanceof Administrador) 
 					{
-						PanelAdmin panelAdmin = new PanelAdmin(VentanaPrincipal.this);
-						setContentPane(panelAdmin);
-						revalidate();
+						goToPanelAdmin();
 					} 
 					else 
 					{
-						PanelUser panelUser = new PanelUser(VentanaPrincipal.this);
-						setContentPane(panelUser);
-						revalidate();
+						goToPanelUser();
 					}
 					
 				} 
@@ -471,6 +491,8 @@ public class VentanaPrincipal extends JFrame
 			public void actionPerformed(ActionEvent e) 
 			{
 				createUser();
+				
+				goToPanelUser();
 			}
 		});
 		
@@ -495,19 +517,19 @@ public class VentanaPrincipal extends JFrame
 	
 	private void setElementsSizePosition()
 	{
-		contentPane.addComponentListener(new ComponentAdapter() 
+		panel_principal.addComponentListener(new ComponentAdapter() 
 		{
 			public void componentResized(ComponentEvent evt)
 			{
 				if(!singUpMenu)
 				{
-					panel.setBounds(((contentPane.getBounds().width)/2)-175, 405, 350, 360);
+					panel.setBounds(((panel_principal.getBounds().width)/2)-175, 405, 350, 360);
 				}
 				else
-					panel.setBounds(((contentPane.getBounds().width)/2)-175, 405, 350, 440);
+					panel.setBounds(((panel_principal.getBounds().width)/2)-175, 405, 350, 440);
 				
-				logo.setBounds(((contentPane.getBounds().width)/2)-185, 0, 370, 370);
-				intro.setBounds(((contentPane.getBounds().width)/2)-115, 350, 230, 30);
+				logo.setBounds(((panel_principal.getBounds().width)/2)-185, 0, 370, 370);
+				intro.setBounds(((panel_principal.getBounds().width)/2)-115, 350, 230, 30);
 			}
 		});
 		
@@ -525,6 +547,9 @@ public class VentanaPrincipal extends JFrame
 		UsuarioNormal usuario = new UsuarioNormal(username, password, name, apellidos, email, fecNac);
 		
 		bdManager.saveUser(usuario);
+		
+		this.usuario = usuario;
+		usuarios.add(usuario);
 	}
 	
 	private void registrationMenuVisible()
@@ -542,6 +567,7 @@ public class VentanaPrincipal extends JFrame
 		infoFecha.setVisible(true);
 		info.setText("Registration info:");
 		name.setVisible(true);
+		apellidos.setVisible(true);
 		email.setVisible(true);
 		day.setVisible(true);
 		month.setVisible(true);
@@ -549,7 +575,7 @@ public class VentanaPrincipal extends JFrame
 		
 		setTexts();
 		
-		panel.setBounds(((contentPane.getBounds().width)/2)-175, 405, 350, 440);
+		panel.setBounds(((panel_principal.getBounds().width)/2)-175, 405, 350, 440);
 	}
 	
 	private void loginMenuVisible()
@@ -566,22 +592,24 @@ public class VentanaPrincipal extends JFrame
 		infoFecha.setVisible(false);
 		info.setText("Login:");
 		name.setVisible(false);
+		apellidos.setVisible(false);
 		email.setVisible(false);
 		day.setVisible(false);
 		month.setVisible(false);
 		year.setVisible(false);
 		
-		panel.setBounds(((contentPane.getBounds().width)/2)-175, 405, 350, 360);
+		panel.setBounds(((panel_principal.getBounds().width)/2)-175, 405, 350, 360);
 		
 		setTexts();
 	}
 	
-	private void setTexts()
+	public void setTexts()
 	{
 		username.setText("Username");
 		password.setText("Password");
 		password.setEchoChar((char)0);
 		name.setText("Name");
+		apellidos.setText("Surnames");
 		email.setText("Email");
 		day.setText("Day");
 		month.setText("Month");
@@ -590,10 +618,25 @@ public class VentanaPrincipal extends JFrame
 		username.setFocusable(false);
 		password.setFocusable(false);
 		name.setFocusable(false);
+		apellidos.setFocusable(false);
 		email.setFocusable(false);
 		day.setFocusable(false);
 		month.setFocusable(false);
 		year.setFocusable(false);
+	}
+	
+	private void goToPanelUser()
+	{
+		PanelUser panelUser = new PanelUser(VentanaPrincipal.this);
+		setContentPane(panelUser);
+		revalidate();
+	}
+	
+	private void goToPanelAdmin()
+	{
+		PanelAdmin panelAdmin = new PanelAdmin(VentanaPrincipal.this);
+		setContentPane(panelAdmin);
+		revalidate();
 	}
 	
 	private void comprobarUsuario(String usuario, String password) throws Exceptions
@@ -609,6 +652,7 @@ public class VentanaPrincipal extends JFrame
 				break;
 			}
 		}
+		username.setFocusable(false);
 		this.password.setText("Password");
 		this.password.setEchoChar((char)0);
 		this.password.setFocusable(false);
@@ -616,7 +660,6 @@ public class VentanaPrincipal extends JFrame
 		if(!encontrado)
 		{
 			username.setText("Username");
-			username.setFocusable(false);
 			throw new Exceptions("Usuario no existente");
 		}
 		else
@@ -627,6 +670,18 @@ public class VentanaPrincipal extends JFrame
 				throw new Exceptions("Contraseña incorrecta");
 			}
 		}
+	}
+
+	
+	
+	public JPanel getPanel_principal() 
+	{
+		return panel_principal;
+	}
+
+	public void setPanel_principal(JPanel panel_principal) 
+	{
+		this.panel_principal = panel_principal;
 	}
 
 	public ArrayList<Usuario> getUsuarios() 
@@ -647,16 +702,6 @@ public class VentanaPrincipal extends JFrame
 	public void setUsuario(Usuario usuario) 
 	{
 		this.usuario = usuario;
-	}
-
-	public JPanel getPanel1() 
-	{
-		return panel;
-	}
-
-	public void setPanel1(JPanel panel1) 
-	{
-		this.panel = panel1;
 	}
 
 	public JTextField getUsername() 

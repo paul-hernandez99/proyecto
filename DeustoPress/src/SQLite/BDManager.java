@@ -94,7 +94,7 @@ public class BDManager
 	private void insertUser(Usuario user)
 	{
 		
-		String sql = "INSERT INTO Usuarios(type, username, password, name, surnames, email, fec_nac, edad) VALUES(?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO Usuarios (type, username, password, name, surnames, email, fec_nac, age) VALUES(?,?,?,?,?,?,?,?)";
 
 		this.connect();
 		
@@ -112,14 +112,14 @@ public class BDManager
             if(user instanceof UsuarioNormal)
             {
             	pstmt.setInt(1, 0);
-            	pstmt.setString(6, ((UsuarioNormal) user).getFechaNacimiento());
-            	pstmt.setInt(7, ((UsuarioNormal) user).getEdad());
+            	pstmt.setString(7, ((UsuarioNormal) user).getFechaNacimiento());
+            	pstmt.setInt(8, ((UsuarioNormal) user).getEdad());
             }
             else
             {
             	pstmt.setInt(1, 1);
-            	pstmt.setNull(6, Types.LONGNVARCHAR);
-            	pstmt.setNull(7, Types.INTEGER);
+            	pstmt.setNull(7, Types.LONGNVARCHAR);
+            	pstmt.setNull(8, Types.INTEGER);
             }
             
             pstmt.executeUpdate();
@@ -148,7 +148,7 @@ public class BDManager
         }
         catch (SQLException e)
         {
-            System.out.println("BadAss error executing insert. " + e.getMessage());
+            System.out.println("BadAss error executing select. " + e.getMessage());
         }
         
         this.disconnect();
@@ -177,13 +177,13 @@ public class BDManager
             	String username = rs.getString("username");
             	String password = rs.getString("password");
             	String name = rs.getString("name");
-            	String apellidos = rs.getString("apellidos");
+            	String apellidos = rs.getString("surnames");
             	String email = rs.getString("email");
             	
             	if(type == 0)
             	{
             		String fec_nac = rs.getString("fec_nac");
-                	int edad = rs.getInt("edad");
+                	int edad = rs.getInt("age");
                 	
                 	UsuarioNormal usuarioNormal = new UsuarioNormal(id, username, password, name, apellidos, email, fec_nac, edad);
                 	users.add(usuarioNormal);
@@ -242,7 +242,7 @@ public class BDManager
 	
 	private void insertPhoto(Foto foto)
 	{
-		final String sql = "INSERT INTO Fotos(id_user, url, fec) VALUES (?,?,?)";
+		final String sql = "INSERT INTO Fotos(id_user, path, fec) VALUES (?,?,?)";
 
 		this.connect();
 		
@@ -281,7 +281,7 @@ public class BDManager
         }
         catch (SQLException e)
         {
-            System.out.println("BadAss error executing insert. " + e.getMessage());
+            System.out.println("BadAss error executing select. " + e.getMessage());
         }
         
         this.disconnect();

@@ -6,7 +6,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.net.Socket;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -17,8 +17,11 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import SQLite.BDManager;
 import foto.Foto;
 import interfaces.IPanelUsuarios;
+import usuarios.UsuarioNormal;
+import utilidades.Utilidades;
 import ventanas.CrearEntrada;
 import ventanas.VentanaPrincipal;
 
@@ -26,8 +29,10 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 {
 	private VentanaPrincipal ventanaPrincipal;
 	
-	private JLabel lblNewLabel_1;
-	private JLabel lblNewLabel;
+	private BDManager bdManager;
+	
+	private JLabel username;
+	private JLabel nombreReal;
 	
 	private ArrayList<Foto> fotos_inicio;
 	private ArrayList<Foto> fotos_perfil;
@@ -35,42 +40,46 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 	
 	public PanelUser(VentanaPrincipal ventana) 
 	{
-		ventanaPrincipal = ventana;
-		setBackground(Color.LIGHT_GRAY);
-		setLayout(null);
+		bdManager = new BDManager();
 		
+		ventanaPrincipal = ventana;
+		
+		fotos_inicio = bdManager.loadInicioPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
+		fotos_perfil = bdManager.loadUsersPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
+				
+		setBackground(Color.WHITE);
 		setIcon(new ImageIcon("Imagenes/Wallpaper.jpg"));
 		
 		JLabel lblImage = new JLabel(new ImageIcon("Imagenes/Usuario.png"));
 		lblImage.setBounds(445, 22, 54, 54);
 		add(lblImage);
 		
-		lblNewLabel_1 = new JLabel();
-		lblNewLabel_1.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(390, 68, 166, 20);
-		add(lblNewLabel_1);
+		username = new JLabel();
+		username.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
+		username.setHorizontalAlignment(SwingConstants.CENTER);
+		username.setBounds(390, 68, 166, 20);
+		add(username);
 		
-		JButton btnModificarDatos = new JButton("Modificar Datos");
-		btnModificarDatos.setForeground(new Color(255, 255, 255));
-		btnModificarDatos.setBackground(new Color(102, 204, 255));
-		btnModificarDatos.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		btnModificarDatos.setBounds(160, 115, 187, 38);
-		add(btnModificarDatos);
+		JButton btnSubirFoto = new JButton("Subir foto");
+		btnSubirFoto.setForeground(new Color(255, 255, 255));
+		btnSubirFoto.setBackground(new Color(102, 204, 255));
+		btnSubirFoto.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
+		btnSubirFoto.setBounds(160, 115, 187, 38);
+		add(btnSubirFoto);
 		
-		JButton btnCrearEntrada = new JButton("Crear Entrada");
-		btnCrearEntrada.setForeground(Color.WHITE);
-		btnCrearEntrada.setBackground(new Color(102, 204, 255));
-		btnCrearEntrada.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		btnCrearEntrada.setBounds(160, 185, 187, 38);
-		add(btnCrearEntrada);
+		JButton btnUsuarios = new JButton("Crear Entrada");
+		btnUsuarios.setForeground(Color.WHITE);
+		btnUsuarios.setBackground(new Color(102, 204, 255));
+		btnUsuarios.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
+		btnUsuarios.setBounds(160, 185, 187, 38);
+		add(btnUsuarios);
 		
-		JButton btnVisualizarEntradas = new JButton("Visualizar Entradas");
-		btnVisualizarEntradas.setForeground(Color.WHITE);
-		btnVisualizarEntradas.setBackground(new Color(102, 204, 255));
-		btnVisualizarEntradas.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		btnVisualizarEntradas.setBounds(160, 255, 187, 38);
-		add(btnVisualizarEntradas);
+		JButton btnPerfil = new JButton("Visualizar Entradas");
+		btnPerfil.setForeground(Color.WHITE);
+		btnPerfil.setBackground(new Color(102, 204, 255));
+		btnPerfil.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
+		btnPerfil.setBounds(160, 255, 187, 38);
+		add(btnPerfil);
 		
 		JButton btnSalir = new JButton("Cerrar Sesion");
 		btnSalir.setForeground(new Color(102, 204, 255));
@@ -79,11 +88,11 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		btnSalir.setBounds(419, 103, 110, 25);
 		add(btnSalir);
 		
-		lblNewLabel = new JLabel();
-		lblNewLabel.setForeground(new Color(102, 204, 255));
-		lblNewLabel.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		lblNewLabel.setBounds(53, 10, 187, 20);
-		add(lblNewLabel);
+		nombreReal = new JLabel();
+		nombreReal.setForeground(new Color(102, 204, 255));
+		nombreReal.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
+		nombreReal.setBounds(53, 10, 187, 20);
+		add(nombreReal);
 		
 		JLabel lblqueDeseaHacer = new JLabel("\u00BFQue desea hacer?");
 		lblqueDeseaHacer.setForeground(new Color(0, 0, 0));
@@ -93,32 +102,36 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		
 		cargarDatos();
 		
-		btnModificarDatos.addActionListener(new ActionListener() 
+		btnSubirFoto.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				PanelModificarDatos panelModificarDatos = new PanelModificarDatos(PanelUser.this, ventanaPrincipal);
-				ventanaPrincipal.setContentPane(panelModificarDatos);
-				ventanaPrincipal.revalidate();
+				int id_user = ((UsuarioNormal)ventanaPrincipal.getUsuario()).getId();
+				String path = uploadPhotoAndGetPath();
+				String fec = Utilidades.fechaDeAlta();
+				
+				Foto foto = new Foto(id_user, path, fec);
+				
+				bdManager.savePhoto(foto);
+				
+				fotos_perfil.add(foto);
+				
 			}
 		});
 		
-		btnCrearEntrada.addActionListener(new ActionListener() 
+		btnUsuarios.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				CrearEntrada crearEntrada = new CrearEntrada(ventanaPrincipal);
-				crearEntrada.setVisible(true);
+				
 			}
 		});
 		
-		btnVisualizarEntradas.addActionListener(new ActionListener() 
+		btnPerfil.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				PanelVisualizarEntradas panelVisualizarEntradas = new PanelVisualizarEntradas(PanelUser.this, ventanaPrincipal);
-				ventanaPrincipal.setContentPane(panelVisualizarEntradas);
-				ventanaPrincipal.revalidate();
+				
 			}
 		});
 		
@@ -126,30 +139,42 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				ventanaPrincipal.setContentPane(ventanaPrincipal.getPanelLogin());
+				ventanaPrincipal.setContentPane(ventanaPrincipal.getPanel_principal());
+				ventanaPrincipal.setTexts();
 				ventanaPrincipal.revalidate();
 			}
 		});
 	}
-	public void seleccionarFoto()
+	private String uploadPhotoAndGetPath()
 	{
 		FileDialog dialog = new FileDialog(ventanaPrincipal,"Select Image to upload", FileDialog.LOAD);
-		 dialog.setVisible(true);
-		 if(dialog.getFile() != null)
-		 {
-			 String type = dialog.getFile().substring(dialog.getFile().length() - 4);
+		dialog.setVisible(true);
+		
+		String path = "";
+		
+		if(dialog.getFile() != null)
+		{
+			String type = dialog.getFile().substring(dialog.getFile().length() - 4);
+			path = "Imagenes/data/"+ventanaPrincipal.getUsuario().getNombreUsuario()+"_"+(fotos_perfil.size()+1)+type;
+			Path path_source = new File(dialog.getDirectory() + dialog.getFile()).toPath();
+			Path path_target = new File(path).toPath();
 			 
-			 Path path_source = new File(dialog.getDirectory() + dialog.getFile()).toPath();
-			 Path path_target = new File("Imagenes/1"+type).toPath();
-			 
-			 Files.copy(path_source, path_target, StandardCopyOption.REPLACE_EXISTING);
-		 }
+			try 
+			{
+				Files.copy(path_source, path_target, StandardCopyOption.REPLACE_EXISTING);
+			} 
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		return path;
 	}
 
 	@Override
 	public void cargarDatos() 
 	{
-		lblNewLabel_1.setText(ventanaPrincipal.getUsuario().getNombreUsuario());
-		lblNewLabel.setText("Bienvenido: "+ventanaPrincipal.getUsuario().getNombreReal());
+		username.setText(ventanaPrincipal.getUsuario().getNombreUsuario());
+		nombreReal.setText("Bienvenido: "+ventanaPrincipal.getUsuario().getNombreReal());
 	}
 }
