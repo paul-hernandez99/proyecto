@@ -170,6 +170,7 @@ public class VentanaPrincipal extends JFrame
 			public void focusGained(FocusEvent e) 
 			{
 				username.setText("");
+				username.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			}
 		});
 		
@@ -203,6 +204,7 @@ public class VentanaPrincipal extends JFrame
 			{
 				password.setText("");
 				password.setEchoChar('*');
+				password.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			}
 		});
 		
@@ -234,6 +236,7 @@ public class VentanaPrincipal extends JFrame
 			public void focusGained(FocusEvent e) 
 			{
 				name.setText("");
+				name.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			}
 		});
 		
@@ -265,6 +268,7 @@ public class VentanaPrincipal extends JFrame
 			public void focusGained(FocusEvent e) 
 			{
 				apellidos.setText("");
+				apellidos.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			}
 		});
 		
@@ -296,6 +300,7 @@ public class VentanaPrincipal extends JFrame
 			public void focusGained(FocusEvent e) 
 			{
 				email.setText("");
+				email.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			}
 		});
 		
@@ -327,6 +332,7 @@ public class VentanaPrincipal extends JFrame
 			public void focusGained(FocusEvent e) 
 			{
 				day.setText("");
+				day.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			}
 		});
 		
@@ -358,6 +364,7 @@ public class VentanaPrincipal extends JFrame
 			public void focusGained(FocusEvent e) 
 			{
 				month.setText("");
+				month.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			}
 		});
 		
@@ -389,6 +396,7 @@ public class VentanaPrincipal extends JFrame
 			public void focusGained(FocusEvent e) 
 			{
 				year.setText("");
+				year.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			}
 		});
 	

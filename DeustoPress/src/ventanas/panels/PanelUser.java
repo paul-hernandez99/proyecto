@@ -11,18 +11,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-
 import SQLite.BDManager;
 import foto.Foto;
 import interfaces.IPanelUsuarios;
 import usuarios.UsuarioNormal;
 import utilidades.Utilidades;
-import ventanas.CrearEntrada;
 import ventanas.VentanaPrincipal;
 
 public class PanelUser extends JLabel implements IPanelUsuarios
@@ -40,65 +36,61 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 	
 	public PanelUser(VentanaPrincipal ventana) 
 	{
+		java.awt.BorderLayout borderlayout = new java.awt.BorderLayout();
+        this.setLayout(borderlayout);
+        
 		bdManager = new BDManager();
 		
 		ventanaPrincipal = ventana;
 		
 		fotos_inicio = bdManager.loadInicioPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
 		fotos_perfil = bdManager.loadUsersPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
-				
-		setBackground(Color.WHITE);
-		setIcon(new ImageIcon("Imagenes/Wallpaper.jpg"));
-		
-		JLabel lblImage = new JLabel(new ImageIcon("Imagenes/Usuario.png"));
-		lblImage.setBounds(445, 22, 54, 54);
-		add(lblImage);
 		
 		username = new JLabel();
 		username.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
 		username.setHorizontalAlignment(SwingConstants.CENTER);
-		username.setBounds(390, 68, 166, 20);
-		add(username);
+		//username.setBounds(390, 68, 166, 20);
+		this.add(username, java.awt.BorderLayout.NORTH);
 		
 		JButton btnSubirFoto = new JButton("Subir foto");
 		btnSubirFoto.setForeground(new Color(255, 255, 255));
 		btnSubirFoto.setBackground(new Color(102, 204, 255));
 		btnSubirFoto.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		btnSubirFoto.setBounds(160, 115, 187, 38);
-		add(btnSubirFoto);
+		//btnSubirFoto.setBounds(160, 115, 187, 38);
+		this.add(btnSubirFoto, java.awt.BorderLayout.WEST);
 		
 		JButton btnUsuarios = new JButton("Crear Entrada");
 		btnUsuarios.setForeground(Color.WHITE);
 		btnUsuarios.setBackground(new Color(102, 204, 255));
 		btnUsuarios.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		btnUsuarios.setBounds(160, 185, 187, 38);
-		add(btnUsuarios);
+		//btnUsuarios.setBounds(160, 185, 187, 38);
+		this.add(btnUsuarios, java.awt.BorderLayout.WEST);
 		
 		JButton btnPerfil = new JButton("Visualizar Entradas");
 		btnPerfil.setForeground(Color.WHITE);
 		btnPerfil.setBackground(new Color(102, 204, 255));
 		btnPerfil.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		btnPerfil.setBounds(160, 255, 187, 38);
-		add(btnPerfil);
+		//btnPerfil.setBounds(160, 255, 187, 38);
+		this.add(btnPerfil, java.awt.BorderLayout.WEST);
 		
 		JButton btnSalir = new JButton("Cerrar Sesion");
 		btnSalir.setForeground(new Color(102, 204, 255));
 		btnSalir.setBackground(Color.YELLOW);
 		btnSalir.setFont(new Font("Gill Sans MT", Font.BOLD, 12));
-		btnSalir.setBounds(419, 103, 110, 25);
-		add(btnSalir);
+		//btnSalir.setBounds(419, 103, 110, 25);
+		this.add(btnSalir, java.awt.BorderLayout.WEST);
 		
 		nombreReal = new JLabel();
 		nombreReal.setForeground(new Color(102, 204, 255));
 		nombreReal.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		nombreReal.setBounds(53, 10, 187, 20);
-		add(nombreReal);
+		//nombreReal.setBounds(53, 10, 187, 20);
+		this.add(nombreReal, java.awt.BorderLayout.NORTH);
 		
 		JLabel lblqueDeseaHacer = new JLabel("\u00BFQue desea hacer?");
 		lblqueDeseaHacer.setForeground(new Color(0, 0, 0));
 		lblqueDeseaHacer.setFont(new Font("Gill Sans MT", Font.PLAIN, 16));
-		lblqueDeseaHacer.setBounds(82, 50, 137, 20);
-		add(lblqueDeseaHacer);
+		//lblqueDeseaHacer.setBounds(82, 50, 137, 20);
+		this.add(lblqueDeseaHacer, java.awt.BorderLayout.NORTH);
 		
 		cargarDatos();
 		

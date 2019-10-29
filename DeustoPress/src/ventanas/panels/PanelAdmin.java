@@ -1,20 +1,9 @@
 package ventanas.panels;
 
-import javax.swing.JPanel;
-
-import usuarios.Administrador;
-import usuarios.Usuario;
-import ventanas.BorrarUsuario;
-import ventanas.RegistrarUsuario;
 import ventanas.VentanaPrincipal;
-import ventanas.VentanaVisualizarEntrada;
-
-import java.util.ArrayList;
 import javax.swing.JLabel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.Font;
-import java.awt.Label;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -35,12 +24,6 @@ public class PanelAdmin extends JLabel implements IPanelUsuarios
 		setBackground(Color.LIGHT_GRAY);
 		setLayout(null);
 		
-		setIcon(new ImageIcon("Imagenes/wallpaper.jpg"));
-		
-		JLabel lblImage = new JLabel(new ImageIcon("Imagenes/Usuario.png"));
-		lblImage.setBounds(445, 22, 54, 54);
-		add(lblImage);
-		
 		JButton btnModificarDatos = new JButton("Modificar Datos");
 		btnModificarDatos.setForeground(new Color(255, 255, 255));
 		btnModificarDatos.setBackground(new Color(102, 204, 255));
@@ -48,12 +31,12 @@ public class PanelAdmin extends JLabel implements IPanelUsuarios
 		btnModificarDatos.setBounds(160, 77, 187, 38);
 		add(btnModificarDatos);
 		
-		JButton btnRegistrarUsuario = new JButton("Registrar Usuario");
-		btnRegistrarUsuario.setForeground(Color.WHITE);
-		btnRegistrarUsuario.setBackground(new Color(102, 204, 255));
-		btnRegistrarUsuario.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		btnRegistrarUsuario.setBounds(160, 142, 187, 38);
-		add(btnRegistrarUsuario);
+		JButton btnRegistrarAdmin = new JButton("Registrar Admin");
+		btnRegistrarAdmin.setForeground(Color.WHITE);
+		btnRegistrarAdmin.setBackground(new Color(102, 204, 255));
+		btnRegistrarAdmin.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
+		btnRegistrarAdmin.setBounds(160, 142, 187, 38);
+		add(btnRegistrarAdmin);
 		
 		JButton btnBorrarUsuario = new JButton("Borrar Usuario");
 		btnBorrarUsuario.setForeground(Color.WHITE);
@@ -62,12 +45,12 @@ public class PanelAdmin extends JLabel implements IPanelUsuarios
 		btnBorrarUsuario.setBounds(160, 210, 187, 38);
 		add(btnBorrarUsuario);
 		
-		JButton btnVisualizarEntradas = new JButton("Visualizar Entradas");
-		btnVisualizarEntradas.setForeground(Color.WHITE);
-		btnVisualizarEntradas.setBackground(new Color(102, 204, 255));
-		btnVisualizarEntradas.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		btnVisualizarEntradas.setBounds(160, 274, 187, 38);
-		add(btnVisualizarEntradas);
+		JButton btnVisualizarFotos = new JButton("Visualizar Fotos");
+		btnVisualizarFotos.setForeground(Color.WHITE);
+		btnVisualizarFotos.setBackground(new Color(102, 204, 255));
+		btnVisualizarFotos.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
+		btnVisualizarFotos.setBounds(160, 274, 187, 38);
+		add(btnVisualizarFotos);
 		
 		JButton btnSalir = new JButton("Cerrar Sesion");
 		btnSalir.setForeground(new Color(102, 204, 255));
@@ -100,18 +83,15 @@ public class PanelAdmin extends JLabel implements IPanelUsuarios
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				PanelModificarDatos panelModificarDatos = new PanelModificarDatos(PanelAdmin.this, ventanaPrincipal);
-				ventanaPrincipal.setContentPane(panelModificarDatos);
-				ventanaPrincipal.revalidate();
+				
 			}
 		});
 		
-		btnRegistrarUsuario.addActionListener(new ActionListener() 
+		btnRegistrarAdmin.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				RegistrarUsuario registrarUsuario = new RegistrarUsuario(ventanaPrincipal);
-				registrarUsuario.setVisible(true);
+				
 			}
 		});
 		
@@ -119,18 +99,15 @@ public class PanelAdmin extends JLabel implements IPanelUsuarios
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				BorrarUsuario borrarUsuario = new BorrarUsuario(ventanaPrincipal);
-				borrarUsuario.setVisible(true);
+				
 			}
 		});
 		
-		btnVisualizarEntradas.addActionListener(new ActionListener() 
+		btnVisualizarFotos.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				PanelVisualizarEntradas panelVisualizarEntradas = new PanelVisualizarEntradas(PanelAdmin.this, ventanaPrincipal);
-				ventanaPrincipal.setContentPane(panelVisualizarEntradas);
-				ventanaPrincipal.revalidate();
+				
 			}
 		});
 		
@@ -138,7 +115,7 @@ public class PanelAdmin extends JLabel implements IPanelUsuarios
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				ventanaPrincipal.setContentPane(ventanaPrincipal.getPanelLogin());
+				ventanaPrincipal.setContentPane(ventanaPrincipal.getPanel_principal());
 				ventanaPrincipal.revalidate();
 			}
 		});
