@@ -111,13 +111,6 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		btnSalir.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
 		panelSouth.add(btnSalir);
 		
-		for(Foto photo: fotos_perfil)
-		{
-			foto = new JLabel(new ImageIcon(photo.getPath()));
-		}
-		foto.setVisible(false);
-		panelCenter.add(foto);
-		
 		cargarDatos();
 		
 		btnSubirFoto.addActionListener(new ActionListener() 
