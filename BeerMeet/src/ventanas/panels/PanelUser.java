@@ -144,7 +144,7 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				foto.setVisible(true);
+				
 			}
 		});
 		
