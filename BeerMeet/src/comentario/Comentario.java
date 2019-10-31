@@ -3,18 +3,18 @@ package comentario;
 *la clase tambien contiene los Getters y Setter de cada atributo.
 *@author aritz eraun y Paul Hernandez*/
 public class Comentario 
-{ 
+{ /**Los distintos atributos que posee el objeto comentario.*/
 	private int cod;
 	private int cod_fot;
 	private int id_user;
 	private String contenido;
 	private String fec;
-	
+	/**Constructor del objeto comentario.*/
 	public Comentario()
 	{
 		
 	}
-	
+	/**Constructor del objeto comentario.*/
 	public Comentario(int cod_fot, int id_user, String contenido, String fec) 
 	{
 		super();
@@ -22,9 +22,9 @@ public class Comentario
 		this.contenido = contenido;
 		this.fec = fec;
 	}
-	
+	/**Constructor del objeto comentario.*/
 	public Comentario(int cod, int cod_fot, int id_user, String contenido, String fec) 
-	{
+	{ 
 		super();
 		this.cod = cod;
 		this.cod_fot = cod_fot;
@@ -85,6 +85,7 @@ public class Comentario
 	}
 
 	@Override
+	/**Estamos ante  el metodo Tostring. Su función crear un String partiendo de un objeto, dato abstracto .*/
 	public String toString()
 	{
 		String texto = "\tAutor: "+this.getNombre()+". Fecha: "+this.fec+".\n\tComentario: "+this.contenido;

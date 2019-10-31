@@ -11,10 +11,11 @@ import javax.mail.internet.MimeMessage;
 /**La función de esta clase email es enviar la contraseña al correo electronico del usuario, pra que  este pueda recuperar su  contraseña.
 *@author aritz eraun y Paul Hernandez*/
 public class envioEmail {
+	/**La función de este metodo es enviar el email al usuario correspondiemte. Para ello utiliamos el servidor de correo de Gmail
+	 * y una cuenta previzmente creada para ello.
+	*@author aritz eraun y Paul Hernandez*/
 	public static void enviarConGMail(String destinatario, String asunto, String cuerpo) {
-		/**La función de este metodo es enviar el email al usuario correspondiemte. Para ello utiliamos el servidor de correo de Gmail
-		 * y una cuenta previzmente creada para ello.
-		*@author aritz eraun y Paul Hernandez*/
+		
 		// Esto es lo que va delante de @gmail.com en tu cuenta de correo. Es el remitente también.
 	    String remitente = "noreply.beermet@gmail.com";  //Para la dirección nomcuenta@gmail.com
 
@@ -45,9 +46,9 @@ public class envioEmail {
 	    }
 	}
 	
+	/**El metodo recibe las caracteristicas del usuario y crea el mensage para enbiarselo mediante el correo oficial de la aplicacion BeerMeet.*/
 	
 	public static void bienvenida(String destinatario, String nombre, String contraseña) {
-		/**El metodo recibe las caracteristicas del usuario y crea el mensage para enbiarselo mediante el correo oficial de la aplicacion BeerMeet.*/
 		String asunto = "Recuperación de contraseña - BeerMet";
 	    String cuerpo = "Buenos dias "+nombre+":\n"
 	    		+ "Nos dirigimos a ustez para que pueda recuperar su contraseña y acceder a la"
