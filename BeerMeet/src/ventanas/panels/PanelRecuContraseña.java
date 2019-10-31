@@ -2,12 +2,12 @@ package ventanas.panels;
 
 import javax.swing.JPanel;
 
-public class PanelRecuperacion extends JPanel {
+public class PanelRecuContraseña extends JPanel {
 
 	/**
 	 * Create the panel.
 	 */
-	public PanelRecuperacion() {
+	public PanelRecuContraseña() {
 
 	}
 

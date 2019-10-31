@@ -8,6 +8,7 @@ import usuarios.Administrador;
 import usuarios.Usuario;
 import usuarios.UsuarioNormal;
 import ventanas.panels.PanelAdmin;
+import ventanas.panels.PanelRecuContraseña;
 import ventanas.panels.PanelUser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -144,7 +145,7 @@ public class VentanaPrincipal extends JFrame
 		lblhasOlvidadoTu.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				lblhasOlvidadoTu.setText("loco");
+				goToPanelRecuContraseña();
 			}
 		});
 		lblhasOlvidadoTu.setFont(new Font("Tahoma", Font.ITALIC, 17));
@@ -642,6 +643,12 @@ public class VentanaPrincipal extends JFrame
 	{
 		PanelUser panelUser = new PanelUser(VentanaPrincipal.this);
 		setContentPane(panelUser);
+		revalidate();
+	}
+	private void goToPanelRecuContraseña()
+	{
+		PanelRecuContraseña panelRecuContraseña = new PanelRecuContraseña();
+		setContentPane(panelRecuContraseña);
 		revalidate();
 	}
 	
