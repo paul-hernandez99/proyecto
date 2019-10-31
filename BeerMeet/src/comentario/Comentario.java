@@ -1,8 +1,9 @@
 package comentario;
-
+/**La función de esta clase comentario es definir un objeto de tipo comentario con sus respectivos atributos, 
+*la clase tambien contiene los Getters y Setter de cada atributo.
+*@author aritz eraun y Paul Hernandez*/
 public class Comentario 
-{ /**La función de esta clase comentario es definir un objeto de tipo comentario con sus respectivos atributos, 
-la clase tambien contiene los Getters y Setter de cada atributo.*/
+{ 
 	private int cod;
 	private int cod_fot;
 	private int id_user;
