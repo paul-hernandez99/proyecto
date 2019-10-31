@@ -3,11 +3,19 @@ package ventanas.panels;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
+
+import usuarios.Usuario;
+import ventanas.VentanaPrincipal;
+import email.envioEmail;
+
 import java.awt.Font;
 import javax.swing.JEditorPane;
 
@@ -17,21 +25,26 @@ public class PanelRecuContraseña extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelRecuContraseña() {
+	public PanelRecuContraseña(VentanaPrincipal ventanaPrincipal, ArrayList <Usuario> usuarios) {
 		setBackground(Color.WHITE);
 		setLayout(null);
 		
-		JLabel label = new JLabel("");
-		label.setBounds(58, 50, 69, 20);
+		JLabel label = new JLabel("En breve recibiras un email en tu correo");
+		label.setBounds(150, 655, 299, 35);
 		add(label);
 		
+		JLabel label1 = new JLabel("indicando tu contraseña actual");
+		label1.setBounds(150, 675, 299, 35);
+		add(label1);
+		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\PC\\Desktop\\Proiektua\\rr.png"));
-		lblNewLabel.setBounds(47, 38, 431, 356);
+		lblNewLabel.setIcon(new ImageIcon("Imagenes/System/Wallpaper.png"));
+		lblNewLabel.setBounds(150, 124, 329, 306);
 		add(lblNewLabel);
 		
 		textField = new JTextField();
 		textField.setBounds(151, 462, 298, 26);
+		textField.setText("Nombre de usuario");
 		add(textField);
 		textField.setColumns(10);
 		
@@ -42,17 +55,49 @@ public class PanelRecuContraseña extends JPanel {
 		
 		JButton btnRecuperarContrasea = new JButton("Recuperar Contrase\u00F1a");
 		btnRecuperarContrasea.setBounds(231, 567, 218, 29);
+		btnRecuperarContrasea.setBackground(new Color(255, 102, 102));
 		add(btnRecuperarContrasea);
 		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\PC\\Desktop\\descarga.png"));
+		JLabel lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setIcon(new ImageIcon("Imagenes/System/info.png"));
 		lblNewLabel_1.setBounds(15, 635, 98, 98);
 		add(lblNewLabel_1);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ventanaPrincipal.setContentPane(ventanaPrincipal.getPanel_principal());
+				ventanaPrincipal.setTexts();
+				ventanaPrincipal.revalidate();
+			}
+		});
 		btnVolver.setBounds(15, 567, 201, 29);
 		btnVolver.setBackground(new Color(153, 240, 153));
 		add(btnVolver);
 
+		
+		btnRecuperarContrasea.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String nombreUsuario=textField.getText();
+				boolean encontrado = false;
+				Usuario user = null;
+				for(Usuario a: usuarios)
+				{
+					if(a.getNombreUsuario().equals(nombreUsuario))
+					{
+						encontrado = true;
+						user = a;
+						break;
+					}
+				}
+				if(encontrado==false) {
+					JOptionPane.showMessageDialog(PanelRecuContraseña.this, "El nombre de usuario introducido no existe. Intentelo de nuevo.");
+				}else {
+					
+					envioEmail.bienvenida(user.getEmail(),user.getNombreReal(), user.getContraseña());
+					JOptionPane.showMessageDialog(PanelRecuContraseña.this, "El mensage ha sido enviado con exito");
+				}
+			}
+		});
 	}
 }

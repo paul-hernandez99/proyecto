@@ -647,7 +647,7 @@ public class VentanaPrincipal extends JFrame
 	}
 	private void goToPanelRecuContraseña()
 	{
-		PanelRecuContraseña panelRecuContraseña = new PanelRecuContraseña();
+		PanelRecuContraseña panelRecuContraseña = new PanelRecuContraseña(VentanaPrincipal.this, usuarios);
 		setContentPane(panelRecuContraseña);
 		revalidate();
 	}
