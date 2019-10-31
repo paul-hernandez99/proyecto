@@ -18,12 +18,13 @@ import email.envioEmail;
 
 import java.awt.Font;
 import javax.swing.JEditorPane;
-
+/**Estamos un panel que tiene como función facilitarle al usuario la recuperación de su contraseña mediante su correo electrónico.
+*@author aritz eraun y Paul Hernandez*/
 public class PanelRecuContraseña extends JPanel {
 	private JTextField textField;
 
 	/**
-	 * Create the panel.
+	 * Este método crea el panel visible por el usuario.
 	 */
 	public PanelRecuContraseña(VentanaPrincipal ventanaPrincipal, ArrayList <Usuario> usuarios) {
 		setBackground(Color.WHITE);

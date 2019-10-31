@@ -32,7 +32,9 @@ import java.awt.Font;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseEvent;
 import javax.swing.border.Border;
-
+/**Estamos ante la clase que define la ventana con la que el usuario podrá interactuar con la aplicación y realizar 
+ * las distintas funciones que se le ofrecen.
+*@author aritz eraun y Paul Hernandez*/
 public class VentanaPrincipal extends JFrame 
 {
 	private BDManager bdManager;
@@ -64,7 +66,7 @@ public class VentanaPrincipal extends JFrame
 	private JButton btnBack;
 	
 	private boolean singUpMenu = false;
-	
+	/**Este método es el método MAIN, el cual pone en funcionamiento toda la aplicación*/
 	public static void main(String[] args) 
 	{
 		EventQueue.invokeLater(new Runnable() 
@@ -83,7 +85,7 @@ public class VentanaPrincipal extends JFrame
 			}
 		});
 	}
-
+/**Este métoo crea el primer panel, el cual da la bienvenida al usuario.*/
 	public VentanaPrincipal() 
 	{
 		bdManager = new BDManager(false);
@@ -101,7 +103,7 @@ public class VentanaPrincipal extends JFrame
 		this.setTexts();
 		this.loginMenuVisible();
 	}
-	
+	/**Este método pone en funcionaminto el layout elegido*/
 	private void createPanels()
 	{
 		panel_principal = new JPanel();
@@ -117,14 +119,14 @@ public class VentanaPrincipal extends JFrame
 		
 		this.add(panel_principal);
 	}
-	
+	/***Este método crea el icono del fondo de la aplicación.*/
 	private void createIcon()
 	{
 		logo = new JLabel(new ImageIcon("Imagenes/System/Wallpaper.png"));
 		panel_principal.add(logo);
 		
 	}
-	
+	/***Este método crea los distintos Labels visibles en el panel principal.*/
 	private void createJlabels()
 	{
 		intro = new JLabel("Welcome to Beermeet:");
@@ -153,7 +155,7 @@ public class VentanaPrincipal extends JFrame
 		panel_principal.add(lblhasOlvidadoTu);
 
 	}
-	
+	/***Este método crea los distintos textFields visibles en el panel principal.*/
 	private void createJtextfields()
 	{
 		username = new JTextField();
@@ -400,7 +402,7 @@ public class VentanaPrincipal extends JFrame
 		});
 	
 	}
-	
+	/***Este método crea los distintos Buttons visibles en el panel principal.*/
 	private void createButtons()
 	{
 		btnSignIn = new JButton("Sign In");
@@ -516,7 +518,7 @@ public class VentanaPrincipal extends JFrame
 			}
 		});
 	}
-	
+	/***Este método define las posiciones exactas de los componentes visibles en el panel principal dependiendo del tamaño del rame en cada momento.*/
 	private void setElementsSizePosition()
 	{
 		panel_principal.addComponentListener(new ComponentAdapter() 
@@ -536,7 +538,7 @@ public class VentanaPrincipal extends JFrame
 		});
 		
 	}
-	
+	/***Este método es un método lógico para la creación de usuaraios.*/
 	private void createUser()
 	{
 		try 
@@ -565,7 +567,7 @@ public class VentanaPrincipal extends JFrame
 		}
 		
 	}
-	
+	/***Este método pone visibles los distintos elementos en el panel principal.*/
 	private void registrationMenuVisible()
 	{
 		singUpMenu = true;
@@ -591,7 +593,7 @@ public class VentanaPrincipal extends JFrame
 		
 		panel.setBounds(((panel_principal.getBounds().width)/2)-175, 405, 350, 440);
 	}
-	
+	/***Este método pone visibles los distintos elementos en el panel principal.*/
 	private void loginMenuVisible()
 	{
 		singUpMenu = false;
@@ -616,7 +618,7 @@ public class VentanaPrincipal extends JFrame
 		
 		setTexts();
 	}
-	
+	/***Este método inserta los distintos textos a los labels localizados en el panel principal.*/
 	public void setTexts()
 	{
 		username.setText("Username");
@@ -638,27 +640,28 @@ public class VentanaPrincipal extends JFrame
 		month.setFocusable(false);
 		year.setFocusable(false);
 	}
-	
+	/***Este método crea un enlace entre el panel principal y el panelUser.*/
 	private void goToPanelUser()
 	{
 		PanelUser panelUser = new PanelUser(VentanaPrincipal.this);
 		setContentPane(panelUser);
 		revalidate();
 	}
+	/***Este método crea un enlace entre el panel principal y el panelRecuContraseña.*/
 	private void goToPanelRecuContraseña()
 	{
 		PanelRecuContraseña panelRecuContraseña = new PanelRecuContraseña(VentanaPrincipal.this, usuarios);
 		setContentPane(panelRecuContraseña);
 		revalidate();
 	}
-	
+	/***Este método crea un enlace entre el panel principal y el panelAdmin.*/
 	private void goToPanelAdmin()
 	{
 		PanelAdmin panelAdmin = new PanelAdmin(VentanaPrincipal.this);
 		setContentPane(panelAdmin);
 		revalidate();
 	}
-	
+	/***Estamos ante un método lógico que tiene como función comprobar si el usuario introducido y su contraseña son correctas.*/
 	private void comprobarUsuarioLogin(String usuario, String password) throws Exceptions
 	{
 		boolean encontrado = false;
@@ -709,7 +712,7 @@ public class VentanaPrincipal extends JFrame
 			}
 		}
 	}
-
+/** Este método es un retorno al panel principal*/
 	public JPanel getPanel_principal() 
 	{
 		return panel_principal;

@@ -2,9 +2,10 @@ package utilidades;
 
 import java.util.Calendar;
 import java.util.Date;
-
+/**Esta clase contiene los métodos necesaios para la transformación de datos de distinto tipo.
+*@author aritz eraun y Paul Hernandez*/
 public class Utilidades 
-{
+{/**La función del método fechaDeAlta() es convertir un dato de tipo date a un String reconocible por la BD o otros métodos. */
 	public static String fechaDeAlta()
 	{
 		Date date = new Date();

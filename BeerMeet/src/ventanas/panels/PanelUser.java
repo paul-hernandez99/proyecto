@@ -23,7 +23,9 @@ import interfaces.IPanelUsuarios;
 import usuarios.UsuarioNormal;
 import utilidades.Utilidades;
 import ventanas.VentanaPrincipal;
-
+/**Estamos ante la clase que tiene como función la creación y definición de un panel para los usuarios
+ * de tipo usuario comun que accedan a nuestra app BeerMeet.
+*@author aritz eraun y Paul Hernandez*/
 public class PanelUser extends JLabel implements IPanelUsuarios
 {
 	private VentanaPrincipal ventanaPrincipal;
@@ -43,7 +45,7 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 	private ArrayList<Foto> fotos_inicio;
 	private ArrayList<Foto> fotos_perfil;
 	private ArrayList<Foto> fotos_usuarios;
-	
+	/**Creación del Panel user*/
 	public PanelUser(VentanaPrincipal ventana) 
 	{
 		java.awt.BorderLayout borderlayout = new java.awt.BorderLayout();
@@ -158,6 +160,7 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 			}
 		});
 	}
+	/**Este método actualiza las fotos de la bandeja de la entrada del panel dependiendo de la fecha de publicación de cad foto*/
 	private String uploadPhotoAndGetPath()
 	{
 		FileDialog dialog = new FileDialog(ventanaPrincipal,"Select Image to upload", FileDialog.LOAD);
