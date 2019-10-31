@@ -18,6 +18,8 @@ import email.envioEmail;
 
 import java.awt.Font;
 import javax.swing.JEditorPane;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 /**Estamos un panel que tiene como función facilitarle al usuario la recuperación de su contraseña mediante su correo electrónico.
 *@author aritz eraun y Paul Hernandez*/
 public class PanelRecuContraseña extends JPanel {
@@ -44,6 +46,12 @@ public class PanelRecuContraseña extends JPanel {
 		add(lblNewLabel);
 		
 		textField = new JTextField();
+		textField.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				textField.setText("");
+			}
+		});
 		textField.setBounds(151, 462, 298, 26);
 		textField.setText("Nombre de usuario");
 		add(textField);
@@ -55,7 +63,7 @@ public class PanelRecuContraseña extends JPanel {
 		add(lblUser);
 		
 		JButton btnRecuperarContrasea = new JButton("Recuperar Contrase\u00F1a");
-		btnRecuperarContrasea.setBounds(231, 567, 218, 29);
+		btnRecuperarContrasea.setBounds(265, 567, 218, 29);
 		btnRecuperarContrasea.setBackground(new Color(255, 102, 102));
 		add(btnRecuperarContrasea);
 		
@@ -72,8 +80,8 @@ public class PanelRecuContraseña extends JPanel {
 				ventanaPrincipal.revalidate();
 			}
 		});
-		btnVolver.setBounds(15, 567, 201, 29);
-		btnVolver.setBackground(new Color(153, 240, 153));
+		btnVolver.setBounds(50, 567, 201, 29);
+		btnVolver.setBackground(new Color(152, 240, 153));
 		add(btnVolver);
 
 		
@@ -96,7 +104,8 @@ public class PanelRecuContraseña extends JPanel {
 				}else {
 					
 					envioEmail.bienvenida(user.getEmail(),user.getNombreReal(), user.getContraseña());
-					JOptionPane.showMessageDialog(PanelRecuContraseña.this, "El mensage ha sido enviado con exito");
+					JOptionPane.showMessageDialog(PanelRecuContraseña.this, "El mensage ha sido enviado con exito."
+							+ "\n El mensage de recuperación ha sido enviado al siguiente correo: "+ user.getEmail());
 				}
 			}
 		});
