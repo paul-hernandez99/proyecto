@@ -20,9 +20,14 @@ public class BDManager
 	private String url;
 	private Connection conn;
 	
-	public BDManager()
+	public BDManager(boolean test)
 	{
-		this.name = "database.db";
+		if(test)
+		{
+			this.name = "test.db";
+		}
+		else
+			this.name = "database.db";
 		this.url = "jdbc:sqlite:" + this.name;
 	}
 	

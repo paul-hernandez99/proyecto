@@ -86,7 +86,7 @@ public class VentanaPrincipal extends JFrame
 
 	public VentanaPrincipal() 
 	{
-		bdManager = new BDManager();
+		bdManager = new BDManager(false);
 		usuarios = bdManager.loadUsers();
 		this.setBounds(670, 60, 600, 920);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
