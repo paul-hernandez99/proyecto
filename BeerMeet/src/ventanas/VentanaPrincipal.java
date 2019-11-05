@@ -88,7 +88,7 @@ public class VentanaPrincipal extends JFrame
 /**Este métoo crea el primer panel, el cual da la bienvenida al usuario.*/
 	public VentanaPrincipal() 
 	{
-		bdManager = new BDManager(false);
+		bdManager = new BDManager();
 		usuarios = bdManager.loadUsers();
 		this.setBounds(670, 60, 600, 920);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

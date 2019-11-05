@@ -22,14 +22,9 @@ public class BDManager
 	private String url;
 	private Connection conn;
 	/**Este método crea una base de datos en el caso de que no este previamente creado.*/
-	public BDManager(boolean test)
+	public BDManager()
 	{
-		if(test)
-		{
-			this.name = "test.db";
-		}
-		else
-			this.name = "database.db";
+		this.name = "database.db";
 		this.url = "jdbc:sqlite:" + this.name;
 	}
 	/**Este método conecta la BD con la aplicación de BeerMeet.*/

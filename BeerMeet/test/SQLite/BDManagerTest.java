@@ -19,7 +19,7 @@ public class BDManagerTest
 	@Before
 	public void setUp() throws Exception
 	{
-		tester = new BDManager(true);
+		tester = new BDManager();
 		
 		usuario = new UsuarioNormal("manuel", "manuel1", "Manuel", "Garcia", "manuel@opendeusto.es", "12-12-1999");
 	}

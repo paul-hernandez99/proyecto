@@ -51,7 +51,7 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		java.awt.BorderLayout borderlayout = new java.awt.BorderLayout();
         this.setLayout(borderlayout);
         
-		bdManager = new BDManager(false);
+		bdManager = new BDManager();
 		
 		ventanaPrincipal = ventana;
 		
