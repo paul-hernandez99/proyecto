@@ -190,6 +190,7 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		}
 		return path;
 	}
+	
 
 	@Override
 	public void cargarDatos() 

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FileDialog;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -13,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,8 +22,29 @@ import javax.swing.JPanel;
 import SQLite.BDManager;
 import foto.Foto;
 import usuarios.UsuarioNormal;
+import utilidades.BordeCircular;
 import utilidades.Utilidades;
 import ventanas.VentanaPrincipal;
+import javax.swing.ImageIcon;
+import javax.swing.BoxLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.GridLayout;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.RowSpec;
+import net.miginfocom.swing.MigLayout;
+import javax.swing.JSplitPane;
+import javax.swing.JSlider;
+import javax.swing.JSeparator;
+import java.awt.FlowLayout;
+import java.awt.Insets;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.AbstractBorder;
 
 
 public class PanelPerfil extends JPanel {
@@ -43,11 +66,12 @@ private VentanaPrincipal ventanaPrincipal;
 	private ArrayList<Foto> fotos_inicio;
 	private ArrayList<Foto> fotos_perfil;
 	private ArrayList<Foto> fotos_usuarios;
-	private JLabel lblLoco;
+	
+	
+	public static AbstractBorder bordeCircular = new BordeCircular();       
+	   private int lineBorder=1; 
+	   private Color lineColor= Color.BLACK;
 
-	/**
-	 * Create the panel.
-	 */
 	public PanelPerfil(VentanaPrincipal ventana) {
 		java.awt.BorderLayout borderlayout = new java.awt.BorderLayout();
         this.setLayout(borderlayout);
@@ -71,8 +95,63 @@ private VentanaPrincipal ventanaPrincipal;
 		panelCenter.setBackground(Color.WHITE);
 		this.add(panelCenter, BorderLayout.CENTER);
 		
-		lblLoco = new JLabel("loco");
-		panelCenter.add(lblLoco);
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int id_user = ((UsuarioNormal)ventanaPrincipal.getUsuario()).getId();
+				String path = uploadPhotoAndGetPath();
+				String fec = Utilidades.fechaDeAlta();
+				
+				if(path != null)
+				{
+					Foto foto = new Foto(id_user, path, fec);
+					
+					bdManager.savePhoto(foto);
+					
+					fotos_perfil.add(foto);
+				}
+				
+				ImageIcon imgIcon = new ImageIcon(path);
+		        Image imgEscalada = imgIcon.getImage().getScaledInstance(lblNewLabel.getWidth(),
+		        		lblNewLabel.getHeight(), Image.SCALE_SMOOTH);
+		        Icon iconoEscalado = new ImageIcon(imgEscalada);
+		        lblNewLabel.setIcon(iconoEscalado);
+		        lblNewLabel.setText("");
+		        lblNewLabel.setBorder(bordeCircular);
+			}
+		});
+		
+		JLabel lblSeguidores = new JLabel("Seguidores");
+		
+		JLabel lblOo = new JLabel("");
+		GroupLayout gl_panelCenter = new GroupLayout(panelCenter);
+		gl_panelCenter.setHorizontalGroup(
+			gl_panelCenter.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelCenter.createSequentialGroup()
+					.addGap(25)
+					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
+					.addGap(67)
+					.addGroup(gl_panelCenter.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblSeguidores)
+						.addComponent(lblOo, GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		gl_panelCenter.setVerticalGroup(
+			gl_panelCenter.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelCenter.createSequentialGroup()
+					.addGroup(gl_panelCenter.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelCenter.createSequentialGroup()
+							.addGap(52)
+							.addComponent(lblOo)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblSeguidores))
+						.addGroup(gl_panelCenter.createSequentialGroup()
+							.addGap(27)
+							.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(55, Short.MAX_VALUE))
+		);
+		panelCenter.setLayout(gl_panelCenter);
 		
 		panelEast = new JPanel();
 		panelEast.setBackground(new Color(255, 102, 102));
@@ -196,7 +275,6 @@ private VentanaPrincipal ventanaPrincipal;
 	{
 		nombreReal.setText("Bienvenido: "+ventanaPrincipal.getUsuario().getNombreReal());
 	}
-
 	}
 
 
