@@ -13,22 +13,20 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import SQLite.BDManager;
 import foto.Foto;
-import interfaces.IPanelUsuarios;
 import usuarios.UsuarioNormal;
 import utilidades.Utilidades;
 import ventanas.VentanaPrincipal;
-/**Estamos ante la clase que tiene como función la creación y definición de un panel para los usuarios
- * de tipo usuario comun que accedan a nuestra app BeerMeet.
-*@author aritz eraun y Paul Hernandez*/
-public class PanelUser extends JLabel implements IPanelUsuarios
-{
-	private VentanaPrincipal ventanaPrincipal;
+
+
+public class PanelPerfil extends JPanel {
+	
+private VentanaPrincipal ventanaPrincipal;
 	
 	private BDManager bdManager;
 
@@ -45,9 +43,12 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 	private ArrayList<Foto> fotos_inicio;
 	private ArrayList<Foto> fotos_perfil;
 	private ArrayList<Foto> fotos_usuarios;
-	/**Creación del Panel user*/
-	public PanelUser(VentanaPrincipal ventana) 
-	{
+	private JLabel lblLoco;
+
+	/**
+	 * Create the panel.
+	 */
+	public PanelPerfil(VentanaPrincipal ventana) {
 		java.awt.BorderLayout borderlayout = new java.awt.BorderLayout();
         this.setLayout(borderlayout);
         
@@ -69,6 +70,9 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		panelCenter = new JPanel();
 		panelCenter.setBackground(Color.WHITE);
 		this.add(panelCenter, BorderLayout.CENTER);
+		
+		lblLoco = new JLabel("loco");
+		panelCenter.add(lblLoco);
 		
 		panelEast = new JPanel();
 		panelEast.setBackground(new Color(255, 102, 102));
@@ -146,10 +150,6 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				PanelPerfil panel = new PanelPerfil(ventanaPrincipal);
-				ventanaPrincipal.setContentPane(panel);
-				ventanaPrincipal.setTexts();
-				ventanaPrincipal.revalidate();
 				
 			}
 		});
@@ -191,9 +191,12 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		return path;
 	}
 
-	@Override
+
 	public void cargarDatos() 
 	{
 		nombreReal.setText("Bienvenido: "+ventanaPrincipal.getUsuario().getNombreReal());
 	}
-}
+
+	}
+
+
