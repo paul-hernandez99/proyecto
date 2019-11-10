@@ -13,22 +13,32 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import SQLite.BDManager;
 import foto.Foto;
-import interfaces.IPanelUsuarios;
+import usuarios.Usuario;
 import usuarios.UsuarioNormal;
 import utilidades.Utilidades;
 import ventanas.VentanaPrincipal;
-/**Estamos ante la clase que tiene como función la creación y definición de un panel para los usuarios
- * de tipo usuario comun que accedan a nuestra app BeerMeet.
-*@author aritz eraun y Paul Hernandez*/
-public class PanelUser extends JLabel implements IPanelUsuarios
-{
-	private VentanaPrincipal ventanaPrincipal;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
+import javax.swing.JList;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.swing.JTextPane;
+import javax.swing.JEditorPane;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
+
+public class PanelBusqueda extends JPanel {
+
+
+private VentanaPrincipal ventanaPrincipal;
 	
 	private BDManager bdManager;
 
@@ -39,25 +49,18 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 	private JPanel panelCenter;
 	private JPanel panelEast;
 	private JPanel panelSouth;
-	
-	private JLabel foto;
-	
-	private ArrayList<Foto> fotos_inicio;
 	private ArrayList<Foto> fotos_perfil;
-	private ArrayList<Foto> fotos_usuarios;
-	/**Creación del Panel user*/
-	public PanelUser(VentanaPrincipal ventana) 
-	{
+	private JTextField textField = new JTextField();
+	private JList<String> list = new JList<String>();
+	
+	public PanelBusqueda( VentanaPrincipal ventana) {
 		java.awt.BorderLayout borderlayout = new java.awt.BorderLayout();
         this.setLayout(borderlayout);
         
 		bdManager = new BDManager();
 		
 		ventanaPrincipal = ventana;
-		
-		fotos_inicio = bdManager.loadInicioPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
-		fotos_perfil = bdManager.loadUsersPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
-		
+				
 		panelNorth = new JPanel();
 		panelNorth.setBackground(Color.WHITE);
 		this.add(panelNorth, BorderLayout.NORTH);
@@ -69,6 +72,38 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		panelCenter = new JPanel();
 		panelCenter.setBackground(Color.WHITE);
 		this.add(panelCenter, BorderLayout.CENTER);
+		SpringLayout sl_panelCenter = new SpringLayout();
+		
+		
+		sl_panelCenter.putConstraint(SpringLayout.NORTH, list, 133, SpringLayout.SOUTH, textField);
+		sl_panelCenter.putConstraint(SpringLayout.WEST, list, 2, SpringLayout.WEST, textField);
+		sl_panelCenter.putConstraint(SpringLayout.SOUTH, list, 32, SpringLayout.SOUTH, textField);
+		sl_panelCenter.putConstraint(SpringLayout.EAST, list, 13, SpringLayout.EAST, textField);
+		panelCenter.setLayout(sl_panelCenter);
+		
+		
+		textField.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent arg0) {
+			String contBusque =getTextoo(); 
+			ArrayList<Usuario> usuariosBusqueda = bdManager.loadUsers();
+			ArrayList<Usuario> usuarioSelect = new ArrayList<Usuario>();
+			for(byte i=0; i<usuariosBusqueda.size();i++) {
+				if(usuariosBusqueda.get(i).getNombreUsuario().contains(contBusque)||usuariosBusqueda.get(i).getNombreReal().contains(contBusque)||usuariosBusqueda.get(i).getApellidos().contains(contBusque)) {
+	
+				usuarioSelect.add(usuariosBusqueda.get(i));
+				}
+			}
+			cargarLista(usuariosBusqueda);
+			}
+	});
+		sl_panelCenter.putConstraint(SpringLayout.NORTH, textField, 76, SpringLayout.NORTH, panelCenter);
+		sl_panelCenter.putConstraint(SpringLayout.WEST, textField, 45, SpringLayout.WEST, panelCenter);
+		sl_panelCenter.putConstraint(SpringLayout.EAST, textField, -54, SpringLayout.EAST, panelCenter);
+		panelCenter.add(textField);
+		textField.setColumns(10);
+		textField.setVisible(true);
+		list.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		panelCenter.add(list);
 		
 		panelEast = new JPanel();
 		panelEast.setBackground(new Color(255, 102, 102));
@@ -138,10 +173,6 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				PanelBusqueda panelB = new PanelBusqueda(ventanaPrincipal);
-				ventanaPrincipal.setContentPane(panelB);
-				ventanaPrincipal.setTexts();
-				ventanaPrincipal.revalidate();
 				
 			}
 		});
@@ -194,11 +225,20 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		}
 		return path;
 	}
-	
 
-	@Override
 	public void cargarDatos() 
 	{
 		nombreReal.setText("Bienvenido: "+ventanaPrincipal.getUsuario().getNombreReal());
+	}
+	public String getTextoo() {
+		return this.textField.getText();
+	}
+public void cargarLista(ArrayList <Usuario> usuarioSelect){
+		
+		DefaultListModel<String> model = new DefaultListModel<>();
+		for(byte n=0;n<usuarioSelect.size();n++) {
+			model.addElement(usuarioSelect.get(n).getNombreReal());
+			list.setModel(model);
+	}
 	}
 }

@@ -3,7 +3,8 @@ package usuarios;
  * Este objeto totalmente abstracto extenderán los dos tipos posibles de usuarios:los administradores y usuarios comunes.
 *@author aritz eraun y Paul Hernandez*/
 public abstract class Usuario 
-{/**Los distintos parametros del objeto de tipo usuario*/
+{
+/**Los distintos parametros del objeto de tipo usuario*/
 	private String nombreUsuario;
 	private String contraseña;
 	private String nombreReal;
@@ -73,5 +74,10 @@ public abstract class Usuario
 	{
 		this.email = email;
 	}
-	
+	@Override
+	public String toString() {
+		return  nombreUsuario +""+nombreReal
+				 + apellidos ;
+	}
+
 }
