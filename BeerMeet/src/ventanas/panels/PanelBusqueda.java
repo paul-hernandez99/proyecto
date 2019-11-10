@@ -34,6 +34,7 @@ import javax.swing.JEditorPane;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
+import javax.swing.AbstractListModel;
 
 public class PanelBusqueda extends JPanel {
 
@@ -50,8 +51,8 @@ private VentanaPrincipal ventanaPrincipal;
 	private JPanel panelEast;
 	private JPanel panelSouth;
 	private ArrayList<Foto> fotos_perfil;
-	private JTextField textField = new JTextField();
-	private JList<String> list = new JList<String>();
+	private JTextField txtKokp = new JTextField();
+	private JList<Usuario> list = new JList<Usuario>();
 	
 	public PanelBusqueda( VentanaPrincipal ventana) {
 		java.awt.BorderLayout borderlayout = new java.awt.BorderLayout();
@@ -75,14 +76,14 @@ private VentanaPrincipal ventanaPrincipal;
 		SpringLayout sl_panelCenter = new SpringLayout();
 		
 		
-		sl_panelCenter.putConstraint(SpringLayout.NORTH, list, 133, SpringLayout.SOUTH, textField);
-		sl_panelCenter.putConstraint(SpringLayout.WEST, list, 2, SpringLayout.WEST, textField);
-		sl_panelCenter.putConstraint(SpringLayout.SOUTH, list, 32, SpringLayout.SOUTH, textField);
-		sl_panelCenter.putConstraint(SpringLayout.EAST, list, 13, SpringLayout.EAST, textField);
+		sl_panelCenter.putConstraint(SpringLayout.NORTH, list, 13, SpringLayout.SOUTH, txtKokp);
+		sl_panelCenter.putConstraint(SpringLayout.WEST, list, 2, SpringLayout.WEST, txtKokp);
+		sl_panelCenter.putConstraint(SpringLayout.SOUTH, list, 122, SpringLayout.SOUTH, txtKokp);
+		sl_panelCenter.putConstraint(SpringLayout.EAST, list, 333, SpringLayout.WEST, txtKokp);
 		panelCenter.setLayout(sl_panelCenter);
 		
 		
-		textField.addKeyListener(new KeyAdapter() {
+		txtKokp.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent arg0) {
 			String contBusque =getTextoo(); 
 			ArrayList<Usuario> usuariosBusqueda = bdManager.loadUsers();
@@ -93,17 +94,22 @@ private VentanaPrincipal ventanaPrincipal;
 				usuarioSelect.add(usuariosBusqueda.get(i));
 				}
 			}
-			cargarLista(usuariosBusqueda);
+			if(usuarioSelect.size()==0) {
+				list.setVisible(false);
+			}else {
+				list.setVisible(true);
+				cargarLista(usuarioSelect);
+			}
 			}
 	});
-		sl_panelCenter.putConstraint(SpringLayout.NORTH, textField, 76, SpringLayout.NORTH, panelCenter);
-		sl_panelCenter.putConstraint(SpringLayout.WEST, textField, 45, SpringLayout.WEST, panelCenter);
-		sl_panelCenter.putConstraint(SpringLayout.EAST, textField, -54, SpringLayout.EAST, panelCenter);
-		panelCenter.add(textField);
-		textField.setColumns(10);
-		textField.setVisible(true);
-		list.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		list.setBackground(Color.WHITE);
 		panelCenter.add(list);
+		sl_panelCenter.putConstraint(SpringLayout.NORTH, txtKokp, 76, SpringLayout.NORTH, panelCenter);
+		sl_panelCenter.putConstraint(SpringLayout.WEST, txtKokp, 45, SpringLayout.WEST, panelCenter);
+		sl_panelCenter.putConstraint(SpringLayout.EAST, txtKokp, -54, SpringLayout.EAST, panelCenter);
+		panelCenter.add(txtKokp);
+		txtKokp.setColumns(10);
+		txtKokp.setVisible(true);
 		
 		panelEast = new JPanel();
 		panelEast.setBackground(new Color(255, 102, 102));
@@ -231,13 +237,13 @@ private VentanaPrincipal ventanaPrincipal;
 		nombreReal.setText("Bienvenido: "+ventanaPrincipal.getUsuario().getNombreReal());
 	}
 	public String getTextoo() {
-		return this.textField.getText();
+		return this.txtKokp.getText();
 	}
-public void cargarLista(ArrayList <Usuario> usuarioSelect){
-		
-		DefaultListModel<String> model = new DefaultListModel<>();
+	
+	public void cargarLista(ArrayList <Usuario> usuarioSelect){
+		DefaultListModel<Usuario> model = new DefaultListModel<>();
 		for(byte n=0;n<usuarioSelect.size();n++) {
-			model.addElement(usuarioSelect.get(n).getNombreReal());
+			model.addElement(usuarioSelect.get(n));
 			list.setModel(model);
 	}
 	}

@@ -76,7 +76,7 @@ public abstract class Usuario
 	}
 	@Override
 	public String toString() {
-		return  nombreUsuario +""+nombreReal
+		return  nombreUsuario +"   "+nombreReal+" "
 				 + apellidos ;
 	}
 
