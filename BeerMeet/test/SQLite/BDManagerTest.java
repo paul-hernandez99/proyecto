@@ -3,6 +3,7 @@ package SQLite;
 import static org.junit.Assert.*;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.SQLException;
 
 import org.junit.After;
@@ -30,6 +31,11 @@ public class BDManagerTest
 		
 	}
 
+	@Test
+	public void test()
+	{
+		
+	}
 	@Test
 	public void testSaveUser() 
 	{

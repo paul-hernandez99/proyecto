@@ -26,6 +26,7 @@ import ventanas.VentanaPrincipal;
 /**Estamos ante la clase que tiene como función la creación y definición de un panel para los usuarios
  * de tipo usuario comun que accedan a nuestra app BeerMeet.
 *@author aritz eraun y Paul Hernandez*/
+
 public class PanelUser extends JLabel implements IPanelUsuarios
 {
 	private VentanaPrincipal ventanaPrincipal;
@@ -45,7 +46,9 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 	private ArrayList<Foto> fotos_inicio;
 	private ArrayList<Foto> fotos_perfil;
 	private ArrayList<Foto> fotos_usuarios;
+	
 	/**Creación del Panel user*/
+	
 	public PanelUser(VentanaPrincipal ventana) 
 	{
 		java.awt.BorderLayout borderlayout = new java.awt.BorderLayout();
@@ -138,8 +141,8 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				PanelBusqueda panelB = new PanelBusqueda(ventanaPrincipal);
-				ventanaPrincipal.setContentPane(panelB);
+				PanelBusqueda panelBusqueda = new PanelBusqueda(ventanaPrincipal);
+				ventanaPrincipal.setContentPane(panelBusqueda);
 				ventanaPrincipal.setTexts();
 				ventanaPrincipal.revalidate();
 				
@@ -150,8 +153,8 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				PanelPerfil panel = new PanelPerfil(ventanaPrincipal);
-				ventanaPrincipal.setContentPane(panel);
+				PanelPerfil panelPerfil = new PanelPerfil(ventanaPrincipal);
+				ventanaPrincipal.setContentPane(panelPerfil);
 				ventanaPrincipal.setTexts();
 				ventanaPrincipal.revalidate();
 				

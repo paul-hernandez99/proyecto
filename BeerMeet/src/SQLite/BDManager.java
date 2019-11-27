@@ -21,13 +21,17 @@ public class BDManager
 	private String name;
 	private String url;
 	private Connection conn;
+	
 	/**Este método crea una base de datos en el caso de que no este previamente creado.*/
+	
 	public BDManager()
 	{
 		this.name = "database.db";
 		this.url = "jdbc:sqlite:" + this.name;
 	}
+	
 	/**Este método conecta la BD con la aplicación de BeerMeet.*/
+	
 	private void connect()
 	{
 	    try
@@ -39,7 +43,9 @@ public class BDManager
 	    	System.out.println(e.getMessage());
 	    }
 	}
+	
 	/**Este método desconecta la BD con la aplicación de BeerMeet.*/
+	
 	private void disconnect()
 	{
 		try
@@ -54,7 +60,9 @@ public class BDManager
             System.out.println("BadAss error closing connection" + ex.getMessage());
         }
 	}
+	
 	/**Este método guarda los datos de los distintos usuarios en la DB.*/
+	
 	public void saveUser(Usuario user)
 	{
 		this.insertUser(user);
@@ -63,13 +71,17 @@ public class BDManager
 			((UsuarioNormal) user).setId(this.seleccionarIdUsuario(user));
 		}
 	}
+	
 	/**Este método recibe información de la DB y crea un ArrayList para el uso en la aplicación.*/
+	
 	public ArrayList<Usuario> loadUsers()
 	{
 		ArrayList<Usuario> usuarios = this.selectAllUsers();
 		return usuarios;
 	}
+	
 	/**Este método selecciona las fotos guardas en la DB dependiendo del usuario y sus relaciones con otros usuarios.*/
+	
 	public ArrayList<Foto> loadInicioPhotos(int id_user)
 	{
 		final String sql = "SELECT * FROM Fotos A "
@@ -79,20 +91,26 @@ public class BDManager
 		ArrayList<Foto> fotos = this.selectPhotos(id_user, sql);
 		return fotos;
 	}
+	
 	/**Este método seleciona fotos desde la BD pedemdiendo del usuario.*/
+	
 	public ArrayList<Foto> loadUsersPhotos(int id_user)
 	{
 		final String sql = "SELECT * FROM Fotos WHERE id_user = ?";
 		ArrayList<Foto> fotos = this.selectPhotos(id_user, sql);
 		return fotos;
 	}
+	
 	/**Este método guarda las fotos en la BD.*/
+	
 	public void savePhoto(Foto foto)
 	{
 		this.insertPhoto(foto);
 		this.selectCodPhoto(foto);
 	}
+	
 	/**Este método guarda en la BD los usuarios que se ahn reguistrado en nuestra aplicaión.*/
+	
 	private void insertUser(Usuario user)
 	{
 		
@@ -132,7 +150,9 @@ public class BDManager
             System.out.println("BadAss error executing insert. " + e.getMessage());
         }
 	}
+	
 	/**Este método seleciona usuarios BD pedemdiendo de su apellido.*/
+	
 	private int seleccionarIdUsuario(Usuario user)
 	{
 		final String sql = "SELECT id FROM Usuarios WHERE username = ?";
@@ -157,7 +177,9 @@ public class BDManager
         
         return id;
 	}
+	
 	/**Este método seleciona todos los usuarios de la BD.*/
+	
 	private ArrayList<Usuario> selectAllUsers()
 	{
 		final String sql = "SELECT * FROM Usuarios";
@@ -206,7 +228,9 @@ public class BDManager
         
         return users;
 	}
+	
 	/**Este método seleciona fotos desde la BD.*/
+	
 	private ArrayList<Foto> selectPhotos(int id, String sql)
 	{
 
@@ -241,7 +265,9 @@ public class BDManager
         
         return fotos;
 	}
+	
 	/**Este método inserta objetos de tipo foto en la BD pedemdiendo del tipo de usuario.*/
+	
 	private void insertPhoto(Foto foto)
 	{
 		final String sql = "INSERT INTO Fotos(id_user, path, fec) VALUES (?,?,?)";
@@ -265,7 +291,9 @@ public class BDManager
             System.out.println("BadAss error executing insert. " + e.getMessage());
         }
 	}
+	
 	/**Este método seleciona todos los URls de las fotos guardas en la BD.*/
+	
 	private int selectCodPhoto(Foto foto)
 	{
 		final String sql = "SELECT cod FROM Fotos WHERE path = ?";
