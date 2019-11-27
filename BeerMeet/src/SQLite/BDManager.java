@@ -24,9 +24,14 @@ public class BDManager
 	
 	/**Este método crea una base de datos en el caso de que no este previamente creado.*/
 	
-	public BDManager()
+	public BDManager(boolean esTest)
 	{
-		this.name = "database.db";
+		if(esTest)
+		{
+			this.name = "test.db";
+		}
+		else
+			this.name = "database.db";
 		this.url = "jdbc:sqlite:" + this.name;
 	}
 	
@@ -153,7 +158,7 @@ public class BDManager
 	
 	/**Este método seleciona usuarios BD pedemdiendo de su apellido.*/
 	
-	private int seleccionarIdUsuario(Usuario user)
+	public int seleccionarIdUsuario(Usuario user)
 	{
 		final String sql = "SELECT id FROM Usuarios WHERE username = ?";
 		

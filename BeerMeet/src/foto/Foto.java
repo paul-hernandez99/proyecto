@@ -1,4 +1,5 @@
 package foto;
+
 /**La función de esta clase denominada foto, es definir el objeto foto. La clase contiene los distintos atributos del 
  * objeto de tipo foto (el código, la identificación del usuario, etc.) además de los getters y setter que nos facilitan el acceso
  * y modificación de los datos.
@@ -10,11 +11,16 @@ public class Foto
 	private int id_user;
 	private String path;
 	private String fec;
+	
 	/**Constructor del objeto foto*/
+	
 	public Foto()
 	{		
+		
 	}
+	
 	/**Constructor del objeto foto*/
+	
 	public Foto(int id_user, String path, String fec) 
 	{ 
 		super();
@@ -22,7 +28,9 @@ public class Foto
 		this.path = path;
 		this.fec = fec;
 	}
+	
 	/**Constructor del objeto foto*/
+	
 	public Foto(int cod, int id_user, String path, String fec) 
 	{
 		super();
@@ -72,6 +80,5 @@ public class Foto
 	{
 		this.fec = fec;
 	}
-	
 	
 }

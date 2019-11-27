@@ -3,27 +3,39 @@ package usuarios;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+
+
 /**La función de esta clase UsuariosComunes es definir y crear un objeto de tipo administrador que desciende de un objeto usuarios.
 *@author aritz eraun y Paul Hernandez*/
+
+
 public class UsuarioNormal extends Usuario
-{/**Atributos especificos de un objeto UsuarioComun*/
+{
+	/**Atributos especificos de un objeto UsuarioComun*/
+	
 	private int id;
 	private String fechaNacimiento;
 	private int edad;
 	private String descripcion;
+	
 	/**Constructor Vacio de la clase UsuarioComun*/
+	
 	public UsuarioNormal()
 	{
 		super();
 	}
+	
 	/**Constuctor super del objeto UsuarioComun (sin algunos atributos)*/
+	
 	public UsuarioNormal(String nombreUsuario, String contraseña, String nombreReal, String apellidos, String email, String fechaNacimiento) 
 	{
 		super(nombreUsuario, contraseña, nombreReal, apellidos, email);
 		this.fechaNacimiento = fechaNacimiento;
 		this.edad = this.calcularEdad();
 	}
+	
 	/**Constuctor super del objeto UsuarioComun (con todos los atributos)*/
+	
 	public UsuarioNormal(int id, String nombreUsuario, String contraseña, String nombreReal, String apellidos, String email, String fechaNacimiento, int edad) 
 	{
 		super(nombreUsuario, contraseña, nombreReal, apellidos, email);

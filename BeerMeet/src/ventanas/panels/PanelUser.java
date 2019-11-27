@@ -54,7 +54,7 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		java.awt.BorderLayout borderlayout = new java.awt.BorderLayout();
         this.setLayout(borderlayout);
         
-		bdManager = new BDManager();
+		bdManager = new BDManager(false);
 		
 		ventanaPrincipal = ventana;
 		
@@ -171,7 +171,9 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 			}
 		});
 	}
+	
 	/**Este método actualiza las fotos de la bandeja de la entrada del panel dependiendo de la fecha de publicación de cad foto*/
+	
 	private String uploadPhotoAndGetPath()
 	{
 		FileDialog dialog = new FileDialog(ventanaPrincipal,"Select Image to upload", FileDialog.LOAD);
