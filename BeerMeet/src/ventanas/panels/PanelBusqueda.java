@@ -58,7 +58,7 @@ private VentanaPrincipal ventanaPrincipal;
 		java.awt.BorderLayout borderlayout = new java.awt.BorderLayout();
         this.setLayout(borderlayout);
         
-		bdManager = new BDManager();
+		bdManager = new BDManager(false);
 		
 		ventanaPrincipal = ventana;
 				

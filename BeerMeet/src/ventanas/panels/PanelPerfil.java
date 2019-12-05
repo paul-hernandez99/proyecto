@@ -26,21 +26,8 @@ import utilidades.BordeCircular;
 import utilidades.Utilidades;
 import ventanas.VentanaPrincipal;
 import javax.swing.ImageIcon;
-import javax.swing.BoxLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.GridLayout;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import net.miginfocom.swing.MigLayout;
-import javax.swing.JSplitPane;
-import javax.swing.JSlider;
-import javax.swing.JSeparator;
-import java.awt.FlowLayout;
-import java.awt.Insets;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -69,14 +56,12 @@ private VentanaPrincipal ventanaPrincipal;
 	
 	
 	public static AbstractBorder bordeCircular = new BordeCircular();       
-	   private int lineBorder=1; 
-	   private Color lineColor= Color.BLACK;
 
 	public PanelPerfil(VentanaPrincipal ventana) {
 		java.awt.BorderLayout borderlayout = new java.awt.BorderLayout();
         this.setLayout(borderlayout);
         
-		bdManager = new BDManager();
+		bdManager = new BDManager(false);
 		
 		ventanaPrincipal = ventana;
 		
@@ -197,7 +182,7 @@ private VentanaPrincipal ventanaPrincipal;
 		panelSouth.add(btnSalir);
 		
 		cargarDatos();
-		
+		cargarFotos();		
 		btnSubirFoto.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
@@ -275,6 +260,28 @@ private VentanaPrincipal ventanaPrincipal;
 	{
 		nombreReal.setText("Bienvenido: "+ventanaPrincipal.getUsuario().getNombreReal());
 	}
-	}
-
+	public  void cargarFotos()
+	{
+		if(fotos_perfil.size()!=0) {
+			for(byte n=0;n<fotos_perfil.size();n++) {
+				JLabel labeln= new JLabel("");
+				labeln.setSize(175, 175);
+				int posicion=n/2;
+				
+				if(n%2 ==0) {
+					labeln.setLocation(50, 250 + 300 * posicion);
+				}else {
+					labeln.setLocation(300, 250 +300 * posicion);
+				}
+				
+				ImageIcon imgIcon = new ImageIcon(fotos_perfil.get(n).getPath());
+		        Image imgEscalada = imgIcon.getImage().getScaledInstance(labeln.getWidth(),
+		        labeln.getHeight(), Image.SCALE_SMOOTH);
+		        Icon iconoEscalado = new ImageIcon(imgEscalada);
+		        labeln.setIcon(iconoEscalado);
+				panelCenter.add(labeln);
+				
+			}
+		}
+	}}
 
