@@ -46,13 +46,13 @@ private VentanaPrincipal ventanaPrincipal;
 	private JPanel panelWest;
 	private JPanel panelCenter;
 	private JPanel panelEast;
-	private JPanel panelSouth;
-	
-	private JLabel foto;
-	
+	private JPanel panelSouth;	
 	private ArrayList<Foto> fotos_inicio;
 	private ArrayList<Foto> fotos_perfil;
 	private ArrayList<Foto> fotos_usuarios;
+	JLabel lblNewLabel = new JLabel("New label");
+	int id_user;
+	String path;
 	
 	
 	public static AbstractBorder bordeCircular = new BordeCircular();       
@@ -67,6 +67,7 @@ private VentanaPrincipal ventanaPrincipal;
 		
 		fotos_inicio = bdManager.loadInicioPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
 		fotos_perfil = bdManager.loadUsersPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
+		id_user = ((UsuarioNormal)ventanaPrincipal.getUsuario()).getId();
 		
 		panelNorth = new JPanel();
 		panelNorth.setBackground(Color.WHITE);
@@ -80,47 +81,57 @@ private VentanaPrincipal ventanaPrincipal;
 		panelCenter.setBackground(Color.WHITE);
 		this.add(panelCenter, BorderLayout.CENTER);
 		
-		JLabel lblNewLabel = new JLabel("New label");
+		path=bdManager.selectPhotoPerfil(id_user);
+		if(path==null) {
+			path ="Imagenes/System/descarga.jpg";
+			ponerfoto();
+		}else {
+			ponerfoto();
+		}
 		lblNewLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				String path = uploadPhotoAndGetPath();
+				bdManager.deletePhotoPerfil(id_user);
+				 path = uploadPhotoAndGetPath();
 				String fec = Utilidades.fechaDeAlta();
 				
 				if(path != null)
 				{
-					int id_user = ((UsuarioNormal)ventanaPrincipal.getUsuario()).getId();
 					Foto foto = new Foto(id_user, path, fec);
-					
-					bdManager.savePhoto(foto);
-					
-					fotos_perfil.add(foto);
+					bdManager.insertPhotoPerfil(foto);
+					ponerfoto();
 				}
 				
-				ImageIcon imgIcon = new ImageIcon(path);
-		        Image imgEscalada = imgIcon.getImage().getScaledInstance(lblNewLabel.getWidth(),
-		        		lblNewLabel.getHeight(), Image.SCALE_SMOOTH);
-		        Icon iconoEscalado = new ImageIcon(imgEscalada);
-		        lblNewLabel.setIcon(iconoEscalado);
-		        lblNewLabel.setText("");
-		        lblNewLabel.setBorder(bordeCircular);
 			}
 		});
 		
-		JLabel lblSeguidores = new JLabel("Seguidores");
+		
+		JLabel lblSeguidores = new JLabel("Seguidos");
 		
 		JLabel lblOo = new JLabel("");
 		lblOo.setText(bdManager.Seguidos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId()).size()+"");
+		
+		JLabel label = new JLabel("Seguidores");
+		
+		JLabel label_1 = new JLabel("0");
+		label_1.setText(bdManager.Seguidores(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId()).size()+"");
 		GroupLayout gl_panelCenter = new GroupLayout(panelCenter);
 		gl_panelCenter.setHorizontalGroup(
 			gl_panelCenter.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelCenter.createSequentialGroup()
 					.addGap(25)
 					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
-					.addGap(67)
-					.addGroup(gl_panelCenter.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblSeguidores)
-						.addComponent(lblOo, GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE))
+					.addGroup(gl_panelCenter.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(gl_panelCenter.createSequentialGroup()
+							.addGap(39)
+							.addComponent(label, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
+							.addGap(35)
+							.addComponent(lblSeguidores))
+						.addGroup(Alignment.TRAILING, gl_panelCenter.createSequentialGroup()
+							.addGap(74)
+							.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(lblOo, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		gl_panelCenter.setVerticalGroup(
@@ -129,9 +140,13 @@ private VentanaPrincipal ventanaPrincipal;
 					.addGroup(gl_panelCenter.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panelCenter.createSequentialGroup()
 							.addGap(52)
-							.addComponent(lblOo)
+							.addGroup(gl_panelCenter.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblOo)
+								.addComponent(label_1))
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblSeguidores))
+							.addGroup(gl_panelCenter.createParallelGroup(Alignment.BASELINE)
+								.addComponent(label)
+								.addComponent(lblSeguidores)))
 						.addGroup(gl_panelCenter.createSequentialGroup()
 							.addGap(27)
 							.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE)))
@@ -195,9 +210,7 @@ private VentanaPrincipal ventanaPrincipal;
 				if(path != null)
 				{
 					Foto foto = new Foto(id_user, path, fec);
-					
-					bdManager.savePhoto(foto);
-					
+					bdManager.savePhoto(foto);		
 					fotos_perfil.add(foto);
 				}
 			}
@@ -207,7 +220,6 @@ private VentanaPrincipal ventanaPrincipal;
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				
 			}
 		});
 		
@@ -255,7 +267,17 @@ private VentanaPrincipal ventanaPrincipal;
 		}
 		return path;
 	}
-
+	private void ponerfoto()
+	{
+		  lblNewLabel.setSize(180, 150);
+		ImageIcon imgIcon = new ImageIcon(path);
+        Image imgEscalada = imgIcon.getImage().getScaledInstance(lblNewLabel.getWidth(),
+        		lblNewLabel.getHeight(), Image.SCALE_SMOOTH);
+        Icon iconoEscalado = new ImageIcon(imgEscalada);
+        lblNewLabel.setIcon(iconoEscalado);
+        lblNewLabel.setText("");
+        lblNewLabel.setBorder(bordeCircular);
+		}
 
 	public void cargarDatos() 
 	{
@@ -284,5 +306,7 @@ private VentanaPrincipal ventanaPrincipal;
 				
 			}
 		}
-	}}
+	}	
+}
+
 

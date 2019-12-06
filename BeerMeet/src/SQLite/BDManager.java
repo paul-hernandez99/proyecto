@@ -332,4 +332,65 @@ public class BDManager
         
         return cod;
 	}
+
+
+public void insertPhotoPerfil(Foto foto)
+{
+	final String sql = "INSERT INTO FotoPerfil(id, path) VALUES (?,?)";
+
+	this.connect();
+	
+    try
+    		(
+                    PreparedStatement pstmt = conn.prepareStatement(sql)
+            )
+    {
+        pstmt.setInt(1, foto.getId_user());
+        pstmt.setString(2, foto.getPath());
+               
+        pstmt.executeUpdate();
+        
+    }
+    catch (SQLException e)
+    {
+        System.out.println("BadAss error executing insert. " + e.getMessage());
+    }
+}
+	public String selectPhotoPerfil(int id) {
+		String sql="SELECT path FROM FotoPerfil where id = ? ;";
+		this.connect();
+		String path = null;
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql);)
+	    {
+	    	pstmt.setInt(1, id);
+	    	ResultSet rs  = pstmt.executeQuery();
+	    	
+	        while (rs.next())
+	        {
+	        	path = rs.getString("path");
+	        }
+	    } 
+	    catch (SQLException e)
+	    {
+	    	System.out.println(e.getMessage());
+	    }
+	    
+	    this.disconnect();
+	    return path;
+	}
+	public void deletePhotoPerfil(int id) {
+		String sql="DELETE FROM FotoPerfil where id = ? ;";
+		this.connect();
+		try
+	    (PreparedStatement pstmt = conn.prepareStatement(sql))
+	    {
+			pstmt.setInt(1, id);
+			pstmt.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e.getMessage());
+		}	    
+		    this.disconnect();
+	}
 }
