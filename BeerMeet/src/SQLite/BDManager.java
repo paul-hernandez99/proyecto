@@ -89,12 +89,27 @@ public class BDManager
 	
 	public ArrayList<Foto> loadInicioPhotos(int id_user)
 	{
-		final String sql = "SELECT * FROM Fotos A "
-			 	+ "JOIN (SELECT id_followed FROM Usuarios A JOIN User_User B ON ? = B.id_follower) B"
-			 	+ "ON A.id_user = B.id_followed";
+		final String sql = "select * from Fotos join (SELECT id_followed FROM Usuarios A JOIN User_User B ON B.id_follower = ?) B"
+			 	+ " on id_user = B.id_followed;";
 		
 		ArrayList<Foto> fotos = this.selectPhotos(id_user, sql);
 		return fotos;
+	}
+	
+	public   ArrayList<Usuario> Seguidores(int id_user)
+	{
+		final String sql = "select * from Usuarios A join (select *from User_User where id_followed = "+id_user+") B on B.id_follower = A.id;";
+		
+		ArrayList<Usuario> seguidores =this.selectUsuario(sql);
+		return seguidores;
+	}
+	
+	public   ArrayList<Usuario> Seguidos(int id_user)
+	{
+		final String sql = "select * from Usuarios A join (select *from User_User where id_follower = "+id_user+") B on B.id_follower = A.id;";
+		
+		ArrayList<Usuario> seguidores =this.selectUsuario(sql);
+		return seguidores;
 	}
 	
 	/**Este método seleciona fotos desde la BD pedemdiendo del usuario.*/
@@ -118,15 +133,11 @@ public class BDManager
 	
 	private void insertUser(Usuario user)
 	{
-		
 		String sql = "INSERT INTO Usuarios (type, username, password, name, surnames, email, fec_nac, age) VALUES(?,?,?,?,?,?,?,?)";
 
 		this.connect();
 		
-        try
-        		(
-                        PreparedStatement pstmt = conn.prepareStatement(sql)
-                )
+        try (PreparedStatement pstmt = conn.prepareStatement(sql))
         {
             pstmt.setString(2, user.getNombreUsuario());
             pstmt.setString(3, user.getContraseña());
@@ -146,9 +157,7 @@ public class BDManager
             	pstmt.setNull(7, Types.LONGNVARCHAR);
             	pstmt.setNull(8, Types.INTEGER);
             }
-            
-            pstmt.executeUpdate();
-            
+            pstmt.executeUpdate(); 
         }
         catch (SQLException e)
         {
@@ -177,9 +186,7 @@ public class BDManager
         {
             System.out.println("BadAss error executing select. " + e.getMessage());
         }
-        
         this.disconnect();
-        
         return id;
 	}
 	
@@ -189,8 +196,11 @@ public class BDManager
 	{
 		final String sql = "SELECT * FROM Usuarios";
 
-		ArrayList<Usuario> users = new ArrayList<>();
-		
+		ArrayList<Usuario> users =selectUsuario(sql);
+		return users;
+	}
+	private ArrayList<Usuario> selectUsuario(String sql){
+		ArrayList<Usuario> users = new ArrayList<>();		
 		this.connect();
 		
         try
@@ -263,7 +273,6 @@ public class BDManager
         } 
         catch (SQLException e)
         {
-            System.out.println(e.getMessage());
         }
         
         this.disconnect();

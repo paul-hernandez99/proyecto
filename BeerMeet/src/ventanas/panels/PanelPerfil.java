@@ -84,12 +84,12 @@ private VentanaPrincipal ventanaPrincipal;
 		lblNewLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int id_user = ((UsuarioNormal)ventanaPrincipal.getUsuario()).getId();
 				String path = uploadPhotoAndGetPath();
 				String fec = Utilidades.fechaDeAlta();
 				
 				if(path != null)
 				{
+					int id_user = ((UsuarioNormal)ventanaPrincipal.getUsuario()).getId();
 					Foto foto = new Foto(id_user, path, fec);
 					
 					bdManager.savePhoto(foto);
@@ -110,6 +110,7 @@ private VentanaPrincipal ventanaPrincipal;
 		JLabel lblSeguidores = new JLabel("Seguidores");
 		
 		JLabel lblOo = new JLabel("");
+		lblOo.setText(bdManager.Seguidos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId()).size()+"");
 		GroupLayout gl_panelCenter = new GroupLayout(panelCenter);
 		gl_panelCenter.setHorizontalGroup(
 			gl_panelCenter.createParallelGroup(Alignment.LEADING)

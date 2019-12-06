@@ -37,6 +37,8 @@ import javax.swing.border.Border;
 *@author aritz eraun y Paul Hernandez*/
 public class VentanaPrincipal extends JFrame 
 {
+	private static final long serialVersionUID = 1L;
+
 	private BDManager bdManager;
 	
 	private ArrayList<Usuario> usuarios;
@@ -64,6 +66,7 @@ public class VentanaPrincipal extends JFrame
 	private JButton btnExit;
 	private JButton btnConfirm;
 	private JButton btnBack;
+	private JLabel lblhasOlvidadoTu = new JLabel("\u00BFHas olvidado tu contrase\u00F1a?");
 	
 	private boolean singUpMenu = false;
 	/**Este método es el método MAIN, el cual pone en funcionamiento toda la aplicación*/
@@ -143,7 +146,7 @@ public class VentanaPrincipal extends JFrame
 		infoFecha.setBounds(65, 284, 180, 10);
 		panel.add(infoFecha);
 		
-		JLabel lblhasOlvidadoTu = new JLabel("\u00BFHas olvidado tu contrase\u00F1a?");
+	
 		lblhasOlvidadoTu.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -151,7 +154,7 @@ public class VentanaPrincipal extends JFrame
 			}
 		});
 		lblhasOlvidadoTu.setFont(new Font("Tahoma", Font.ITALIC, 17));
-		lblhasOlvidadoTu.setBounds(184, 817, 229, 20);
+		lblhasOlvidadoTu.setBounds(200, 817, 229, 20);
 		panel_principal.add(lblhasOlvidadoTu);
 
 	}
@@ -534,6 +537,7 @@ public class VentanaPrincipal extends JFrame
 				
 				logo.setBounds(((panel_principal.getBounds().width)/2)-185, 0, 370, 370);
 				intro.setBounds(((panel_principal.getBounds().width)/2)-115, 350, 230, 30);
+				lblhasOlvidadoTu.setBounds(((panel_principal.getBounds().width)/2)-200, 820, 230, 20);
 			}
 		});
 		
