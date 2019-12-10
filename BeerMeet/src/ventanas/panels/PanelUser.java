@@ -141,7 +141,7 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				PanelBusqueda panelBusqueda = new PanelBusqueda(ventanaPrincipal);
+				PanelBusqueda panelBusqueda = new PanelBusqueda(ventanaPrincipal,"");
 				ventanaPrincipal.setContentPane(panelBusqueda);
 				ventanaPrincipal.setTexts();
 				ventanaPrincipal.revalidate();

@@ -35,6 +35,8 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.AbstractListModel;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
 
 public class PanelBusqueda extends JPanel {
 
@@ -53,8 +55,9 @@ private VentanaPrincipal ventanaPrincipal;
 	private ArrayList<Foto> fotos_perfil;
 	private JTextField txtKokp = new JTextField();
 	private JList<Usuario> list = new JList<Usuario>();
+	private String contBusque;
 	
-	public PanelBusqueda( VentanaPrincipal ventana) {
+	public PanelBusqueda( VentanaPrincipal ventana, String textBusqueda) {
 		java.awt.BorderLayout borderlayout = new java.awt.BorderLayout();
         this.setLayout(borderlayout);
         
@@ -82,10 +85,10 @@ private VentanaPrincipal ventanaPrincipal;
 		sl_panelCenter.putConstraint(SpringLayout.EAST, list, 333, SpringLayout.WEST, txtKokp);
 		panelCenter.setLayout(sl_panelCenter);
 		
-		
+		txtKokp.setText(textBusqueda);
 		txtKokp.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent arg0) {
-			String contBusque =getTextoo(); 
+			contBusque =getTextoo(); 
 			ArrayList<Usuario> usuariosBusqueda = bdManager.loadUsers();
 			ArrayList<Usuario> usuarioSelect = new ArrayList<Usuario>();
 			for(byte i=0; i<usuariosBusqueda.size();i++) {
@@ -102,8 +105,18 @@ private VentanaPrincipal ventanaPrincipal;
 			}
 			}
 	});
+		list.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent arg0) {
+				Usuario usuario =list.getSelectedValue(); 
+				PanelMostrarPerfil panelMPerfil = new PanelMostrarPerfil(ventanaPrincipal,usuario, contBusque);
+				ventanaPrincipal.setContentPane(panelMPerfil);
+				ventanaPrincipal.setTexts();
+				ventanaPrincipal.revalidate();
+			}
+		});
 		list.setBackground(Color.WHITE);
 		panelCenter.add(list);
+		
 		sl_panelCenter.putConstraint(SpringLayout.NORTH, txtKokp, 76, SpringLayout.NORTH, panelCenter);
 		sl_panelCenter.putConstraint(SpringLayout.WEST, txtKokp, 45, SpringLayout.WEST, panelCenter);
 		sl_panelCenter.putConstraint(SpringLayout.EAST, txtKokp, -54, SpringLayout.EAST, panelCenter);

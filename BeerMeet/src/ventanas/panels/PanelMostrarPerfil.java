@@ -21,35 +21,28 @@ import javax.swing.JPanel;
 
 import SQLite.BDManager;
 import foto.Foto;
+import usuarios.Usuario;
 import usuarios.UsuarioNormal;
 import utilidades.BordeCircular;
-import utilidades.Utilidades;
 import ventanas.VentanaPrincipal;
 import javax.swing.ImageIcon;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.AbstractBorder;
 
 
-public class PanelPerfil extends JPanel {
+public class PanelMostrarPerfil extends JPanel {
 	
-private VentanaPrincipal ventanaPrincipal;
-	
+	private VentanaPrincipal ventanaPrincipal;
 	private BDManager bdManager;
-
 	private JLabel nombreReal;
-	
 	private JPanel panelNorth;
 	private JPanel panelWest;
 	private JPanel panelCenter;
 	private JPanel panelEast;
 	private JPanel panelSouth;	
-	private ArrayList<Foto> fotos_inicio;
 	private ArrayList<Foto> fotos_perfil;
-	private ArrayList<Foto> fotos_usuarios;
 	JLabel lblNewLabel = new JLabel("New label");
 	int id_user;
 	String path;
@@ -57,7 +50,8 @@ private VentanaPrincipal ventanaPrincipal;
 	
 	public static AbstractBorder bordeCircular = new BordeCircular();       
 
-	public PanelPerfil(VentanaPrincipal ventana) {
+	public PanelMostrarPerfil(VentanaPrincipal ventana,Usuario usuario, String txtBusqueda) {
+		
 		java.awt.BorderLayout borderlayout = new java.awt.BorderLayout();
         this.setLayout(borderlayout);
         
@@ -65,9 +59,8 @@ private VentanaPrincipal ventanaPrincipal;
 		
 		ventanaPrincipal = ventana;
 		
-		fotos_inicio = bdManager.loadInicioPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
-		fotos_perfil = bdManager.loadUsersPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
-		id_user = ((UsuarioNormal)ventanaPrincipal.getUsuario()).getId();
+		fotos_perfil = bdManager.loadUsersPhotos(((UsuarioNormal)usuario).getId());
+		id_user = ((UsuarioNormal)usuario).getId();
 		
 		panelNorth = new JPanel();
 		panelNorth.setBackground(Color.WHITE);
@@ -88,51 +81,51 @@ private VentanaPrincipal ventanaPrincipal;
 		}else {
 			ponerfoto();
 		}
-		lblNewLabel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				bdManager.deletePhotoPerfil(id_user);
-				 path = uploadPhotoAndGetPath();
-				String fec = Utilidades.fechaDeAlta();
-				
-				if(path != null)
-				{
-					Foto foto = new Foto(id_user, path, fec);
-					bdManager.insertPhotoPerfil(foto);
-					ponerfoto();
-				}
-				
-			}
-		});
-		
 		
 		JLabel lblSeguidores = new JLabel("Seguidos");
 		
 		JLabel lblOo = new JLabel("");
-		lblOo.setText(bdManager.Seguidos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId()).size()+"");
+		lblOo.setText(bdManager.Seguidos(((UsuarioNormal)usuario).getId()).size()+"");
 		
 		JLabel label = new JLabel("Seguidores");
 		
 		JLabel label_1 = new JLabel("0");
-		label_1.setText(bdManager.Seguidores(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId()).size()+"");
+		label_1.setText(bdManager.Seguidores(((UsuarioNormal)usuario).getId()).size()+"");
+		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				PanelBusqueda panelBusqueda = new PanelBusqueda(ventanaPrincipal,txtBusqueda);
+				ventanaPrincipal.setContentPane(panelBusqueda);
+				ventanaPrincipal.setTexts();
+				ventanaPrincipal.revalidate();
+				
+			}
+		});
+		btnVolver.setBounds(0, 16, 115, 29);
 		GroupLayout gl_panelCenter = new GroupLayout(panelCenter);
 		gl_panelCenter.setHorizontalGroup(
 			gl_panelCenter.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelCenter.createSequentialGroup()
-					.addGap(25)
-					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
-					.addGroup(gl_panelCenter.createParallelGroup(Alignment.LEADING, false)
+					.addGroup(gl_panelCenter.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panelCenter.createSequentialGroup()
-							.addGap(39)
-							.addComponent(label, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
-							.addGap(35)
-							.addComponent(lblSeguidores))
-						.addGroup(Alignment.TRAILING, gl_panelCenter.createSequentialGroup()
-							.addGap(74)
-							.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(lblOo, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap())
+							.addGap(25)
+							.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
+							.addGroup(gl_panelCenter.createParallelGroup(Alignment.TRAILING, false)
+								.addGroup(gl_panelCenter.createSequentialGroup()
+									.addGap(39)
+									.addComponent(label, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
+									.addGap(35)
+									.addComponent(lblSeguidores))
+								.addGroup(gl_panelCenter.createSequentialGroup()
+									.addGap(74)
+									.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(lblOo, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))))
+						.addGroup(gl_panelCenter.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(btnVolver, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		gl_panelCenter.setVerticalGroup(
 			gl_panelCenter.createParallelGroup(Alignment.LEADING)
@@ -148,7 +141,9 @@ private VentanaPrincipal ventanaPrincipal;
 								.addComponent(label)
 								.addComponent(lblSeguidores)))
 						.addGroup(gl_panelCenter.createSequentialGroup()
-							.addGap(27)
+							.addContainerGap()
+							.addComponent(btnVolver)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap(55, Short.MAX_VALUE))
 		);
@@ -199,37 +194,6 @@ private VentanaPrincipal ventanaPrincipal;
 		
 		cargarDatos();
 		cargarFotos();		
-		btnSubirFoto.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent arg0) 
-			{
-				int id_user = ((UsuarioNormal)ventanaPrincipal.getUsuario()).getId();
-				String path = uploadPhotoAndGetPath();
-				String fec = Utilidades.fechaDeAlta();
-				
-				if(path != null)
-				{
-					Foto foto = new Foto(id_user, path, fec);
-					bdManager.savePhoto(foto);		
-					fotos_perfil.add(foto);
-				}
-			}
-		});
-		
-		btnUsuarios.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-			}
-		});
-		
-		btnPerfil.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e) 
-			{
-				
-			}
-		});
 		
 		btnSalir.addActionListener(new ActionListener() 
 		{
@@ -303,7 +267,6 @@ private VentanaPrincipal ventanaPrincipal;
 		        Icon iconoEscalado = new ImageIcon(imgEscalada);
 		        labeln.setIcon(iconoEscalado);
 				panelCenter.add(labeln);
-				
 			}
 		}
 	}	
