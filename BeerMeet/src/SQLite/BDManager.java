@@ -96,20 +96,21 @@ public class BDManager
 		return fotos;
 	}
 	
-	public   ArrayList<Usuario> Seguidores(int id_user)
+	public int Seguidores(int id_user)
 	{
 		final String sql = "select * from Usuarios A join (select *from User_User where id_followed = "+id_user+") B on B.id_follower = A.id;";
 		
 		ArrayList<Usuario> seguidores =this.selectUsuario(sql);
-		return seguidores;
+		return seguidores.size();
 	}
 	
-	public   ArrayList<Usuario> Seguidos(int id_user)
+	public int Seguidos(int id_user)
 	{
 		final String sql = "select * from Usuarios A join (select *from User_User where id_follower = "+id_user+") B on B.id_follower = A.id;";
 		
-		ArrayList<Usuario> seguidores =this.selectUsuario(sql);
-		return seguidores;
+		ArrayList<Usuario> seguidores = this.selectUsuario(sql);
+		
+		return seguidores.size();
 	}
 	
 	/**Este método seleciona fotos desde la BD pedemdiendo del usuario.*/
@@ -199,7 +200,9 @@ public class BDManager
 		ArrayList<Usuario> users =selectUsuario(sql);
 		return users;
 	}
-	private ArrayList<Usuario> selectUsuario(String sql){
+	
+	private ArrayList<Usuario> selectUsuario(String sql)
+	{
 		ArrayList<Usuario> users = new ArrayList<>();		
 		this.connect();
 		
@@ -334,29 +337,31 @@ public class BDManager
 	}
 
 
-public void insertPhotoPerfil(Foto foto)
-{
-	final String sql = "INSERT INTO FotoPerfil(id, path) VALUES (?,?)";
-
-	this.connect();
+	public void insertPhotoPerfil(Foto foto)
+	{
+		final String sql = "INSERT INTO FotoPerfil(id, path) VALUES (?,?)";
 	
-    try
-    		(
-                    PreparedStatement pstmt = conn.prepareStatement(sql)
-            )
-    {
-        pstmt.setInt(1, foto.getId_user());
-        pstmt.setString(2, foto.getPath());
-               
-        pstmt.executeUpdate();
-        
-    }
-    catch (SQLException e)
-    {
-        System.out.println("BadAss error executing insert. " + e.getMessage());
-    }
-}
-	public String selectPhotoPerfil(int id) {
+		this.connect();
+		
+	    try
+	    		(
+	                    PreparedStatement pstmt = conn.prepareStatement(sql)
+	            )
+	    {
+	        pstmt.setInt(1, foto.getId_user());
+	        pstmt.setString(2, foto.getPath());
+	               
+	        pstmt.executeUpdate();
+	        
+	    }
+	    catch (SQLException e)
+	    {
+	        System.out.println("BadAss error executing insert. " + e.getMessage());
+	    }
+	}
+	
+	public String selectPhotoPerfil(int id) 
+	{
 		String sql="SELECT path FROM FotoPerfil where id = ? ;";
 		this.connect();
 		String path = null;
@@ -378,7 +383,9 @@ public void insertPhotoPerfil(Foto foto)
 	    this.disconnect();
 	    return path;
 	}
-	public void deletePhotoPerfil(int id) {
+	
+	public void deletePhotoPerfil(int id) 
+	{
 		String sql="DELETE FROM FotoPerfil where id = ? ;";
 		this.connect();
 		try

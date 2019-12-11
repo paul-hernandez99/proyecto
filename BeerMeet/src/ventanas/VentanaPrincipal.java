@@ -69,7 +69,9 @@ public class VentanaPrincipal extends JFrame
 	private JLabel lblhasOlvidadoTu = new JLabel("\u00BFHas olvidado tu contrase\u00F1a?");
 	
 	private boolean singUpMenu = false;
+	
 	/**Este método es el método MAIN, el cual pone en funcionamiento toda la aplicación*/
+	
 	public static void main(String[] args) 
 	{
 		EventQueue.invokeLater(new Runnable() 
@@ -89,6 +91,7 @@ public class VentanaPrincipal extends JFrame
 		});
 	}
 /**Este métoo crea el primer panel, el cual da la bienvenida al usuario.*/
+	
 	public VentanaPrincipal() 
 	{
 		bdManager = new BDManager(false);
@@ -717,11 +720,22 @@ public class VentanaPrincipal extends JFrame
 		}
 	}
 /** Este método es un retorno al panel principal*/
+	
 	public JPanel getPanel_principal() 
 	{
 		return panel_principal;
 	}
 
+	public BDManager getBdManager() 
+	{
+		return bdManager;
+	}
+	
+	public void setBdManager(BDManager bdManager) 
+	{
+		this.bdManager = bdManager;
+	}
+	
 	public void setPanel_principal(JPanel panel_principal) 
 	{
 		this.panel_principal = panel_principal;

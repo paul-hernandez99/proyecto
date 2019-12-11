@@ -12,36 +12,33 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import SQLite.BDManager;
 import foto.Foto;
-import interfaces.IPanelUsuarios;
 import usuarios.UsuarioNormal;
 import utilidades.Utilidades;
 import ventanas.VentanaPrincipal;
+
 /**Estamos ante la clase que tiene como función la creación y definición de un panel para los usuarios
  * de tipo usuario comun que accedan a nuestra app BeerMeet.
 *@author aritz eraun y Paul Hernandez*/
 
-public class PanelUser extends JLabel implements IPanelUsuarios
+public class PanelUser extends JPanel
 {
 	private VentanaPrincipal ventanaPrincipal;
-	
 	private BDManager bdManager;
-
-	private JLabel nombreReal;
+	private UsuarioNormal usuario;
 	
 	private JPanel panelNorth;
 	private JPanel panelWest;
-	private JPanel panelCenter;
 	private JPanel panelEast;
 	private JPanel panelSouth;
 	
-	private JLabel foto;
+	private PanelInicio panelInicio;
+	private PanelPerfil panelPerfil;
+	private PanelUsuarios panelUsuarios;
 	
 	private ArrayList<Foto> fotos_inicio;
 	private ArrayList<Foto> fotos_perfil;
@@ -51,15 +48,18 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 	
 	public PanelUser(VentanaPrincipal ventana) 
 	{
-		java.awt.BorderLayout borderlayout = new java.awt.BorderLayout();
+		BorderLayout borderlayout = new java.awt.BorderLayout();
         this.setLayout(borderlayout);
-        
-		bdManager = new BDManager(false);
 		
 		ventanaPrincipal = ventana;
+		bdManager = ventanaPrincipal.getBdManager();
+		usuario = (UsuarioNormal)ventanaPrincipal.getUsuario();
 		
 		fotos_inicio = bdManager.loadInicioPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
 		fotos_perfil = bdManager.loadUsersPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
+		
+		panelPerfil = new PanelPerfil(this);
+		panelUsuarios = new PanelUsuarios(this);
 		
 		panelNorth = new JPanel();
 		panelNorth.setBackground(Color.WHITE);
@@ -69,10 +69,6 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		panelWest.setBackground(new Color(255, 102, 102));
 		this.add(panelWest, BorderLayout.WEST);
 		
-		panelCenter = new JPanel();
-		panelCenter.setBackground(Color.WHITE);
-		this.add(panelCenter, BorderLayout.CENTER);
-		
 		panelEast = new JPanel();
 		panelEast.setBackground(new Color(255, 102, 102));
 		this.add(panelEast, BorderLayout.EAST);
@@ -81,7 +77,11 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		panelSouth.setBackground(Color.WHITE);
 		this.add(panelSouth, BorderLayout.SOUTH);
 		
-		nombreReal = new JLabel();
+		panelInicio = new PanelInicio(this);
+		panelInicio.setBackground(Color.WHITE);
+		this.add(panelInicio, BorderLayout.CENTER);
+		
+		JLabel nombreReal = new JLabel(""+usuario.getNombreReal());
 		nombreReal.setForeground(new Color(153, 240, 153));
 		nombreReal.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
 		panelNorth.add(nombreReal);
@@ -116,8 +116,6 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		btnSalir.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
 		panelSouth.add(btnSalir);
 		
-		cargarDatos();
-		
 		btnSubirFoto.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
@@ -141,10 +139,7 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				PanelBusqueda panelBusqueda = new PanelBusqueda(ventanaPrincipal,"");
-				ventanaPrincipal.setContentPane(panelBusqueda);
-				ventanaPrincipal.setTexts();
-				ventanaPrincipal.revalidate();
+				goToPanelUsuarios();
 				
 			}
 		});
@@ -153,11 +148,7 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				PanelPerfil panelPerfil = new PanelPerfil(ventanaPrincipal);
-				ventanaPrincipal.setContentPane(panelPerfil);
-				ventanaPrincipal.setTexts();
-				ventanaPrincipal.revalidate();
-				
+				goToPanelPerfil();
 			}
 		});
 		
@@ -173,6 +164,25 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 	}
 	
 	/**Este método actualiza las fotos de la bandeja de la entrada del panel dependiendo de la fecha de publicación de cad foto*/
+	
+	private void goToPanelPerfil()
+	{
+		panelInicio.setVisible(false);
+		panelUsuarios.setVisible(false);
+		panelPerfil.setVisible(true);
+		panelPerfil.setBackground(Color.WHITE);
+		this.add(panelPerfil, BorderLayout.CENTER);
+		panelPerfil.setVisible(true);
+	}
+	
+	private void goToPanelUsuarios()
+	{
+		panelInicio.setVisible(false);
+		panelPerfil.setVisible(false);
+		panelUsuarios.setVisible(true);
+		panelUsuarios.setBackground(Color.WHITE);
+		this.add(panelUsuarios, BorderLayout.CENTER);
+	}
 	
 	private String uploadPhotoAndGetPath()
 	{
@@ -199,11 +209,55 @@ public class PanelUser extends JLabel implements IPanelUsuarios
 		}
 		return path;
 	}
-	
 
-	@Override
-	public void cargarDatos() 
+	public BDManager getBdManager() 
 	{
-		nombreReal.setText("Bienvenido: "+ventanaPrincipal.getUsuario().getNombreReal());
+		return bdManager;
 	}
+
+	public void setBdManager(BDManager bdManager) 
+	{
+		this.bdManager = bdManager;
+	}
+
+	public UsuarioNormal getUsuario() 
+	{
+		return usuario;
+	}
+
+	public void setUsuario(UsuarioNormal usuario) 
+	{
+		this.usuario = usuario;
+	}
+	
+	public ArrayList<Foto> getFotos_inicio() 
+	{
+		return fotos_inicio;
+	}
+
+	public void setFotos_inicio(ArrayList<Foto> fotos_inicio) 
+	{
+		this.fotos_inicio = fotos_inicio;
+	}
+
+	public ArrayList<Foto> getFotos_perfil() 
+	{
+		return fotos_perfil;
+	}
+
+	public void setFotos_perfil(ArrayList<Foto> fotos_perfil) 
+	{
+		this.fotos_perfil = fotos_perfil;
+	}
+
+	public VentanaPrincipal getVentanaPrincipal() 
+	{
+		return ventanaPrincipal;
+	}
+
+	public void setVentanaPrincipal(VentanaPrincipal ventanaPrincipal) 
+	{
+		this.ventanaPrincipal = ventanaPrincipal;
+	}
+	
 }

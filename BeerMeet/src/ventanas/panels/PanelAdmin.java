@@ -9,16 +9,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
-import interfaces.IPanelUsuarios;
 /**Estamos ante la clase que tiene como función la creación y definición de un panel para los usuarios
  * de tipo administrador que accedan a nuestra app BeerMeet.
 *@author aritz eraun y Paul Hernandez*/
-public class PanelAdmin extends JLabel implements IPanelUsuarios
+
+public class PanelAdmin extends JLabel
 {
 	private VentanaPrincipal ventanaPrincipal;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel;
+	
 	/**El método de cración del panel con sus correspondientes componentes*/
+	
 	public PanelAdmin(VentanaPrincipal ventana) 
 	{
 		ventanaPrincipal = ventana;
@@ -79,8 +81,6 @@ public class PanelAdmin extends JLabel implements IPanelUsuarios
 		lblNewLabel_1.setBounds(390, 68, 166, 20);
 		add(lblNewLabel_1);
 		
-		cargarDatos();
-		
 		btnModificarDatos.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
@@ -123,11 +123,4 @@ public class PanelAdmin extends JLabel implements IPanelUsuarios
 		});
 	}
 
-	@Override
-	/**Este método carga el texto de los labels dependiendo del nombre y caracteristicas del usuario*/
-	public void cargarDatos()
-	{
-		lblNewLabel_1.setText(ventanaPrincipal.getUsuario().getNombreUsuario());
-		lblNewLabel.setText("Bienvenido: "+ventanaPrincipal.getUsuario().getNombreReal());
-	}	
 }
