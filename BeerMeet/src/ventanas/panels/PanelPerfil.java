@@ -140,7 +140,7 @@ public class PanelPerfil extends JPanel
 		if(dialog.getFile() != null)
 		{
 			String type = dialog.getFile().substring(dialog.getFile().length() - 4);
-			path = "Imagenes/data/Perfil"+panelUser.getUsuario().getNombreUsuario()+type;
+			path = "Imagenes/data/Perfil/"+panelUser.getUsuario().getNombreUsuario()+type;
 			Path path_source = new File(dialog.getDirectory() + dialog.getFile()).toPath();
 			Path path_target = new File(path).toPath();
 			 
