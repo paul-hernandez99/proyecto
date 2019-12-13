@@ -2,12 +2,14 @@ package ventanas.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FileDialog;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -38,11 +40,11 @@ public class PanelUser extends JPanel
 	
 	private PanelInicio panelInicio;
 	private PanelPerfil panelPerfil;
-	private PanelUsuarios panelUsuarios;
+	private PanelBusquedaUsuarios panelUsuarios;
+	private PanelPerfil panelUserProfile;
 	
 	private ArrayList<Foto> fotos_inicio;
 	private ArrayList<Foto> fotos_perfil;
-	private ArrayList<Foto> fotos_usuarios;
 	
 	/**Creación del Panel user*/
 	
@@ -58,8 +60,8 @@ public class PanelUser extends JPanel
 		fotos_inicio = bdManager.loadInicioPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
 		fotos_perfil = bdManager.loadUsersPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
 		
-		panelPerfil = new PanelPerfil(this);
-		panelUsuarios = new PanelUsuarios(this);
+		panelPerfil = new PanelPerfil(this, null);
+		panelUsuarios = new PanelBusquedaUsuarios(this);
 		
 		panelNorth = new JPanel();
 		panelNorth.setBackground(Color.WHITE);
@@ -165,8 +167,13 @@ public class PanelUser extends JPanel
 	
 	/**Este método actualiza las fotos de la bandeja de la entrada del panel dependiendo de la fecha de publicación de cad foto*/
 	
-	private void goToPanelPerfil()
+	public void goToPanelPerfil()
 	{
+		if(panelUserProfile != null)
+		{
+			panelUserProfile.setVisible(false);
+		}
+		
 		panelInicio.setVisible(false);
 		panelUsuarios.setVisible(false);
 		panelPerfil.setVisible(true);
@@ -177,6 +184,12 @@ public class PanelUser extends JPanel
 	
 	private void goToPanelUsuarios()
 	{
+		if(panelUserProfile != null)
+		{
+			this.remove(panelUserProfile);
+			panelUserProfile = null;
+		}
+		
 		panelInicio.setVisible(false);
 		panelPerfil.setVisible(false);
 		panelUsuarios.setVisible(true);
@@ -208,6 +221,11 @@ public class PanelUser extends JPanel
 			}
 		}
 		return path;
+	}
+	
+	public void setPanelUserProfile(PanelPerfil panel)
+	{
+		panelUserProfile = panel;
 	}
 
 	public BDManager getBdManager() 

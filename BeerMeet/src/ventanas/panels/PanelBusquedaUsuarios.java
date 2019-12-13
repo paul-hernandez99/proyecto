@@ -1,27 +1,36 @@
 package ventanas.panels;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
+import foto.Foto;
 import usuarios.Usuario;
 import usuarios.UsuarioNormal;
 
-public class PanelUsuarios extends JPanel
+public class PanelBusquedaUsuarios extends JPanel
 {
 	private PanelUser panelUser;
 	private JList<UsuarioNormal> listaUsuarios;
 	private JTextField txtUsername;
+	private UsuarioNormal usuario;
 	
-	public PanelUsuarios(PanelUser panel)
+	public PanelBusquedaUsuarios(PanelUser panel)
 	{
 		this.setLayout(null);
 		
@@ -33,17 +42,18 @@ public class PanelUsuarios extends JPanel
 		this.add(txtUsername);
 		
 		listaUsuarios = new JList<>();
-		listaUsuarios.setBackground(Color.WHITE);
-		listaUsuarios.setBounds(210, 100, 400, 200);
+		listaUsuarios.setBounds(240, 100, 100, 200);
 		this.add(listaUsuarios);
+		
+		JButton btnVisualizar = new JButton("Visualizar");
+		btnVisualizar.setBounds(300, 250, 100, 30);
+		btnVisualizar.setVisible(false);
+		this.add(btnVisualizar);
 		
 		txtUsername.addFocusListener(new FocusListener() 
 		{
 			@Override
-			public void focusLost(FocusEvent e) 
-			{
-				txtUsername.setText("Busqueda de usuario");
-			}
+			public void focusLost(FocusEvent e) {}
 			
 			@Override
 			public void focusGained(FocusEvent e) 
@@ -72,6 +82,25 @@ public class PanelUsuarios extends JPanel
 				cargarLista();
 			}
 		});
+		
+		listaUsuarios.addListSelectionListener(new ListSelectionListener() 
+		{
+			@Override
+			public void valueChanged(ListSelectionEvent arg0)
+			{
+				usuario = listaUsuarios.getSelectedValue();
+				btnVisualizar.setVisible(true);
+			}
+		});
+		
+		btnVisualizar.addActionListener(new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				goToUserProfil();
+			}
+		});
 	}
 	
 	private void cargarLista()
@@ -88,5 +117,13 @@ public class PanelUsuarios extends JPanel
 				}
 			}
 		}
+	}
+	
+	private void goToUserProfil()
+	{
+		PanelPerfil panelPerfilUser = new PanelPerfil(panelUser, usuario);
+		panelUser.add(panelPerfilUser, BorderLayout.CENTER);
+		panelUser.setPanelUserProfile(panelPerfilUser);
+		this.setVisible(false);
 	}
 }
