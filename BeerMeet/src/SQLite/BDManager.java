@@ -400,4 +400,27 @@ public class BDManager
 		}	    
 		    this.disconnect();
 	}
+	public String SelectNombreUsuaruario(int id)
+	{
+		String sql="SELECT username FROM Usuarios where id = ? ;";
+		this.connect();
+		String username = null;
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql);)
+	    {
+	    	pstmt.setInt(1, id);
+	    	ResultSet rs  = pstmt.executeQuery();
+	    	
+	        while (rs.next())
+	        {
+	        	username = rs.getString("username");
+	        }
+	    } 
+	    catch (SQLException e)
+	    {
+	    	System.out.println(e.getMessage());
+	    }
+	    
+	    this.disconnect();
+	    return username;
+	}
 }
