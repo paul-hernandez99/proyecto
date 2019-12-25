@@ -114,8 +114,12 @@ public class BDManager
 	}
 	public ArrayList<Usuario> relationships(int id_user)
 	{
-		final String sql = "select * from Usuarios A join (select *from User_User where id_follower = "+id_user+") B on B.id_follower = A.id;";
-		ArrayList<Usuario> seguidores = this.selectUsuario(sql);
+final String sql = "select * from Usuarios A join (select *from User_User where id_followed = "+id_user+") B on B.id_follower = A.id;";
+		
+		ArrayList<Usuario> seguidores =this.selectUsuario(sql);
+		for(byte i=0; i<seguidores.size();i++) {
+			System.out.println(seguidores.get(i).getNombreUsuario());
+		}
 		return seguidores;
 	}
 	
@@ -429,22 +433,32 @@ public class BDManager
 	    this.disconnect();
 	    return username;
 	}
-	public void createRelationship(int id_followed, int id_follower)
+	public void createRelationship(int id_follower, int id_followed)
 	{
-		final String sql = "INSERT INTO user_user(id_followed,id_follower) VALUES (?,?)";
-		
+		final String sql = "INSERT INTO User_User(id_follower,id_followed) VALUES (?,?)";
 		this.connect();
 		
-	    try
-	    		(
-	                    PreparedStatement pstmt = conn.prepareStatement(sql)
-	            )
+	    try	( PreparedStatement pstmt = conn.prepareStatement(sql))
 	    {
-	        pstmt.setInt(1, id_followed);
-	        pstmt.setInt(2, id_follower);
-	               
+	        pstmt.setInt(1, id_follower);
+	        pstmt.setInt(2, id_followed);      
 	        pstmt.executeUpdate();
-	        
+	    }
+	    catch (SQLException e)
+	    {
+	        System.out.println("BadAss error executing insert. " + e.getMessage());
+	    }
+	}
+	public void deleteRelationship(int id_follower, int id_followed)
+	{
+		final String sql = "DELETE FROM User_User WHERE (id_follower = ? AND id_followed=?)";
+		this.connect();
+		
+	    try	( PreparedStatement pstmt = conn.prepareStatement(sql))
+	    {
+	        pstmt.setInt(1, id_follower);
+	        pstmt.setInt(2, id_followed);      
+	        pstmt.executeUpdate();
 	    }
 	    catch (SQLException e)
 	    {
