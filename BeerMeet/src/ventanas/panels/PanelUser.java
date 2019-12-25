@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import SQLite.BDManager;
 import foto.Foto;
+import usuarios.Usuario;
 import usuarios.UsuarioNormal;
 import utilidades.Utilidades;
 import ventanas.VentanaPrincipal;
@@ -45,6 +46,7 @@ public class PanelUser extends JPanel
 	
 	private ArrayList<Foto> fotos_inicio;
 	private ArrayList<Foto> fotos_perfil;
+	private ArrayList<Usuario> seguidos;
 	
 	/**Creación del Panel user*/
 	
@@ -59,6 +61,7 @@ public class PanelUser extends JPanel
 		
 		fotos_inicio = bdManager.loadInicioPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
 		fotos_perfil = bdManager.loadUsersPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
+		seguidos = bdManager.relationships(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
 		
 		panelPerfil = new PanelPerfil(this, null);
 		panelUsuarios = new PanelBusquedaUsuarios(this);
@@ -276,6 +279,15 @@ public class PanelUser extends JPanel
 	public void setVentanaPrincipal(VentanaPrincipal ventanaPrincipal) 
 	{
 		this.ventanaPrincipal = ventanaPrincipal;
+	}
+	public ArrayList<Usuario> getSeguidos() 
+	{
+		return seguidos;
+	}
+
+	public void setSeguidos(ArrayList<Usuario> seguidos) 
+	{
+		this.seguidos = seguidos;
 	}
 	
 }

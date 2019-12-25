@@ -92,10 +92,26 @@ public class PanelInicio extends JPanel
 			nombre.setHorizontalAlignment(SwingConstants.CENTER);
 			GridBagConstraints gnombre= new GridBagConstraints();
 			gnombre .gridx = 2;
-			gnombre .gridy = posicion+1;
-						
+			gnombre .gridy = posicion+1;	
 			nombre.setVisible(true);
 			panel_1.add(nombre, gnombre);
+			
+			nombre.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+				ArrayList<Usuario> useers= bdManager.loadUsers();
+				
+				String nombre= bdManager.SelectNombreUsuaruario(panelUser.getFotos_inicio().get(contador).getId_user());
+				List<Usuario> userr=useers.stream().filter(x -> x.getNombreUsuario().equals(nombre)).collect(Collectors.toList());
+					
+					PanelPerfil panelPerfilUser = new PanelPerfil(panelUser, (UsuarioNormal)userr.get(0));
+					panelUser.add(panelPerfilUser, BorderLayout.CENTER);
+					panelUser.setPanelUserProfile(panelPerfilUser);
+					setVisible(false);
+
+
+				}
+			});
 			
 			JLabel imagen = new JLabel();
 			imagen.setBounds(0,0,400,400);

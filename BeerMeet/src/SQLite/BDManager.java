@@ -112,6 +112,12 @@ public class BDManager
 		
 		return seguidores.size();
 	}
+	public ArrayList<Usuario> relationships(int id_user)
+	{
+		final String sql = "select * from Usuarios A join (select *from User_User where id_follower = "+id_user+") B on B.id_follower = A.id;";
+		ArrayList<Usuario> seguidores = this.selectUsuario(sql);
+		return seguidores;
+	}
 	
 	/**Este método seleciona fotos desde la BD pedemdiendo del usuario.*/
 	
@@ -422,5 +428,27 @@ public class BDManager
 	    
 	    this.disconnect();
 	    return username;
+	}
+	public void createRelationship(int id_followed, int id_follower)
+	{
+		final String sql = "INSERT INTO user_user(id_followed,id_follower) VALUES (?,?)";
+		
+		this.connect();
+		
+	    try
+	    		(
+	                    PreparedStatement pstmt = conn.prepareStatement(sql)
+	            )
+	    {
+	        pstmt.setInt(1, id_followed);
+	        pstmt.setInt(2, id_follower);
+	               
+	        pstmt.executeUpdate();
+	        
+	    }
+	    catch (SQLException e)
+	    {
+	        System.out.println("BadAss error executing insert. " + e.getMessage());
+	    }
 	}
 }
