@@ -1,5 +1,6 @@
 package ventanas.panels;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FileDialog;
 import java.awt.Image;
@@ -25,16 +26,18 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.AbstractBorder;
+
+import SQLite.BDManager;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextPane;
 
 
 public class PanelPerfil extends JPanel 
 {
-	public void paneltxue() {
-		
-	}
+	private static final long serialVersionUID = 1L;
 	PanelUser panelUser;
 	JLabel lblNewLabel = new JLabel();
 	String path = null;
@@ -49,7 +52,7 @@ public class PanelPerfil extends JPanel
 		
 		this.panelUser = panel;
 		
-		if(usuario == null)
+		if(usuario == null || panelUser.getUsuario().getNombreUsuario().equals(usuario.getNombreUsuario()))
 		{
 			user = panelUser.getUsuario();
 			esPerfilPropio = true;
@@ -94,13 +97,14 @@ public class PanelPerfil extends JPanel
 		
 		JLabel lblSeguidores = new JLabel("Seguidos");
 		
-		JLabel lblOo = new JLabel("");
-		lblOo.setText(""+panelUser.getBdManager().Seguidos(user.getId()));
+		BDManager bdManager = new BDManager(false);
+		JLabel lblOo = new JLabel();
+		lblOo.setText(""+bdManager.Seguidos(user.getId()));
 		
 		JLabel label = new JLabel("Seguidores");
 		
-		JLabel label_1 = new JLabel("0");
-		label_1.setText(""+panelUser.getBdManager().Seguidores(user.getId()));
+		JLabel label_1 = new JLabel("");
+		label_1.setText(""+bdManager.Seguidores(user.getId()));
 		
 		
 		JButton btnSeguir = new JButton("Seguir");
@@ -112,7 +116,7 @@ public class PanelPerfil extends JPanel
 		
 			ArrayList<Usuario> relationships=panelUser.getBdManager().relationships(panelUser.getUsuario().getId());
 			List<Usuario> existeRelacion=relationships.stream().filter(x -> x.getNombreUsuario().equals(usuario.getNombreUsuario())).collect(Collectors.toList());
-			System.out.println(existeRelacion.size());			
+					
 			if(existeRelacion.size()==1)
 			{
 				btnSeguir.setText("Dejar de seguir");
@@ -120,14 +124,25 @@ public class PanelPerfil extends JPanel
 				btnSeguir.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						panelUser.getBdManager().deleteRelationship(panelUser.getUsuario().getId(), usuario.getId());
-						panelUser.updateUI();
+						
+						PanelPerfil panelPerfilUser = new PanelPerfil(panelUser, usuario);
+						panelUser.add(panelPerfilUser, BorderLayout.CENTER);
+						panelUser.getPanelPerfil().setVisible(false);
+						panelUser.getPanelUserProfile().setVisible(false);
+						panelUser.setPanelUserProfile(panelPerfilUser);
+						
 					}
 				});
 			}else if(existeRelacion.size()==0){
 				btnSeguir.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						panelUser.getBdManager().createRelationship(panelUser.getUsuario().getId(), usuario.getId());
-						panelUser.updateUI();
+						
+						PanelPerfil panelPerfilUser = new PanelPerfil(panelUser, usuario);
+						panelUser.add(panelPerfilUser, BorderLayout.CENTER);
+						panelUser.getPanelPerfil().setVisible(false);
+						panelUser.getPanelUserProfile().setVisible(false);
+						panelUser.setPanelUserProfile(panelPerfilUser);				
 					}
 				});
 			}	
@@ -135,35 +150,40 @@ public class PanelPerfil extends JPanel
 		JLabel lblPublicaciones = new JLabel("Publicaciones");
 		
 		JLabel label_2 = new JLabel();
+		
+		JLabel lblDesciption = new JLabel("");
+		lblDesciption.setText(panelUser.getUsuario().getDescripcion());
+		lblDesciption.setVisible(true);
+		add(lblDesciption);
+		
 		GroupLayout gl_panelCenter = new GroupLayout(this);
 		gl_panelCenter.setHorizontalGroup(
 			gl_panelCenter.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelCenter.createSequentialGroup()
 					.addGap(25)
 					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
-					.addGroup(gl_panelCenter.createParallelGroup(Alignment.TRAILING)
-						.addGroup(Alignment.LEADING, gl_panelCenter.createSequentialGroup()
+					.addGroup(gl_panelCenter.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelCenter.createSequentialGroup()
 							.addGap(74)
-							.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
+							.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+							.addGap(43)
+							.addComponent(lblOo, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+							.addComponent(label_2, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+							.addGap(33))
 						.addGroup(gl_panelCenter.createSequentialGroup()
 							.addGap(39)
-							.addGroup(gl_panelCenter.createParallelGroup(Alignment.LEADING)
-								.addComponent(btnSeguir, GroupLayout.PREFERRED_SIZE, 247, GroupLayout.PREFERRED_SIZE)
-								.addGroup(Alignment.TRAILING, gl_panelCenter.createSequentialGroup()
-									.addGroup(gl_panelCenter.createParallelGroup(Alignment.TRAILING)
-										.addComponent(lblOo, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-										.addGroup(gl_panelCenter.createSequentialGroup()
-											.addComponent(label, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
-											.addPreferredGap(ComponentPlacement.UNRELATED)
-											.addComponent(lblSeguidores)))
-									.addGroup(gl_panelCenter.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_panelCenter.createSequentialGroup()
-											.addPreferredGap(ComponentPlacement.UNRELATED)
-											.addComponent(lblPublicaciones))
-										.addGroup(gl_panelCenter.createSequentialGroup()
-											.addGap(58)
-											.addComponent(label_2, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)))))))
-					.addContainerGap())
+							.addGroup(gl_panelCenter.createParallelGroup(Alignment.TRAILING, false)
+								.addComponent(lblDesciption, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(btnSeguir, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
+								.addGroup(Alignment.LEADING, gl_panelCenter.createSequentialGroup()
+									.addComponent(label, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(lblSeguidores)
+									.addGap(18)
+									.addComponent(lblPublicaciones)))
+							.addGap(6)))
+					.addGap(47))
 		);
 		gl_panelCenter.setVerticalGroup(
 			gl_panelCenter.createParallelGroup(Alignment.LEADING)
@@ -180,16 +200,18 @@ public class PanelPerfil extends JPanel
 								.addComponent(label)
 								.addComponent(lblSeguidores)
 								.addComponent(lblPublicaciones))
-							.addGap(41)
-							.addComponent(btnSeguir))
+							.addGap(18)
+							.addComponent(lblDesciption, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_panelCenter.createSequentialGroup()
 							.addGap(27)
 							.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(121, Short.MAX_VALUE))
+					.addGap(7)
+					.addComponent(btnSeguir)
+					.addContainerGap(85, Short.MAX_VALUE))
 		);
 		
 		this.setLayout(gl_panelCenter);
-		label_2.setText(panelUser.getFotos_perfil().size()+"");
+		label_2.setText(panelUser.getVentanaPrincipal().getBdManager().loadUsersPhotos(user.getId()).size()+"");
 		if(esPerfilPropio) {
 			cargarFotos();
 		}

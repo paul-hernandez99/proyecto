@@ -230,6 +230,10 @@ public class PanelUser extends JPanel
 	{
 		panelUserProfile = panel;
 	}
+	public PanelPerfil getPanelUserProfile()
+	{
+		return panelUserProfile ;
+	}
 
 	public BDManager getBdManager() 
 	{
@@ -288,6 +292,14 @@ public class PanelUser extends JPanel
 	public void setSeguidos(ArrayList<Usuario> seguidos) 
 	{
 		this.seguidos = seguidos;
+	}public PanelPerfil getPanelPerfil() 
+	{
+		return panelPerfil;
+	}
+
+	public void setPanelPerfil(PanelPerfil panel) 
+	{
+		this.panelPerfil = panel;
 	}
 	
 }

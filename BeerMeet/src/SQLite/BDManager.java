@@ -68,7 +68,7 @@ public class BDManager
 	
 	/**Este método guarda los datos de los distintos usuarios en la DB.*/
 	
-	public void saveUser(Usuario user)
+	public void saveUser(UsuarioNormal user)
 	{
 		this.insertUser(user);
 		if(user instanceof UsuarioNormal)
@@ -98,7 +98,7 @@ public class BDManager
 	
 	public int Seguidores(int id_user)
 	{
-		final String sql = "select * from Usuarios A join (select *from User_User where id_followed = "+id_user+") B on B.id_follower = A.id;";
+		final String sql = "select * from Usuarios A join (select id_followed from User_User where id_follower = "+id_user+") B on B.id_followed = A.id;";
 		
 		ArrayList<Usuario> seguidores =this.selectUsuario(sql);
 		return seguidores.size();
@@ -114,12 +114,9 @@ public class BDManager
 	}
 	public ArrayList<Usuario> relationships(int id_user)
 	{
-final String sql = "select * from Usuarios A join (select *from User_User where id_followed = "+id_user+") B on B.id_follower = A.id;";
+final String sql = "select * from Usuarios A join (select id_followed from User_User where id_follower = "+id_user+") B on B.id_followed = A.id;";
 		
 		ArrayList<Usuario> seguidores =this.selectUsuario(sql);
-		for(byte i=0; i<seguidores.size();i++) {
-			System.out.println(seguidores.get(i).getNombreUsuario());
-		}
 		return seguidores;
 	}
 	
@@ -142,9 +139,9 @@ final String sql = "select * from Usuarios A join (select *from User_User where 
 	
 	/**Este método guarda en la BD los usuarios que se ahn reguistrado en nuestra aplicaión.*/
 	
-	private void insertUser(Usuario user)
+	private void insertUser(UsuarioNormal user)
 	{
-		String sql = "INSERT INTO Usuarios (type, username, password, name, surnames, email, fec_nac, age) VALUES(?,?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO Usuarios (type, username, password, name, surnames, email, fec_nac, age, description) VALUES(?,?,?,?,?,?,?,?,?)";
 
 		this.connect();
 		
@@ -155,6 +152,7 @@ final String sql = "select * from Usuarios A join (select *from User_User where 
             pstmt.setString(4, user.getNombreReal());
             pstmt.setString(5, user.getApellidos());
             pstmt.setString(6, user.getEmail());
+            pstmt.setString(7, user.getDescripcion());
             
             if(user instanceof UsuarioNormal)
             {
@@ -231,13 +229,14 @@ final String sql = "select * from Usuarios A join (select *from User_User where 
             	String name = rs.getString("name");
             	String apellidos = rs.getString("surnames");
             	String email = rs.getString("email");
+            	String description = rs.getString("description");
             	
             	if(type == 0)
             	{
             		String fec_nac = rs.getString("fec_nac");
                 	int edad = rs.getInt("age");
                 	
-                	UsuarioNormal usuarioNormal = new UsuarioNormal(id, username, password, name, apellidos, email, fec_nac, edad);
+                	UsuarioNormal usuarioNormal = new UsuarioNormal(id, username, password, name, apellidos, email, fec_nac, edad, description);
                 	users.add(usuarioNormal);
             	}
             	else
@@ -458,6 +457,22 @@ final String sql = "select * from Usuarios A join (select *from User_User where 
 	    {
 	        pstmt.setInt(1, id_follower);
 	        pstmt.setInt(2, id_followed);      
+	        pstmt.executeUpdate();
+	    }
+	    catch (SQLException e)
+	    {
+	        System.out.println("BadAss error executing insert. " + e.getMessage());
+	    }
+	}
+	public void ModifyDescription (String description, String nombreUsuario)
+	{
+		String sql="UPDATE Usuarios SET descripcion = ' ? '  WHERE username= ? ;";
+		this.connect();
+		
+	    try	( PreparedStatement pstmt = conn.prepareStatement(sql))
+	    {
+	        pstmt.setString(1, description);
+	        pstmt.setString(2, nombreUsuario);      
 	        pstmt.executeUpdate();
 	    }
 	    catch (SQLException e)

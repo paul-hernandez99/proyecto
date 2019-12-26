@@ -27,7 +27,7 @@ public class UsuarioNormal extends Usuario
 	
 	/**Constuctor super del objeto UsuarioComun (sin algunos atributos)*/
 	
-	public UsuarioNormal(String nombreUsuario, String contraseña, String nombreReal, String apellidos, String email, String fechaNacimiento) 
+	public UsuarioNormal(String nombreUsuario, String contraseña, String nombreReal, String apellidos, String email, String fechaNacimiento, String description) 
 	{
 		super(nombreUsuario, contraseña, nombreReal, apellidos, email);
 		this.fechaNacimiento = fechaNacimiento;
@@ -36,7 +36,7 @@ public class UsuarioNormal extends Usuario
 	
 	/**Constuctor super del objeto UsuarioComun (con todos los atributos)*/
 	
-	public UsuarioNormal(int id, String nombreUsuario, String contraseña, String nombreReal, String apellidos, String email, String fechaNacimiento, int edad) 
+	public UsuarioNormal(int id, String nombreUsuario, String contraseña, String nombreReal, String apellidos, String email, String fechaNacimiento, int edad, String descripcion) 
 	{
 		super(nombreUsuario, contraseña, nombreReal, apellidos, email);
 		this.fechaNacimiento = fechaNacimiento;
