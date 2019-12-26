@@ -556,10 +556,10 @@ public class VentanaPrincipal extends JFrame
 			String apellidos = this.apellidos.getText();
 			String email = this.email.getText();
 			String fecNac = this.day.getText() +"-"+ this.month.getText() +"-"+ this.year.getText();
-			
+			String description = null;
 			comprobarUsuarioRegistration(username, email);
 			
-			UsuarioNormal usuario = new UsuarioNormal(username, password, name, apellidos, email, fecNac);
+			UsuarioNormal usuario = new UsuarioNormal(username, password, name, apellidos, email, fecNac,description);
 			
 			bdManager.saveUser(usuario);
 			

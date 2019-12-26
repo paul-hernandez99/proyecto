@@ -42,6 +42,7 @@ public class UsuarioNormal extends Usuario
 		this.fechaNacimiento = fechaNacimiento;
 		this.edad = edad;
 		this.id = id;
+		this.descripcion = descripcion;
 	}
 	
 	private int calcularEdad()

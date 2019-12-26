@@ -68,7 +68,7 @@ public class BDManager
 	
 	/**Este método guarda los datos de los distintos usuarios en la DB.*/
 	
-	public void saveUser(UsuarioNormal user)
+	public void saveUser(Usuario user)
 	{
 		this.insertUser(user);
 		if(user instanceof UsuarioNormal)
@@ -139,7 +139,7 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
 	
 	/**Este método guarda en la BD los usuarios que se ahn reguistrado en nuestra aplicaión.*/
 	
-	private void insertUser(UsuarioNormal user)
+	private void insertUser(Usuario user)
 	{
 		String sql = "INSERT INTO Usuarios (type, username, password, name, surnames, email, fec_nac, age, description) VALUES(?,?,?,?,?,?,?,?,?)";
 
@@ -152,7 +152,7 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
             pstmt.setString(4, user.getNombreReal());
             pstmt.setString(5, user.getApellidos());
             pstmt.setString(6, user.getEmail());
-            pstmt.setString(7, user.getDescripcion());
+            pstmt.setString(7, ((UsuarioNormal) user).getDescripcion());
             
             if(user instanceof UsuarioNormal)
             {
@@ -229,14 +229,13 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
             	String name = rs.getString("name");
             	String apellidos = rs.getString("surnames");
             	String email = rs.getString("email");
-            	String description = rs.getString("description");
             	
             	if(type == 0)
             	{
             		String fec_nac = rs.getString("fec_nac");
                 	int edad = rs.getInt("age");
-                	
-                	UsuarioNormal usuarioNormal = new UsuarioNormal(id, username, password, name, apellidos, email, fec_nac, edad, description);
+                	String description = rs.getString("description");
+                  	UsuarioNormal usuarioNormal = new UsuarioNormal(id, username, password, name, apellidos, email, fec_nac, edad, description);
                 	users.add(usuarioNormal);
             	}
             	else
@@ -466,13 +465,11 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
 	}
 	public void ModifyDescription (String description, String nombreUsuario)
 	{
-		String sql="UPDATE Usuarios SET descripcion = ' ? '  WHERE username= ? ;";
+		String sql="UPDATE Usuarios SET description = '"+description+"'  WHERE username='"+nombreUsuario+"';";
 		this.connect();
 		
 	    try	( PreparedStatement pstmt = conn.prepareStatement(sql))
-	    {
-	        pstmt.setString(1, description);
-	        pstmt.setString(2, nombreUsuario);      
+	    {   
 	        pstmt.executeUpdate();
 	    }
 	    catch (SQLException e)

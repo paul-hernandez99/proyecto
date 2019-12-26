@@ -28,7 +28,7 @@ public class BDManagerTest
 	public void setUp() throws Exception
 	{
 		tester = new BDManager(true);
-		usuario = new UsuarioNormal("manuel", "manuel1", "Manuel", "Garcia", "manuel@opendeusto.es", "12-12-1999");
+		usuario = new UsuarioNormal("manuel", "manuel1", "Manuel", "Garcia", "manuel@opendeusto.es", "12-12-1999",null);
 		foto = new Foto(1, "Imagenes/data/manuel_1.jpg", "14:00 02/01/2019");
 	}
 

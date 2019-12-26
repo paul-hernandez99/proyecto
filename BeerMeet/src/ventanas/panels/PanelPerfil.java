@@ -33,6 +33,9 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextPane;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.Font;
 
 
 public class PanelPerfil extends JPanel 
@@ -151,10 +154,39 @@ public class PanelPerfil extends JPanel
 		
 		JLabel label_2 = new JLabel();
 		
+		JTextPane txtdes = new JTextPane();
+		
+		txtdes.setText("Escriba su descripci\u00F3n...");
+		txtdes.setVisible(false);
+		txtdes.enable(false);
+		
 		JLabel lblDesciption = new JLabel("");
+		lblDesciption.setForeground(Color.GRAY);
+		lblDesciption.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 17));
+		lblDesciption.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent iepa) {
+				txtdes.setVisible(true);
+				txtdes.enable(true);
+				txtdes.addKeyListener(new KeyAdapter() {
+					public void keyPressed(KeyEvent e) {
+						if (e.getKeyCode()==KeyEvent.VK_ENTER){
+							lblDesciption.setText(txtdes.getText());
+							bdManager.ModifyDescription(txtdes.getText(), panelUser.getUsuario().getNombreUsuario());
+							txtdes.setVisible(false);
+							txtdes.enable(false);
+							panelUser.getUsuario().setDescripcion(panelUser.getUsuario().getNombreUsuario());
+						}
+					}
+				});
+				
+			}
+		});
+		
 		lblDesciption.setText(panelUser.getUsuario().getDescripcion());
 		lblDesciption.setVisible(true);
 		add(lblDesciption);
+		
+		
 		
 		GroupLayout gl_panelCenter = new GroupLayout(this);
 		gl_panelCenter.setHorizontalGroup(
@@ -173,15 +205,17 @@ public class PanelPerfil extends JPanel
 							.addGap(33))
 						.addGroup(gl_panelCenter.createSequentialGroup()
 							.addGap(39)
-							.addGroup(gl_panelCenter.createParallelGroup(Alignment.TRAILING, false)
+							.addGroup(gl_panelCenter.createParallelGroup(Alignment.TRAILING)
 								.addComponent(lblDesciption, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(btnSeguir, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
-								.addGroup(Alignment.LEADING, gl_panelCenter.createSequentialGroup()
-									.addComponent(label, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(lblSeguidores)
-									.addGap(18)
-									.addComponent(lblPublicaciones)))
+								.addGroup(Alignment.LEADING, gl_panelCenter.createParallelGroup(Alignment.LEADING, false)
+									.addComponent(btnSeguir, GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
+									.addGroup(gl_panelCenter.createSequentialGroup()
+										.addComponent(label, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.UNRELATED)
+										.addComponent(lblSeguidores)
+										.addGap(18)
+										.addComponent(lblPublicaciones))
+									.addComponent(txtdes)))
 							.addGap(6)))
 					.addGap(47))
 		);
@@ -201,11 +235,13 @@ public class PanelPerfil extends JPanel
 								.addComponent(lblSeguidores)
 								.addComponent(lblPublicaciones))
 							.addGap(18)
-							.addComponent(lblDesciption, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE))
+							.addComponent(lblDesciption, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(txtdes, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_panelCenter.createSequentialGroup()
 							.addGap(27)
 							.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE)))
-					.addGap(7)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnSeguir)
 					.addContainerGap(85, Short.MAX_VALUE))
 		);
