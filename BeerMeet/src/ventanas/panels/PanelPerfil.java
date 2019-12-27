@@ -46,6 +46,7 @@ public class PanelPerfil extends JPanel
 	String path = null;
 	UsuarioNormal user;
 	boolean esPerfilPropio;
+	int n_g;
 	
 	public static AbstractBorder bordeCircular = new BordeCircular();       
 
@@ -163,26 +164,32 @@ public class PanelPerfil extends JPanel
 		JLabel lblDesciption = new JLabel("");
 		lblDesciption.setForeground(Color.GRAY);
 		lblDesciption.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 17));
-		lblDesciption.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent iepa) {
-				txtdes.setVisible(true);
-				txtdes.enable(true);
-				txtdes.addKeyListener(new KeyAdapter() {
-					public void keyPressed(KeyEvent e) {
-						if (e.getKeyCode()==KeyEvent.VK_ENTER){
-							lblDesciption.setText(txtdes.getText());
-							bdManager.ModifyDescription(txtdes.getText(), panelUser.getUsuario().getNombreUsuario());
-							txtdes.setVisible(false);
-							txtdes.enable(false);
-							panelUser.getUsuario().setDescripcion(panelUser.getUsuario().getNombreUsuario());
+		if(esPerfilPropio) {
+			lblDesciption.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent iepa) {
+					txtdes.setVisible(true);
+					txtdes.enable(true);
+					txtdes.addKeyListener(new KeyAdapter() {
+						public void keyPressed(KeyEvent e) {
+							if (e.getKeyCode()==KeyEvent.VK_ENTER){
+								lblDesciption.setText(txtdes.getText());
+								bdManager.ModifyDescription(txtdes.getText(), panelUser.getUsuario().getNombreUsuario());
+								txtdes.setVisible(false);
+								txtdes.enable(false);
+								panelUser.getUsuario().setDescripcion(panelUser.getUsuario().getNombreUsuario());
+							}
 						}
-					}
-				});
-				
-			}
-		});
-		
-		lblDesciption.setText(panelUser.getUsuario().getDescripcion());
+					});
+					
+				}
+			});
+		}
+		if(esPerfilPropio)
+		{
+			lblDesciption.setText(panelUser.getUsuario().getDescripcion());
+		}else {
+			lblDesciption.setText(usuario.getDescripcion());
+		}
 		lblDesciption.setVisible(true);
 		add(lblDesciption);
 		
@@ -200,14 +207,14 @@ public class PanelPerfil extends JPanel
 							.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 							.addGap(43)
 							.addComponent(lblOo, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
 							.addComponent(label_2, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-							.addGap(33))
+							.addGap(44))
 						.addGroup(gl_panelCenter.createSequentialGroup()
 							.addGap(39)
-							.addGroup(gl_panelCenter.createParallelGroup(Alignment.TRAILING)
-								.addComponent(lblDesciption, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addGroup(Alignment.LEADING, gl_panelCenter.createParallelGroup(Alignment.LEADING, false)
+							.addGroup(gl_panelCenter.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblDesciption, GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
+								.addGroup(gl_panelCenter.createParallelGroup(Alignment.LEADING, false)
 									.addComponent(btnSeguir, GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
 									.addGroup(gl_panelCenter.createSequentialGroup()
 										.addComponent(label, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
@@ -215,7 +222,7 @@ public class PanelPerfil extends JPanel
 										.addComponent(lblSeguidores)
 										.addGap(18)
 										.addComponent(lblPublicaciones))
-									.addComponent(txtdes)))
+									.addComponent(txtdes, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 							.addGap(6)))
 					.addGap(47))
 		);
@@ -243,7 +250,7 @@ public class PanelPerfil extends JPanel
 							.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE)))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnSeguir)
-					.addContainerGap(85, Short.MAX_VALUE))
+					.addContainerGap(76, Short.MAX_VALUE))
 		);
 		
 		this.setLayout(gl_panelCenter);
@@ -293,39 +300,60 @@ public class PanelPerfil extends JPanel
 	private  void cargarFotos()
 	{
 		ArrayList<Foto> fotos;
-		if(esPerfilPropio)
-		{
+		if(esPerfilPropio){
 			fotos = panelUser.getFotos_perfil();
-		}
-		else
-		{
+		}else{
 			fotos = panelUser.getVentanaPrincipal().getBdManager().loadUsersPhotos(user.getId());
 		}
-		
-		if(fotos != null) 
+		if(fotos.size()>0)
 		{
-			for(int n = 0 ; n  <fotos.size() ; n++) 
+
+		ArrayList<Foto> fotosPar =new ArrayList<Foto>();
+		ArrayList<Foto> fotosImpar = new ArrayList<Foto>();
+		
+		for( n_g = 0 ; n_g  <fotos.size() ; n_g++) 
+		{
+			Foto foto =fotos.get(n_g);
+			if(n_g%2 == 0) {
+				fotosPar.add(foto);
+			}else{
+				fotosImpar.add(foto);
+			
+				}
+			}
+		n_g=0;
+		Thread hilo = new Thread(){
+			public void run() {
+				for(byte n = 0 ; n <fotosPar.size() ; n++) 
+				{
+					JLabel labeln= new JLabel("");
+					labeln.setSize(175, 175);
+					labeln.setLocation(50, 250 + 300 * n);
+					ImageIcon imgIcon = new ImageIcon(fotosPar.get(n).getPath());
+			        Image imgEscalada = imgIcon.getImage().getScaledInstance(labeln.getWidth(),labeln.getHeight(), Image.SCALE_SMOOTH);
+			        Icon iconoEscalado = new ImageIcon(imgEscalada);
+			        labeln.setIcon(iconoEscalado);
+					add(labeln);
+				}
+			}
+	};
+	
+		Runnable lanzable = () -> {
+			for(byte n = 0 ; n <fotosImpar.size() ; n++) 
 			{
 				JLabel labeln= new JLabel("");
 				labeln.setSize(175, 175);
-				int posicion=n/2;
-				
-				if(n%2 == 0) 
-				{
-					labeln.setLocation(50, 250 + 300 * posicion);
-				}
-				else 
-				{
-					labeln.setLocation(300, 250 +300 * posicion);
-				}
-				
-				ImageIcon imgIcon = new ImageIcon(fotos.get(n).getPath());
+				labeln.setLocation(300, 250 +300 * n);
+				ImageIcon imgIcon = new ImageIcon(fotosImpar.get(n).getPath());
 		        Image imgEscalada = imgIcon.getImage().getScaledInstance(labeln.getWidth(),labeln.getHeight(), Image.SCALE_SMOOTH);
 		        Icon iconoEscalado = new ImageIcon(imgEscalada);
 		        labeln.setIcon(iconoEscalado);
-				this.add(labeln);
-				
+				add(labeln);
 			}
+		};
+		Thread hilo_2 = new Thread (lanzable);
+		hilo.start();
+		hilo_2.start();
 		}
 	}
 }
