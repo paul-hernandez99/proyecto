@@ -311,17 +311,16 @@ public class PanelPerfil extends JPanel
 		ArrayList<Foto> fotosPar =new ArrayList<Foto>();
 		ArrayList<Foto> fotosImpar = new ArrayList<Foto>();
 		
-		for( n_g = 0 ; n_g  <fotos.size() ; n_g++) 
+		for(byte n = 0 ;n  <fotos.size() ; n++) 
 		{
-			Foto foto =fotos.get(n_g);
-			if(n_g%2 == 0) {
+			Foto foto =fotos.get(n);
+			if(n%2 == 0) {
 				fotosPar.add(foto);
 			}else{
 				fotosImpar.add(foto);
 			
 				}
 			}
-		n_g=0;
 		Thread hilo = new Thread(){
 			public void run() {
 				for(byte n = 0 ; n <fotosPar.size() ; n++) 
@@ -331,8 +330,25 @@ public class PanelPerfil extends JPanel
 					labeln.setLocation(50, 250 + 300 * n);
 					ImageIcon imgIcon = new ImageIcon(fotosPar.get(n).getPath());
 			        Image imgEscalada = imgIcon.getImage().getScaledInstance(labeln.getWidth(),labeln.getHeight(), Image.SCALE_SMOOTH);
+			        Foto foto= fotosPar.get(n);
 			        Icon iconoEscalado = new ImageIcon(imgEscalada);
 			        labeln.setIcon(iconoEscalado);
+			    	labeln.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseClicked(MouseEvent arg0) {
+							Usuario userr;
+							if (esPerfilPropio) {
+								userr = panelUser.getUsuario();
+							}else {
+								userr= user;	
+							}
+							PanelVisualizar panel = new PanelVisualizar(panelUser,foto, user);
+							panelUser.add(panel, BorderLayout.CENTER);
+							panel.setVisible(true);
+							panelUser.getPanelPerfil().setVisible(false);
+						}
+			    	});
+						
 					add(labeln);
 				}
 			}
