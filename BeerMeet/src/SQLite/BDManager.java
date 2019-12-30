@@ -89,7 +89,7 @@ public class BDManager
 	
 	public ArrayList<Foto> loadInicioPhotos(int id_user)
 	{
-		final String sql = "select * from Fotos join (SELECT id_followed FROM Usuarios A JOIN User_User B ON B.id_follower = ?) B"
+		final String sql = "select * from Fotos join (SELECT id_followed FROM User_User WHERE id_follower = ?) B"
 			 	+ " on id_user = B.id_followed;";
 		
 		ArrayList<Foto> fotos = this.selectPhotos(id_user, sql);

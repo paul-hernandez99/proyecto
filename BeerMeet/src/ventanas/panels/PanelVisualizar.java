@@ -42,9 +42,15 @@ public class PanelVisualizar extends JPanel
 				adaptador.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent arg0) {
-						panel.getPanelPerfil().getPanelVisualizar().setVisible(false);
-						panel.getPanelPerfil().setVisible(true);
-						panel.goToPanelPerfil();
+						if(panelUser.getUsuario().getId() ==foto.getId_user())
+					        {
+								panel.getPanelPerfil().getPanelVisualizar().setVisible(false);
+								panel.getPanelPerfil().setVisible(true);
+								panel.goToPanelPerfil();
+					        }else {
+					        	panel.getPanelUserProfile().getPanelVisualizar().setVisible(false);
+								panel.getPanelUserProfile().setVisible(true);
+							}
 					}
 				});
 				
@@ -99,10 +105,9 @@ public class PanelVisualizar extends JPanel
 			        		panelUser.setPanelPerfil(nuevo);
 			        		panelUser.getPanelPerfil().setVisible(true);
 			        		panelUser.goToPanelPerfil();
-			        		
 			        	}
 			        });
-			        borrar.setIcon(new ImageIcon("C:\\Users\\PC\\Desktop\\Image_74.png"));
+			        borrar.setIcon(new ImageIcon("Imagenes\\System\\Image_74.png"));
 			        borrar.setBounds(484, 99, 38, 36);
 			        add(borrar);
 		        }

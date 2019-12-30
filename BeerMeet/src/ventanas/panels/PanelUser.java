@@ -5,8 +5,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.FileDialog;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -14,6 +17,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -47,6 +53,7 @@ public class PanelUser extends JPanel
 	private ArrayList<Foto> fotos_inicio;
 	private ArrayList<Foto> fotos_perfil;
 	private ArrayList<Usuario> seguidos;
+	private JLabel btnPaginaPrincipal = new JLabel();
 	
 	/**Creación del Panel user*/
 	
@@ -62,7 +69,7 @@ public class PanelUser extends JPanel
 		fotos_inicio = bdManager.loadInicioPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
 		fotos_perfil = bdManager.loadUsersPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
 		seguidos = bdManager.relationships(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
-		
+	
 		panelPerfil = new PanelPerfil(this, null);
 		panelUsuarios = new PanelBusquedaUsuarios(this);
 		
@@ -96,6 +103,14 @@ public class PanelUser extends JPanel
 		lblqueDeseaHacer.setFont(new Font("Gill Sans MT", Font.PLAIN, 16));
 		lblqueDeseaHacer.setBounds(82, 50, 137, 20);
 		panelNorth.add(lblqueDeseaHacer);
+		
+	
+		btnPaginaPrincipal.setBounds(0, 0, 40,40);
+		btnPaginaPrincipal.setIcon(escalar("Imagenes\\System\\PaginaPrincipal.png",btnPaginaPrincipal));
+		btnPaginaPrincipal.setForeground(Color.WHITE);
+		btnPaginaPrincipal.setBackground(new Color(255, 102, 102));
+		btnPaginaPrincipal.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
+		panelSouth.add(btnPaginaPrincipal);
 		
 		JButton btnSubirFoto = new JButton("Subir foto");
 		btnSubirFoto.setForeground(Color.WHITE);
@@ -156,6 +171,12 @@ public class PanelUser extends JPanel
 				goToPanelPerfil();
 			}
 		});
+		btnPaginaPrincipal.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				goToPanelInicio();
+			}
+		});
 		
 		btnSalir.addActionListener(new ActionListener() 
 		{
@@ -176,7 +197,7 @@ public class PanelUser extends JPanel
 		{
 			panelUserProfile.setVisible(false);
 		}
-		
+		btnPaginaPrincipal.setBackground(Color.WHITE);
 		panelInicio.setVisible(false);
 		panelUsuarios.setVisible(false);
 		panelPerfil.setVisible(true);
@@ -184,7 +205,20 @@ public class PanelUser extends JPanel
 		this.add(panelPerfil, BorderLayout.CENTER);
 		panelPerfil.setVisible(true);
 	}
-	
+	public void goToPanelInicio()
+	{
+		if(panelUserProfile != null)
+		{
+			panelUserProfile.setVisible(false);
+		}
+		btnPaginaPrincipal.setBackground(new Color(255, 102, 102));
+		panelInicio.setVisible(true);
+		panelUsuarios.setVisible(false);
+		panelPerfil.setVisible(false);
+		panelInicio.setBackground(Color.WHITE);
+		this.add(panelInicio, BorderLayout.CENTER);
+		panelInicio.setVisible(true);
+	}
 	private void goToPanelUsuarios()
 	{
 		if(panelUserProfile != null)
@@ -192,7 +226,7 @@ public class PanelUser extends JPanel
 			this.remove(panelUserProfile);
 			panelUserProfile = null;
 		}
-		
+		btnPaginaPrincipal.setBackground(Color.WHITE);
 		panelInicio.setVisible(false);
 		panelPerfil.setVisible(false);
 		panelUsuarios.setVisible(true);
@@ -225,7 +259,13 @@ public class PanelUser extends JPanel
 		}
 		return path;
 	}
-	
+	public Icon escalar(String path,JLabel imagen)
+	{
+		ImageIcon imgIcon = new ImageIcon(path);
+        Image imgEscalada = imgIcon.getImage().getScaledInstance(imagen.getWidth(),imagen.getHeight(), Image.SCALE_SMOOTH);
+        Icon iconoEscalado = new ImageIcon(imgEscalada);
+		return iconoEscalado;
+	}
 	public void setPanelUserProfile(PanelPerfil panel)
 	{
 		panelUserProfile = panel;

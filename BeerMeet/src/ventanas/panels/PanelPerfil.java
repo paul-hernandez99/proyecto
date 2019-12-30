@@ -36,6 +36,10 @@ import javax.swing.JTextPane;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+
+import javax.swing.JScrollPane;
+import java.awt.GridBagLayout;
 
 
 public class PanelPerfil extends JPanel 
@@ -48,10 +52,12 @@ public class PanelPerfil extends JPanel
 	boolean esPerfilPropio;
 	int n_g;
 	PanelVisualizar panelV ;
+	JPanel panel_1 = new JPanel();
+	JScrollPane scrollPane = new JScrollPane(panel_1,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	
 	public static AbstractBorder bordeCircular = new BordeCircular();       
 
-	public PanelPerfil(PanelUser panel, UsuarioNormal usuario) 
+	public PanelPerfil(PanelUser panel, UsuarioNormal usuario)
 	{
 		this.setBackground(Color.WHITE);
 		
@@ -67,6 +73,7 @@ public class PanelPerfil extends JPanel
 			user = usuario;
 			esPerfilPropio = false;
 		}
+		
 		
 		path = panelUser.getBdManager().selectPhotoPerfil(user.getId());
 		
@@ -99,19 +106,6 @@ public class PanelPerfil extends JPanel
 				}
 			});
 		}
-		
-		JLabel lblSeguidores = new JLabel("Seguidos");
-		
-		BDManager bdManager = new BDManager(false);
-		JLabel lblOo = new JLabel();
-		lblOo.setText(""+bdManager.Seguidos(user.getId()));
-		
-		JLabel label = new JLabel("Seguidores");
-		
-		JLabel label_1 = new JLabel("");
-		label_1.setText(""+bdManager.Seguidores(user.getId()));
-		
-		
 		JButton btnSeguir = new JButton("Seguir");
 		
 		if (esPerfilPropio) {
@@ -124,8 +118,9 @@ public class PanelPerfil extends JPanel
 					
 			if(existeRelacion.size()==1)
 			{
-				btnSeguir.setText("Dejar de seguir");
 				cargarFotos();
+				btnSeguir.setText("Dejar de seguir");
+				scrollPane.setVisible(true);
 				btnSeguir.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						panelUser.getBdManager().deleteRelationship(panelUser.getUsuario().getId(), usuario.getId());
@@ -142,7 +137,7 @@ public class PanelPerfil extends JPanel
 				btnSeguir.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						panelUser.getBdManager().createRelationship(panelUser.getUsuario().getId(), usuario.getId());
-						
+						scrollPane.setVisible(false);
 						PanelPerfil panelPerfilUser = new PanelPerfil(panelUser, usuario);
 						panelUser.add(panelPerfilUser, BorderLayout.CENTER);
 						panelUser.getPanelPerfil().setVisible(false);
@@ -152,6 +147,35 @@ public class PanelPerfil extends JPanel
 				});
 			}	
 		}
+		
+		if(esPerfilPropio) {
+			cargarFotos();
+		}
+				
+		panel_1.setBackground(Color.WHITE);
+		panel_1.setLayout(new GridBagLayout());
+		
+		panel.setBackground(Color.WHITE);
+		panel_1.setVisible(true);
+		
+		scrollPane.setViewportView(panel_1);
+		scrollPane.setBounds(0,300,560,790);
+		if(esPerfilPropio) {
+		scrollPane.setVisible(true);	
+		}
+		JLabel lblSeguidores = new JLabel("Seguidos");
+		
+		BDManager bdManager = new BDManager(false);
+		JLabel lblOo = new JLabel();
+		lblOo.setText(""+bdManager.Seguidos(user.getId()));
+		
+		JLabel label = new JLabel("Seguidores");
+		
+		JLabel label_1 = new JLabel("");
+		label_1.setText(""+bdManager.Seguidores(user.getId()));
+		
+		
+		
 		JLabel lblPublicaciones = new JLabel("Publicaciones");
 		
 		JLabel label_2 = new JLabel();
@@ -194,8 +218,6 @@ public class PanelPerfil extends JPanel
 		lblDesciption.setVisible(true);
 		add(lblDesciption);
 		
-		
-		
 		GroupLayout gl_panelCenter = new GroupLayout(this);
 		gl_panelCenter.setHorizontalGroup(
 			gl_panelCenter.createParallelGroup(Alignment.LEADING)
@@ -226,6 +248,9 @@ public class PanelPerfil extends JPanel
 									.addComponent(txtdes, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 							.addGap(6)))
 					.addGap(47))
+				.addGroup(Alignment.TRAILING, gl_panelCenter.createSequentialGroup()
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
+					.addContainerGap())
 		);
 		gl_panelCenter.setVerticalGroup(
 			gl_panelCenter.createParallelGroup(Alignment.LEADING)
@@ -251,13 +276,18 @@ public class PanelPerfil extends JPanel
 							.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE)))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnSeguir)
-					.addContainerGap(76, Short.MAX_VALUE))
+					.addGap(30)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+					.addGap(41))
 		);
-		
 		this.setLayout(gl_panelCenter);
-		label_2.setText(panelUser.getVentanaPrincipal().getBdManager().loadUsersPhotos(user.getId()).size()+"");
-		if(esPerfilPropio) {
-			cargarFotos();
+		label_2.setText(panelUser.getVentanaPrincipal().getBdManager().loadUsersPhotos(user.getId()).size()+"");	
+	
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	/**Este método actualiza las fotos de la bandeja de la entrada del panel dependiendo de la fecha de publicación de cad foto*/
@@ -304,22 +334,21 @@ public class PanelPerfil extends JPanel
 		if(esPerfilPropio){
 			fotos = panelUser.getFotos_perfil();
 		}else{
-			fotos = panelUser.getVentanaPrincipal().getBdManager().loadUsersPhotos(user.getId());
+			fotos = panelUser.getBdManager().loadUsersPhotos(user.getId());
+			
 		}
 		if(fotos.size()>0)
 		{
-
-		ArrayList<Foto> fotosPar =new ArrayList<Foto>();
-		ArrayList<Foto> fotosImpar = new ArrayList<Foto>();
+			ArrayList<Foto> fotosPar =new ArrayList<Foto>();
+			ArrayList<Foto> fotosImpar = new ArrayList<Foto>();
 		
-		for(byte n = 0 ;n  <fotos.size() ; n++) 
-		{
-			Foto foto =fotos.get(n);
-			if(n%2 == 0) {
-				fotosPar.add(foto);
-			}else{
-				fotosImpar.add(foto);
-			
+			for(byte n = 0 ;n  <fotos.size() ; n++) 
+			{
+				Foto foto =fotos.get(n);
+				if(n%2 == 0) {
+					fotosPar.add(foto);
+				}else{
+					fotosImpar.add(foto);
 				}
 			}
 		Thread hilo = new Thread(){
@@ -328,7 +357,9 @@ public class PanelPerfil extends JPanel
 				{
 					JLabel labeln= new JLabel("");
 					labeln.setSize(175, 175);
-					labeln.setLocation(50, 250 + 300 * n);
+					GridBagConstraints gimagen = new GridBagConstraints();
+					gimagen .gridx = 0;
+					gimagen .gridy = 0+2*n;
 					ImageIcon imgIcon = new ImageIcon(fotosPar.get(n).getPath());
 			        Image imgEscalada = imgIcon.getImage().getScaledInstance(labeln.getWidth(),labeln.getHeight(), Image.SCALE_SMOOTH);
 			        Foto foto= fotosPar.get(n);
@@ -337,20 +368,23 @@ public class PanelPerfil extends JPanel
 			    	labeln.addMouseListener(new MouseAdapter() {
 						@Override
 						public void mouseClicked(MouseEvent arg0) {
-							Usuario userr;
-							if (esPerfilPropio) {
-								userr = panelUser.getUsuario();
-							}else {
-								userr= user;	
-							}
-							panelV = new PanelVisualizar(panelUser,foto, userr, path);
+							panelV = new PanelVisualizar(panelUser,foto, user, path);
 							panelUser.add(panelV, BorderLayout.CENTER);
 							panelV.setVisible(true);
 							panelUser.getPanelPerfil().setVisible(false);
+							panelUser.getPanelUserProfile().setVisible(false);
 						}
 			    	});
+			    	JLabel adaptador= new JLabel("");
+			    	adaptador.setSize(75, 75);
+			    	adaptador.setText("oooooooooooooooo");
+			    	adaptador.setForeground(Color.WHITE);
+					GridBagConstraints bimagen = new GridBagConstraints();
+					bimagen .gridx = 1;
+					bimagen .gridy = 0+2*n;
+					panel_1.add(adaptador,bimagen);
 						
-					add(labeln);
+					panel_1.add(labeln, gimagen);
 				}
 			}
 	};
@@ -360,7 +394,9 @@ public class PanelPerfil extends JPanel
 			{
 				JLabel labeln= new JLabel("");
 				labeln.setSize(175, 175);
-				labeln.setLocation(300, 250 +300 * n);
+				GridBagConstraints gimagen = new GridBagConstraints();
+				gimagen .gridx = 2;
+				gimagen .gridy = 0+2*n;
 				ImageIcon imgIcon = new ImageIcon(fotosImpar.get(n).getPath());
 		        Image imgEscalada = imgIcon.getImage().getScaledInstance(labeln.getWidth(),labeln.getHeight(), Image.SCALE_SMOOTH);
 		        Icon iconoEscalado = new ImageIcon(imgEscalada);
@@ -369,25 +405,22 @@ public class PanelPerfil extends JPanel
 		        labeln.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent arg0) {
-						Usuario userr;
-						if (esPerfilPropio) {
-							userr = panelUser.getUsuario();
-						}else {
-							userr= user;	
-						}
-						panelV = new PanelVisualizar(panelUser,foto, userr, path);
+						panelV = new PanelVisualizar(panelUser,foto, user, path);
 						panelUser.add(panelV, BorderLayout.CENTER);
 						panelV.setVisible(true);
 						panelUser.getPanelPerfil().setVisible(false);
 					}
 		    	});
-				add(labeln);
+		        panel_1.add(labeln,gimagen);
 			}
 		};
 		Thread hilo_2 = new Thread (lanzable);
 		hilo.start();
-		hilo_2.start();
+		hilo_2.start();		   
+		   
 		}
+		
+
 	}
 	public void setPanelVisualizar(PanelVisualizar PanelV)
 	{
