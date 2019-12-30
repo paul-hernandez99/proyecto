@@ -2,7 +2,6 @@ package ventanas.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import javax.swing.Icon;
@@ -12,9 +11,10 @@ import javax.swing.JPanel;
 import SQLite.BDManager;
 import usuarios.Usuario;
 import usuarios.UsuarioNormal;
-
+import utilidades.BordeCircular;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.border.AbstractBorder;
 import java.awt.GridBagConstraints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -27,6 +27,7 @@ public class PanelInicio extends JPanel
 	private PanelUser panelUser;
 	private BDManager bdManager;
 	private int contador =0;
+	public static AbstractBorder bordeCircular = new BordeCircular();  
 	
 	public PanelInicio(PanelUser panel)
 	{
@@ -63,9 +64,10 @@ public class PanelInicio extends JPanel
 			GridBagConstraints gfotoPerfil = new GridBagConstraints();
 			gfotoPerfil .gridx =  1;
 			gfotoPerfil .gridy = 1+posicion;
-			ImageIcon foto = new ImageIcon(panelUser.getFotos_perfil().get(panelUser.getFotos_inicio().get(i).getId_user()).getPath());
+			ImageIcon foto = new ImageIcon( panelUser.getBdManager().selectPhotoPerfil(panelUser.getFotos_inicio().get(i).getId_user()));
 	        Image fotoEscalada = foto.getImage().getScaledInstance(fotoPerfil.getWidth(),fotoPerfil.getHeight(), Image.SCALE_SMOOTH);
 	        Icon iconEscalado = new ImageIcon(fotoEscalada);
+	        fotoPerfil.setBorder(bordeCircular);
 	        fotoPerfil.setIcon(iconEscalado);
 	        
 	    	fotoPerfil.addMouseListener(new MouseAdapter() {

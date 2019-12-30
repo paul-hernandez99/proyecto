@@ -47,6 +47,7 @@ public class PanelPerfil extends JPanel
 	UsuarioNormal user;
 	boolean esPerfilPropio;
 	int n_g;
+	PanelVisualizar panelV ;
 	
 	public static AbstractBorder bordeCircular = new BordeCircular();       
 
@@ -342,9 +343,9 @@ public class PanelPerfil extends JPanel
 							}else {
 								userr= user;	
 							}
-							PanelVisualizar panel = new PanelVisualizar(panelUser,foto, user);
-							panelUser.add(panel, BorderLayout.CENTER);
-							panel.setVisible(true);
+							panelV = new PanelVisualizar(panelUser,foto, userr, path);
+							panelUser.add(panelV, BorderLayout.CENTER);
+							panelV.setVisible(true);
 							panelUser.getPanelPerfil().setVisible(false);
 						}
 			    	});
@@ -364,6 +365,22 @@ public class PanelPerfil extends JPanel
 		        Image imgEscalada = imgIcon.getImage().getScaledInstance(labeln.getWidth(),labeln.getHeight(), Image.SCALE_SMOOTH);
 		        Icon iconoEscalado = new ImageIcon(imgEscalada);
 		        labeln.setIcon(iconoEscalado);
+		        Foto foto= fotosImpar.get(n);
+		        labeln.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						Usuario userr;
+						if (esPerfilPropio) {
+							userr = panelUser.getUsuario();
+						}else {
+							userr= user;	
+						}
+						panelV = new PanelVisualizar(panelUser,foto, userr, path);
+						panelUser.add(panelV, BorderLayout.CENTER);
+						panelV.setVisible(true);
+						panelUser.getPanelPerfil().setVisible(false);
+					}
+		    	});
 				add(labeln);
 			}
 		};
@@ -371,5 +388,12 @@ public class PanelPerfil extends JPanel
 		hilo.start();
 		hilo_2.start();
 		}
+	}
+	public void setPanelVisualizar(PanelVisualizar PanelV)
+	{
+		this.panelV=PanelV;
+	}
+	public PanelVisualizar getPanelVisualizar() {
+		return panelV;
 	}
 }

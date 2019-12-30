@@ -477,4 +477,19 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
 	        System.out.println("BadAss error executing insert. " + e.getMessage());
 	    }
 	}
+	public void deleteFoto(int cod) {
+		String sql="DELETE FROM Fotos where cod = ? ;";
+		this.connect();
+		try
+	    (PreparedStatement pstmt = conn.prepareStatement(sql))
+	    {
+			pstmt.setInt(1, cod);
+			pstmt.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e.getMessage());
+		}	    
+		    this.disconnect();
+	}
 }

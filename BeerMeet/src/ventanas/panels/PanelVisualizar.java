@@ -9,59 +9,102 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import foto.Foto;
 import usuarios.Usuario;
+import usuarios.UsuarioNormal;
+import utilidades.BordeCircular;
+
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.border.AbstractBorder;
+
 import java.awt.GridBagConstraints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.awt.Insets;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.Font;
 
 public class PanelVisualizar extends JPanel
 {
 	private PanelUser panelUser;
+	public static AbstractBorder bordeCircular = new BordeCircular();  
 
-	public PanelVisualizar(PanelUser panel, Foto foto, Usuario user)
+	public PanelVisualizar(PanelUser panel, Foto foto, Usuario user, String path)
 	{
 		this.panelUser=panel;
-		
 		setBackground(Color.WHITE);
-		setLayout(new GridBagLayout());
-					
-			JLabel adaptador= new JLabel();
-			adaptador.setBounds(0,0,10,10);
-			
-			GridBagConstraints gadaptador = new GridBagConstraints();
-			gadaptador .gridx =  0;
-			gadaptador .gridy = 0;
-			add(adaptador,gadaptador);
-			
-			JLabel fotoPerfil= new JLabel();
-			fotoPerfil.setBounds(0,0,50,50);
-			GridBagConstraints gfotoPerfil = new GridBagConstraints();
-			gfotoPerfil .gridx =  1;
-			gfotoPerfil .gridy = 1;
-			ImageIcon fotoIcon = new ImageIcon(panelUser.getFotos_perfil().get(foto.getId_user()).getPath());
-	        Image fotoEscalada = fotoIcon.getImage().getScaledInstance(fotoPerfil.getWidth(),fotoPerfil.getHeight(), Image.SCALE_SMOOTH);
-	        Icon iconEscalado = new ImageIcon(fotoEscalada);
-	        fotoPerfil.setIcon(iconEscalado);
-	        
-	        this.add(fotoPerfil,gfotoPerfil);
-			
-			JLabel nombre = new JLabel();
-			nombre.setBounds(0,0,50,50);
-			nombre.setText("   "+user.getNombreUsuario() +"");
-			nombre.setHorizontalAlignment(SwingConstants.CENTER);
-			GridBagConstraints gnombre= new GridBagConstraints();
-			gnombre .gridx = 2;
-			gnombre .gridy = +1;	
-			nombre.setVisible(true);
-			this.add(nombre, gnombre);
-			
-			JLabel imagen = new JLabel();
-			imagen.setBounds(0,0,400,400);
-			GridBagConstraints gimagen = new GridBagConstraints();
-			gimagen .gridx = 3;
-			gimagen .gridy = 2;
-			ImageIcon imgIcon = new ImageIcon(foto.getPath());
-	        Image imgEscalada = imgIcon.getImage().getScaledInstance(imagen.getWidth(),imagen.getHeight(), Image.SCALE_SMOOTH);
-	        Icon iconoEscalado = new ImageIcon(imgEscalada);
-	        imagen.setIcon(iconoEscalado);
-	        this.add(imagen, gimagen);      
+		setLayout(null); 
+									
+				JLabel adaptador= new JLabel();
+				adaptador.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						panel.getPanelPerfil().getPanelVisualizar().setVisible(false);
+						panel.getPanelPerfil().setVisible(true);
+						panel.goToPanelPerfil();
+					}
+				});
+				
+				adaptador.setBounds(0,0,65,65);
+				ImageIcon back = new ImageIcon("Imagenes\\System\\j.png");
+		        Image backEscalada = back.getImage().getScaledInstance(adaptador.getWidth(),adaptador.getHeight(), Image.SCALE_SMOOTH);
+		        Icon backEscalado = new ImageIcon(backEscalada);
+		        adaptador.setIcon(backEscalado);
+				add(adaptador);
+		        
+		        JLabel fotoPerfil= new JLabel();
+		        fotoPerfil.setBounds(30,80,60,60);
+		        ImageIcon fotoIcon = new ImageIcon(path);
+		        Image fotoEscalada = fotoIcon.getImage().getScaledInstance(fotoPerfil.getWidth(),fotoPerfil.getHeight(), Image.SCALE_SMOOTH);
+		        Icon iconEscalado = new ImageIcon(fotoEscalada);
+		        fotoPerfil.setIcon(iconEscalado);
+		        fotoPerfil.setBorder(bordeCircular);
+		        add(fotoPerfil);
+		        
+		        JLabel nombre = new JLabel();
+		        nombre.setForeground(Color.DARK_GRAY);
+		        nombre.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 22));
+		        nombre.setBounds(88,85,100,55);
+		        nombre.setText("   "+user.getNombreUsuario() +"");
+		        nombre.setVisible(true);
+		        add(nombre);
+				
+				JLabel imagen = new JLabel();
+				imagen.setBounds(85,160,365,365);
+				ImageIcon imgIcon = new ImageIcon(foto.getPath());
+		        Image imgEscalada = imgIcon.getImage().getScaledInstance(imagen.getWidth(),imagen.getHeight(), Image.SCALE_SMOOTH);
+		        Icon iconoEscalado = new ImageIcon(imgEscalada);
+		        imagen.setIcon(iconoEscalado);
+		        add(imagen);
+		        
+		        if(panelUser.getUsuario().getId() ==foto.getId_user())
+		        {
+			        JLabel borrar = new JLabel("");
+			        borrar.addMouseListener(new MouseAdapter() {
+			        	@Override
+			        	public void mouseClicked(MouseEvent e) {
+			        		panel.getBdManager().deleteFoto(foto.getCod());
+			        		ArrayList<Foto> allFotos =panel.getFotos_inicio();
+			        		List<Foto> eliminacion =allFotos.stream().filter(x ->x.getCod()!=foto.getCod()).collect(Collectors.toList());
+			        		ArrayList<Foto> filtrado = new ArrayList<Foto>(eliminacion); 
+			        		panel.setFotos_inicio(filtrado);
+			        		 
+			        		panel.setFotos_perfil(panelUser.getBdManager().loadUsersPhotos(panelUser.getUsuario().getId()));
+			        					        		
+			        		panelUser.getPanelPerfil().getPanelVisualizar().setVisible(false);
+			        		PanelPerfil nuevo = new PanelPerfil(panelUser, null);
+			        		panelUser.setPanelPerfil(nuevo);
+			        		panelUser.getPanelPerfil().setVisible(true);
+			        		panelUser.goToPanelPerfil();
+			        		
+			        	}
+			        });
+			        borrar.setIcon(new ImageIcon("C:\\Users\\PC\\Desktop\\Image_74.png"));
+			        borrar.setBounds(484, 99, 38, 36);
+			        add(borrar);
+		        }
 	}
 }
