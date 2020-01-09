@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 
+import comentario.Comentario;
 import foto.Foto;
 import usuarios.Administrador;
 import usuarios.Usuario;
@@ -490,6 +491,22 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
 		{
 			System.out.println(e.getMessage());
 		}	    
-		    this.disconnect();
+	}
+	public void createComent(Comentario comentario)
+	{
+		final String sql = "INSERT INTO Comentarios(cod, id_user, comentario, fec) VALUES (?,?,?,?)";
+				
+	    try	( PreparedStatement pstmt = conn.prepareStatement(sql))
+	    {
+	        pstmt.setInt(1, comentario.getCod_fot());
+	        pstmt.setInt(2, comentario.getId_user()); 
+	        pstmt.setString(3, comentario.getContenido()); 
+	        pstmt.setString(4, comentario.getFec()); 
+	        pstmt.executeUpdate();
+	    }
+	    catch (SQLException e)
+	    {
+	        System.out.println("BadAss error executing insert. " + e.getMessage());
+	    }
 	}
 }

@@ -105,10 +105,10 @@ public class PanelUser extends JPanel
 		panelNorth.add(lblqueDeseaHacer);
 		
 	
-		btnPaginaPrincipal.setBounds(0, 0, 40,40);
+		btnPaginaPrincipal.setBounds(0, 0, 35,40);
 		btnPaginaPrincipal.setIcon(escalar("Imagenes\\System\\PaginaPrincipal.png",btnPaginaPrincipal));
 		btnPaginaPrincipal.setForeground(Color.WHITE);
-		btnPaginaPrincipal.setBackground(new Color(255, 102, 102));
+		btnPaginaPrincipal.setBackground(Color.BLACK);
 		btnPaginaPrincipal.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
 		panelSouth.add(btnPaginaPrincipal);
 		

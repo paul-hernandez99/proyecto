@@ -371,8 +371,11 @@ public class PanelPerfil extends JPanel
 							panelV = new PanelVisualizar(panelUser,foto, user, path);
 							panelUser.add(panelV, BorderLayout.CENTER);
 							panelV.setVisible(true);
-							panelUser.getPanelPerfil().setVisible(false);
-							panelUser.getPanelUserProfile().setVisible(false);
+							if(esPerfilPropio) {
+								panelUser.getPanelPerfil().setVisible(false);
+							}else {
+								panelUser.getPanelUserProfile().setVisible(false);
+							}
 						}
 			    	});
 			    	JLabel adaptador= new JLabel("");

@@ -4,7 +4,6 @@ package comentario;
 *@author aritz eraun y Paul Hernandez*/
 public class Comentario 
 { /**Los distintos atributos que posee el objeto comentario.*/
-	private int cod;
 	private int cod_fot;
 	private int id_user;
 	private String contenido;
@@ -22,28 +21,7 @@ public class Comentario
 		this.contenido = contenido;
 		this.fec = fec;
 	}
-	/**Constructor del objeto comentario.*/
-	public Comentario(int cod, int cod_fot, int id_user, String contenido, String fec) 
-	{ 
-		super();
-		this.cod = cod;
-		this.cod_fot = cod_fot;
-		this.contenido = contenido;
-		this.fec = fec;
-	}
 	
-	
-	
-	public int getCod() 
-	{
-		return cod;
-	}
-
-	public void setCod(int cod) 
-	{
-		this.cod = cod;
-	}
-
 	public int getCod_fot()
 	{
 		return cod_fot;
