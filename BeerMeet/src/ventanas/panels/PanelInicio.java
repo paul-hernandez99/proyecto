@@ -9,10 +9,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import SQLite.BDManager;
+import comentario.Comentario;
 import usuarios.Usuario;
 import usuarios.UsuarioNormal;
 import utilidades.BordeCircular;
+import utilidades.Utilidades;
+
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.AbstractBorder;
 import java.awt.GridBagConstraints;
@@ -48,16 +52,16 @@ public class PanelInicio extends JPanel
 		bdManager = panelUser.getBdManager();
 		int posicion=0;
 		
+		JLabel adaptador= new JLabel();
+		adaptador.setBounds(0,0,10,10);
+		GridBagConstraints gadaptador = new GridBagConstraints();
+		gadaptador .gridx =  0;
+		gadaptador .gridy = 0;
+		panel_1.add(adaptador,gadaptador);
+		
 		for(int i=0; i<panelUser.getFotos_inicio().size(); i++)
 		{
 			contador=i;
-			
-			JLabel adaptador= new JLabel();
-			adaptador.setBounds(0,0,10,10);
-			GridBagConstraints gadaptador = new GridBagConstraints();
-			gadaptador .gridx =  0;
-			gadaptador .gridy = 0;
-			panel_1.add(adaptador,gadaptador);
 			
 			JLabel fotoPerfil= new JLabel();
 			fotoPerfil.setBounds(0,0,50,50);
@@ -91,7 +95,7 @@ public class PanelInicio extends JPanel
 			JLabel nombre = new JLabel();
 			nombre.setBounds(0,0,50,50);
 			nombre.setText("   "+bdManager.SelectNombreUsuaruario(panelUser.getFotos_inicio().get(i).getId_user()) +"");
-			nombre.setHorizontalAlignment(SwingConstants.CENTER);
+			nombre.setHorizontalAlignment(SwingConstants.LEFT);
 			GridBagConstraints gnombre= new GridBagConstraints();
 			gnombre .gridx = 2;
 			gnombre .gridy = posicion+1;	
@@ -126,7 +130,56 @@ public class PanelInicio extends JPanel
 	        imagen.setIcon(iconoEscalado);
 	        panel_1.add(imagen, gimagen);
 	        
-	        posicion+=2;
+	        JLabel comentarios=new JLabel();
+	        System.out.println(panelUser.getFotos_inicio().get(i).getCod());
+	        comentarios.setText("Ver los "+panelUser.getBdManager().SelectComentarios(panelUser.getFotos_inicio().get(i).getCod()).size()+" comentarios");
+	        GridBagConstraints gcomentario= new GridBagConstraints();
+			gcomentario .gridx = 3;
+			gcomentario .gridy = 3+posicion;
+			panel_1.add(comentarios,gcomentario);
+	        
+	        JTextField newComent =new JTextField();
+	        newComent.setBackground(Color.yellow);
+	        newComent.setBounds(0, 0, 600, 50);
+	        newComent.setText("Escriba su comentario                              ");
+	        GridBagConstraints gnewcoment = new GridBagConstraints();
+			gnewcoment .gridx = 3;
+			gnewcoment .gridy = 4+posicion;
+			
+			newComent.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					newComent.setText("");;
+				}
+			});
+			panel_1.add(newComent,gnewcoment);
+			
+			JLabel publicar =new JLabel();
+			publicar.setBounds(0, 0, 50, 50);
+			publicar.setText("Publicar");
+			publicar.setHorizontalAlignment(SwingConstants.LEFT);
+			 GridBagConstraints gp = new GridBagConstraints();
+				gp .gridx = 4;
+				gp .gridy = 4+posicion;
+				panel_1.add(publicar,gp);
+				publicar.setName(""+contador);
+			
+				publicar.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						if (newComent.getText().length()>0) {
+							Comentario comentario = new Comentario();
+							comentario.setCod_fot(panelUser.getFotos_inicio().get(new Integer(publicar.getName())).getCod());
+							comentario.setContenido(newComent.getText());
+							comentario.setId_user(panelUser.getUsuario().getId());
+							String fec = Utilidades.fechaDeAlta();
+							comentario.setFec(fec);
+							panelUser.getBdManager().createComent(comentario);
+						}
+					}
+				});
+	        
+	        posicion+=4;
 		}
 	}
 }
