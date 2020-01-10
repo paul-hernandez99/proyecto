@@ -119,7 +119,7 @@ public class BDManager
 	{
 		final String sql = "select * from Usuarios A join (select id_followed from User_User where id_follower = "+ id_user +") B on B.id_followed = A.id;";
 		
-		ArrayList<Usuario> seguidores =this.selectUsuario(sql);
+		ArrayList<Usuario> seguidores = this.selectUsuario(sql);
 		return seguidores;
 	}
 	
@@ -137,7 +137,7 @@ public class BDManager
 	public void savePhoto(Foto foto)
 	{
 		this.insertPhoto(foto);
-		this.selectCodPhoto(foto);
+		foto.setCod(this.selectCodPhoto(foto));
 	}
 	
 	/**Este método guarda en la BD los usuarios que se ahn reguistrado en nuestra aplicaión.*/
@@ -153,19 +153,20 @@ public class BDManager
             pstmt.setString(4, user.getNombreReal());
             pstmt.setString(5, user.getApellidos());
             pstmt.setString(6, user.getEmail());
-            pstmt.setString(7, ((UsuarioNormal) user).getDescripcion());
             
             if(user instanceof UsuarioNormal)
             {
             	pstmt.setInt(1, 0);
             	pstmt.setString(7, ((UsuarioNormal) user).getFechaNacimiento());
             	pstmt.setInt(8, ((UsuarioNormal) user).getEdad());
+            	pstmt.setString(9, ((UsuarioNormal) user).getDescripcion());
             }
             else
             {
             	pstmt.setInt(1, 1);
             	pstmt.setNull(7, Types.LONGNVARCHAR);
             	pstmt.setNull(8, Types.INTEGER);
+            	pstmt.setNull(9, Types.LONGNVARCHAR);
             }
             
             pstmt.executeUpdate(); 
@@ -241,7 +242,7 @@ public class BDManager
             	}
             	else
             	{
-            		Administrador administrador = new Administrador(username, password, name, apellidos, email);
+            		Administrador administrador = new Administrador(id, username, password, name, apellidos, email);
             		users.add(administrador);
             	}
             }

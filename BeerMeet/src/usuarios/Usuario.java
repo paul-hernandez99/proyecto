@@ -85,7 +85,8 @@ public abstract class Usuario
 		this.email = email;
 	}
 	@Override
-	public String toString() {
+	public String toString() 
+	{
 		return  nombreUsuario +"   "+nombreReal+" "
 				 + apellidos ;
 	}
