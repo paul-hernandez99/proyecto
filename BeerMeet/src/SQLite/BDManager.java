@@ -495,7 +495,7 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
 	public void createComent(Comentario comentario)
 	{
 		final String sql = "INSERT INTO Comentarios(cod, id_user, comentario, fec) VALUES (?,?,?,?)";
-				
+		this.connect();		
 	    try	( PreparedStatement pstmt = conn.prepareStatement(sql))
 	    {
 	        pstmt.setInt(1, comentario.getCod_fot());
@@ -508,5 +508,31 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
 	    {
 	        System.out.println("BadAss error executing insert. " + e.getMessage());
 	    }
+	}
+	public ArrayList<Comentario> SelectComentarios(int cod){
+		
+		this.connect();
+		final String sql="SELECT * FROM Comentarios WHERE cod = ?";
+		ArrayList<Comentario>comentarios=new ArrayList<Comentario>();
+		try {
+			PreparedStatement pt =conn.prepareStatement(sql);
+			pt.setInt(1, cod);
+			ResultSet result = pt.executeQuery();
+			
+			
+			while(result.next()) {
+				Comentario newComent = new Comentario();
+				newComent.setCod_fot(result.getInt("cod"));
+				newComent.setId_user(result.getInt("id_user"));
+				newComent.setContenido(result.getString("comentario"));
+				newComent.setFec(result.getString("fec"));
+				comentarios.add(newComent);
+				}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return comentarios;	
 	}
 }
