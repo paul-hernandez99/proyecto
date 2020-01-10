@@ -1,0 +1,1 @@
+insert into Usuarios (type,username,password,name,surnames,email,fec_nac,age) values (0,"paul","lqaz1875","Paul","Hernandez Guridi","paul.hernandez@opendeusto.es","30-01-1999",20);

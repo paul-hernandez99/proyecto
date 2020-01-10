@@ -2,6 +2,9 @@ package SQLite;
 
 import static org.junit.Assert.*;
 
+import java.io.Reader;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -11,6 +14,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
+
+import com.ibatis.common.jdbc.ScriptRunner;
 
 import foto.Foto;
 import usuarios.Administrador;
@@ -28,14 +33,24 @@ public class BDManagerTest
 	public void setUp() throws Exception
 	{
 		tester = new BDManager(true);
+		tester.connect();
 		usuario = new UsuarioNormal("manuel", "manuel1", "Manuel", "Garcia", "manuel@opendeusto.es", "12-12-1999",null);
 		foto = new Foto(1, "Imagenes/data/manuel_1.jpg", "14:00 02/01/2019");
+		/*
+		ScriptRunner sr = new ScriptRunner(tester.getConnection(), true, true);
+		Reader reader = new BufferedReader(new FileReader("SetUpScript.sql"));
+	    sr.runScript(reader);*/
 	}
 
 	@After
 	public void tearDown() throws Exception
 	{
 		
+		ScriptRunner sr = new ScriptRunner(tester.getConnection(), true, true);
+		Reader reader = new BufferedReader(new FileReader("/.DeleteTablesScript.sql"));
+	    sr.runScript(reader);
+	    
+	    tester.disconnect();
 	}
 
 	@Test

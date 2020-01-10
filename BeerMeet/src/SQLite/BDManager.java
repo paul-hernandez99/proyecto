@@ -14,6 +14,7 @@ import foto.Foto;
 import usuarios.Administrador;
 import usuarios.Usuario;
 import usuarios.UsuarioNormal;
+
 /**Esta clase contiene los distintos métodos para la cración y gestion de la base de datos que utilizaremos en nuestra aplicación BeerMeet.
  * Entre esos métodos se encuentran el método de creacion de la BD, la inserción de contenido en la DB y la extracción de datos de la DB.
 *@author aritz eraun y Paul Hernandez*/
@@ -38,7 +39,7 @@ public class BDManager
 	
 	/**Este método conecta la BD con la aplicación de BeerMeet.*/
 	
-	private void connect()
+	public void connect()
 	{
 	    try
 	    {
@@ -52,7 +53,7 @@ public class BDManager
 	
 	/**Este método desconecta la BD con la aplicación de BeerMeet.*/
 	
-	private void disconnect()
+	public void disconnect()
 	{
 		try
         {
@@ -107,15 +108,16 @@ public class BDManager
 	
 	public int Seguidos(int id_user)
 	{
-		final String sql = "select * from Usuarios A join (select *from User_User where id_follower = "+id_user+") B on B.id_follower = A.id;";
+		final String sql = "select * from Usuarios A join (select * from User_User where id_follower = "+id_user+") B on B.id_follower = A.id;";
 		
 		ArrayList<Usuario> seguidores = this.selectUsuario(sql);
 		
 		return seguidores.size();
 	}
+	
 	public ArrayList<Usuario> relationships(int id_user)
 	{
-final String sql = "select * from Usuarios A join (select id_followed from User_User where id_follower = "+id_user+") B on B.id_followed = A.id;";
+		final String sql = "select * from Usuarios A join (select id_followed from User_User where id_follower = "+ id_user +") B on B.id_followed = A.id;";
 		
 		ArrayList<Usuario> seguidores =this.selectUsuario(sql);
 		return seguidores;
@@ -143,8 +145,6 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
 	private void insertUser(Usuario user)
 	{
 		String sql = "INSERT INTO Usuarios (type, username, password, name, surnames, email, fec_nac, age, description) VALUES(?,?,?,?,?,?,?,?,?)";
-
-		this.connect();
 		
         try (PreparedStatement pstmt = conn.prepareStatement(sql))
         {
@@ -167,6 +167,7 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
             	pstmt.setNull(7, Types.LONGNVARCHAR);
             	pstmt.setNull(8, Types.INTEGER);
             }
+            
             pstmt.executeUpdate(); 
         }
         catch (SQLException e)
@@ -196,7 +197,7 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
         {
             System.out.println("BadAss error executing select. " + e.getMessage());
         }
-        this.disconnect();
+        
         return id;
 	}
 	
@@ -206,14 +207,13 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
 	{
 		final String sql = "SELECT * FROM Usuarios";
 
-		ArrayList<Usuario> users =selectUsuario(sql);
+		ArrayList<Usuario> users = selectUsuario(sql);
 		return users;
 	}
 	
 	private ArrayList<Usuario> selectUsuario(String sql)
 	{
 		ArrayList<Usuario> users = new ArrayList<>();		
-		this.connect();
 		
         try
                 (
@@ -245,8 +245,6 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
             		users.add(administrador);
             	}
             }
-            
-            this.disconnect();
         } 
         catch (SQLException e)
         {
@@ -262,8 +260,6 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
 	{
 
 		ArrayList<Foto> fotos = new ArrayList<>();
-		
-		this.connect();
 		
         try
                 (
@@ -285,9 +281,8 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
         } 
         catch (SQLException e)
         {
+        	System.out.println("BadAss error executing insert. " + e.getMessage());
         }
-        
-        this.disconnect();
         
         return fotos;
 	}
@@ -297,8 +292,6 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
 	private void insertPhoto(Foto foto)
 	{
 		final String sql = "INSERT INTO Fotos(id_user, path, fec) VALUES (?,?,?)";
-
-		this.connect();
 		
         try
         		(
@@ -340,8 +333,6 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
             System.out.println("BadAss error executing select. " + e.getMessage());
         }
         
-        this.disconnect();
-        
         return cod;
 	}
 
@@ -349,8 +340,6 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
 	public void insertPhotoPerfil(Foto foto)
 	{
 		final String sql = "INSERT INTO FotoPerfil(id, path) VALUES (?,?)";
-	
-		this.connect();
 		
 	    try
 	    		(
@@ -372,7 +361,7 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
 	public String selectPhotoPerfil(int id) 
 	{
 		String sql="SELECT path FROM FotoPerfil where id = ? ;";
-		this.connect();
+
 		String path = null;
 	    try (PreparedStatement pstmt = conn.prepareStatement(sql);)
 	    {
@@ -389,16 +378,14 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
 	    	System.out.println(e.getMessage());
 	    }
 	    
-	    this.disconnect();
 	    return path;
 	}
 	
 	public void deletePhotoPerfil(int id) 
 	{
 		String sql="DELETE FROM FotoPerfil where id = ? ;";
-		this.connect();
-		try
-	    (PreparedStatement pstmt = conn.prepareStatement(sql))
+
+		try (PreparedStatement pstmt = conn.prepareStatement(sql))
 	    {
 			pstmt.setInt(1, id);
 			pstmt.executeUpdate();
@@ -407,13 +394,14 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
 		{
 			System.out.println(e.getMessage());
 		}	    
-		    this.disconnect();
 	}
+	
 	public String SelectNombreUsuaruario(int id)
 	{
 		String sql="SELECT username FROM Usuarios where id = ? ;";
-		this.connect();
+
 		String username = null;
+		
 	    try (PreparedStatement pstmt = conn.prepareStatement(sql);)
 	    {
 	    	pstmt.setInt(1, id);
@@ -429,13 +417,12 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
 	    	System.out.println(e.getMessage());
 	    }
 	    
-	    this.disconnect();
 	    return username;
 	}
+	
 	public void createRelationship(int id_follower, int id_followed)
 	{
 		final String sql = "INSERT INTO User_User(id_follower,id_followed) VALUES (?,?)";
-		this.connect();
 		
 	    try	( PreparedStatement pstmt = conn.prepareStatement(sql))
 	    {
@@ -448,10 +435,10 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
 	        System.out.println("BadAss error executing insert. " + e.getMessage());
 	    }
 	}
+	
 	public void deleteRelationship(int id_follower, int id_followed)
 	{
 		final String sql = "DELETE FROM User_User WHERE (id_follower = ? AND id_followed=?)";
-		this.connect();
 		
 	    try	( PreparedStatement pstmt = conn.prepareStatement(sql))
 	    {
@@ -464,10 +451,10 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
 	        System.out.println("BadAss error executing insert. " + e.getMessage());
 	    }
 	}
+	
 	public void ModifyDescription (String description, String nombreUsuario)
 	{
 		String sql="UPDATE Usuarios SET description = '"+description+"'  WHERE username='"+nombreUsuario+"';";
-		this.connect();
 		
 	    try	( PreparedStatement pstmt = conn.prepareStatement(sql))
 	    {   
@@ -478,9 +465,11 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
 	        System.out.println("BadAss error executing insert. " + e.getMessage());
 	    }
 	}
-	public void deleteFoto(int cod) {
+	
+	public void deleteFoto(int cod) 
+	{
 		String sql="DELETE FROM Fotos where cod = ? ;";
-		this.connect();
+		
 		try
 	    (PreparedStatement pstmt = conn.prepareStatement(sql))
 	    {
@@ -492,6 +481,7 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
 			System.out.println(e.getMessage());
 		}	    
 	}
+	
 	public void createComent(Comentario comentario)
 	{
 		final String sql = "INSERT INTO Comentarios(cod, id_user, comentario, fec) VALUES (?,?,?,?)";
@@ -508,5 +498,10 @@ final String sql = "select * from Usuarios A join (select id_followed from User_
 	    {
 	        System.out.println("BadAss error executing insert. " + e.getMessage());
 	    }
+	}
+	
+	public Connection getConnection()
+	{
+		return conn;
 	}
 }
