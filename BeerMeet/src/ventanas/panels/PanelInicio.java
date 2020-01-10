@@ -86,8 +86,6 @@ public class PanelInicio extends JPanel
 					panelUser.add(panelPerfilUser, BorderLayout.CENTER);
 					panelUser.setPanelUserProfile(panelPerfilUser);
 					setVisible(false);
-
-
 				}
 			});
 	        panel_1.add(fotoPerfil,gfotoPerfil);
@@ -131,11 +129,21 @@ public class PanelInicio extends JPanel
 	        panel_1.add(imagen, gimagen);
 	        
 	        JLabel comentarios=new JLabel();
-	        System.out.println(panelUser.getFotos_inicio().get(i).getCod());
-	        comentarios.setText("Ver los "+panelUser.getBdManager().SelectComentarios(panelUser.getFotos_inicio().get(i).getCod()).size()+" comentarios");
+	        ArrayList<Comentario> list =panelUser.getBdManager().SelectComentarios(panelUser.getFotos_inicio().get(i).getCod());
+	        comentarios.setText("Ver los "+list.size()+" comentarios");
 	        GridBagConstraints gcomentario= new GridBagConstraints();
 			gcomentario .gridx = 3;
 			gcomentario .gridy = 3+posicion;
+			
+			comentarios.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					PanelComentario panelCo= new PanelComentario(panelUser,list);
+					panel.getPanelInicio().setVisible(false);
+					panelUser.add(panelCo,BorderLayout.CENTER);
+					panelCo.setVisible(true);
+				}
+			});
 			panel_1.add(comentarios,gcomentario);
 	        
 	        JTextField newComent =new JTextField();
@@ -149,7 +157,7 @@ public class PanelInicio extends JPanel
 			newComent.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					newComent.setText("");;
+					newComent.setText("");
 				}
 			});
 			panel_1.add(newComent,gnewcoment);

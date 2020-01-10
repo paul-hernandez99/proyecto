@@ -219,6 +219,7 @@ public class PanelUser extends JPanel
 		this.add(panelInicio, BorderLayout.CENTER);
 		panelInicio.setVisible(true);
 	}
+	
 	private void goToPanelUsuarios()
 	{
 		if(panelUserProfile != null)
@@ -332,7 +333,8 @@ public class PanelUser extends JPanel
 	public void setSeguidos(ArrayList<Usuario> seguidos) 
 	{
 		this.seguidos = seguidos;
-	}public PanelPerfil getPanelPerfil() 
+	}
+	public PanelPerfil getPanelPerfil() 
 	{
 		return panelPerfil;
 	}
@@ -340,6 +342,14 @@ public class PanelUser extends JPanel
 	public void setPanelPerfil(PanelPerfil panel) 
 	{
 		this.panelPerfil = panel;
+	}
+	public PanelInicio getPanelInicio() 
+	{
+		return panelInicio;
+	}
+	public void setPanelInicio(PanelInicio panel) 
+	{
+		this.panelInicio = panel;
 	}
 	
 }
