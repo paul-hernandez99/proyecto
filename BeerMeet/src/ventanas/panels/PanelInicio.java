@@ -31,7 +31,8 @@ public class PanelInicio extends JPanel
 	private PanelUser panelUser;
 	private BDManager bdManager;
 	private int contador =0;
-	public static AbstractBorder bordeCircular = new BordeCircular();  
+	public static AbstractBorder bordeCircular = new BordeCircular(); 
+	public PanelComentario panelComentario;
 	
 	public PanelInicio(PanelUser panel)
 	{
@@ -138,56 +139,22 @@ public class PanelInicio extends JPanel
 			comentarios.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					PanelComentario panelCo= new PanelComentario(panelUser,list);
-					panel.getPanelInicio().setVisible(false);
-					panelUser.add(panelCo,BorderLayout.CENTER);
-					panelCo.setVisible(true);
+					panelComentario= new PanelComentario(panelUser,list);
+					panelUser.getPanelInicio().setVisible(false);
+					panelUser.add(panelComentario,BorderLayout.CENTER);
+					panelComentario.setVisible(true);
 				}
 			});
 			panel_1.add(comentarios,gcomentario);
 	        
-	        JTextField newComent =new JTextField();
-	        newComent.setBackground(Color.yellow);
-	        newComent.setBounds(0, 0, 600, 50);
-	        newComent.setText("Escriba su comentario                              ");
-	        GridBagConstraints gnewcoment = new GridBagConstraints();
-			gnewcoment .gridx = 3;
-			gnewcoment .gridy = 4+posicion;
-			
-			newComent.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					newComent.setText("");
-				}
-			});
-			panel_1.add(newComent,gnewcoment);
-			
-			JLabel publicar =new JLabel();
-			publicar.setBounds(0, 0, 50, 50);
-			publicar.setText("Publicar");
-			publicar.setHorizontalAlignment(SwingConstants.LEFT);
-			 GridBagConstraints gp = new GridBagConstraints();
-				gp .gridx = 4;
-				gp .gridy = 4+posicion;
-				panel_1.add(publicar,gp);
-				publicar.setName(""+contador);
-			
-				publicar.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						if (newComent.getText().length()>0) {
-							Comentario comentario = new Comentario();
-							comentario.setCod_fot(panelUser.getFotos_inicio().get(new Integer(publicar.getName())).getCod());
-							comentario.setContenido(newComent.getText());
-							comentario.setId_user(panelUser.getUsuario().getId());
-							String fec = Utilidades.fechaDeAlta();
-							comentario.setFec(fec);
-							panelUser.getBdManager().createComent(comentario);
-						}
-					}
-				});
-	        
-	        posicion+=4;
+	        posicion+=3;
 		}
+	}
+	public PanelComentario getPanelComentario() {
+		return this.panelComentario;
+	}
+	public void setpanelCpmentario(PanelComentario panel)
+	{
+		this.panelComentario = panel;
 	}
 }

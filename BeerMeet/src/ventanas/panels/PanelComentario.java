@@ -2,6 +2,7 @@ package ventanas.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -16,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.AbstractBorder;
 
@@ -25,6 +27,7 @@ import foto.Foto;
 import usuarios.Usuario;
 import usuarios.UsuarioNormal;
 import utilidades.BordeCircular;
+import utilidades.Utilidades;
 
 public class PanelComentario extends JPanel {
 	private PanelUser panelUser;
@@ -33,27 +36,41 @@ public class PanelComentario extends JPanel {
 	private int contador;
 	
 	public PanelComentario(PanelUser panel, ArrayList<Comentario>coments) {
-		setLayout(new BorderLayout(0, 0));
+		BorderLayout borderlayout = new java.awt.BorderLayout();
+        this.setLayout(borderlayout);
+		
+		this.panelUser=panel;
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(Color.WHITE);
-		add(panel_3, BorderLayout.SOUTH);
+		this.add(panel_3, BorderLayout.SOUTH);
 			
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(Color.white);
-		add(panel_2, BorderLayout.NORTH);
+		this.add(panel_2, BorderLayout.NORTH);
 		
 		JLabel simbolo= new JLabel();
 		simbolo.setBounds(0, 0, 50, 50);
-		simbolo.setBackground(Color.BLACK);
 		ImageIcon symbol = new ImageIcon("Imagenes/System/1.png");
         Image symbolEscalada = symbol.getImage().getScaledInstance(simbolo.getWidth(),simbolo.getHeight(), Image.SCALE_SMOOTH);
         Icon SinboloiconEscalado = new ImageIcon(symbolEscalada);
         simbolo.setIcon(SinboloiconEscalado);
+        simbolo.setHorizontalAlignment(SwingConstants.LEFT);
+        simbolo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				panelUser.goToPanelInicio();
+				panelUser.getPanelInicio().getPanelComentario().setVisible(false);
+			}
+		});
 		 panel_2.add(simbolo);
-		
-		this.panelUser=panel;
-		setLayout(null);
+		 
+		 JLabel cabezera = new JLabel();
+		 cabezera.setText("Comentarios");
+		 cabezera.setBounds(0, 0,300, 50);
+		 cabezera.setFont(new Font("Helvetica Neue", Font.BOLD, 26));
+		 cabezera.setHorizontalAlignment(SwingConstants.LEFT);
+		 panel_2.add(cabezera);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.WHITE);
@@ -64,7 +81,53 @@ public class PanelComentario extends JPanel {
 		scrollPane.setBounds(0,0,560,790);
 		add(scrollPane,BorderLayout.CENTER);
 		
+		JLabel profile =new JLabel();
+		profile.setBounds(0,0,65,65);
+		ImageIcon pro = new ImageIcon(panelUser.getBdManager().selectPhotoPerfil(panelUser.getUsuario().getId()));
+		Image proEscalada = pro.getImage().getScaledInstance(profile.getWidth(),profile.getHeight(), Image.SCALE_SMOOTH);
+        Icon proEscalado = new ImageIcon(proEscalada);
+        profile.setBorder(bordeCircular);
+        profile.setIcon(proEscalado);
+        panel_3.add(profile);
 		
+        JLabel publicar =new JLabel();
+        
+		 JTextField newComent =new JTextField();
+	        newComent.setBounds(0, 0, 600, 65);
+	        newComent.setText("Comentar como "+panelUser.getUsuario().getNombreUsuario()+"....                         ");
+	        newComent.setFont(new Font("Helvetica Neue", Font.PLAIN, 18));
+	        newComent.setForeground(new Color(220, 220, 220));
+	        newComent.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					newComent.setText("");
+					newComent.setForeground(Color.BLACK);
+					publicar.setEnabled(true);
+				}
+			});
+			panel_3.add(newComent);
+		
+			
+			publicar.setEnabled(false);
+			publicar.setBounds(0, 0, 50, 50);
+			publicar.setText("    Publicar");
+			publicar.setFont(new Font("Helvetica Neue", Font.PLAIN, 18));
+			publicar.setHorizontalAlignment(SwingConstants.LEFT);
+			publicar.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						if (newComent.getText().length()>0) {
+							Comentario comentario = new Comentario();
+							comentario.setCod_fot(panelUser.getFotos_inicio().get(new Integer(publicar.getName())).getCod());
+							comentario.setContenido(newComent.getText());
+							comentario.setId_user(panelUser.getUsuario().getId());
+							String fec = Utilidades.fechaDeAlta();
+							comentario.setFec(fec);
+							panelUser.getBdManager().createComent(comentario);
+						}
+					}
+				});
+		panel_3.add(publicar);
 		int posicion = 0;
 		bdManager = panelUser.getBdManager();
 		

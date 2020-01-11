@@ -35,6 +35,7 @@ public class BDManager
 		else
 			this.name = "database.db";
 		this.url = "jdbc:sqlite:" + this.name;
+		connect();
 	}
 	
 	/**Este método conecta la BD con la aplicación de BeerMeet.*/
