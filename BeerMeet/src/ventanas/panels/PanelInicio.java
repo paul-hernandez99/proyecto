@@ -139,10 +139,12 @@ public class PanelInicio extends JPanel
 			comentarios.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					panelComentario= new PanelComentario(panelUser,list);
-					panelUser.getPanelInicio().setVisible(false);
-					panelUser.add(panelComentario,BorderLayout.CENTER);
-					panelComentario.setVisible(true);
+					if(list.size()>0) {
+						panelComentario= new PanelComentario(panelUser,list);
+						panelUser.getPanelInicio().setVisible(false);
+						panelUser.add(panelComentario,BorderLayout.CENTER);
+						panelComentario.setVisible(true);
+					}
 				}
 			});
 			panel_1.add(comentarios,gcomentario);
@@ -153,7 +155,7 @@ public class PanelInicio extends JPanel
 	public PanelComentario getPanelComentario() {
 		return this.panelComentario;
 	}
-	public void setpanelCpmentario(PanelComentario panel)
+	public void setPanelComentario(PanelComentario panel)
 	{
 		this.panelComentario = panel;
 	}

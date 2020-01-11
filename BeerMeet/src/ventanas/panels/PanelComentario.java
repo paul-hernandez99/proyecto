@@ -36,6 +36,7 @@ public class PanelComentario extends JPanel {
 	private int contador;
 	
 	public PanelComentario(PanelUser panel, ArrayList<Comentario>coments) {
+		
 		BorderLayout borderlayout = new java.awt.BorderLayout();
         this.setLayout(borderlayout);
 		
@@ -61,6 +62,7 @@ public class PanelComentario extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				panelUser.goToPanelInicio();
 				panelUser.getPanelInicio().getPanelComentario().setVisible(false);
+				panelUser.getPanelInicio().setPanelComentario(null);
 			}
 		});
 		 panel_2.add(simbolo);
@@ -118,12 +120,21 @@ public class PanelComentario extends JPanel {
 					public void mouseClicked(MouseEvent e) {
 						if (newComent.getText().length()>0) {
 							Comentario comentario = new Comentario();
-							comentario.setCod_fot(panelUser.getFotos_inicio().get(new Integer(publicar.getName())).getCod());
+							comentario.setCod_fot(coments.get(0).getCod_fot());
 							comentario.setContenido(newComent.getText());
 							comentario.setId_user(panelUser.getUsuario().getId());
 							String fec = Utilidades.fechaDeAlta();
 							comentario.setFec(fec);
 							panelUser.getBdManager().createComent(comentario);
+							
+							PanelInicio inicio = new PanelInicio(panelUser);
+							panelUser.setPanelInicio(inicio);
+							PanelComentario nuevo = new PanelComentario(panelUser,coments);
+							panelUser.getPanelInicio().getPanelComentario().setVisible(false);
+							panelUser.getPanelInicio().setPanelComentario(nuevo);
+							panelUser.getPanelInicio().setVisible(false);
+							panelUser.add(nuevo,BorderLayout.CENTER);
+							nuevo.setVisible(true);
 						}
 					}
 				});
@@ -136,7 +147,7 @@ public class PanelComentario extends JPanel {
 			contador =i;
 			
 			JLabel fotoPerfil= new JLabel();
-			fotoPerfil.setBounds(0,0,100,100);
+			fotoPerfil.setBounds(0,0,65,65);
 			GridBagConstraints gfotoPerfil = new GridBagConstraints();
 			gfotoPerfil .gridx =  1;
 			gfotoPerfil .gridy = 1+posicion;
@@ -175,15 +186,42 @@ public class PanelComentario extends JPanel {
 			});
 	        panel_1.add(fotoPerfil,gfotoPerfil);
 	        
+	        JLabel nombre = new JLabel();
+			nombre.setBounds(0,0,50,50);
+			nombre.setText("   "+bdManager.SelectNombreUsuaruario(coments.get(i).getId_user()) +":  ");
+			nombre.setHorizontalAlignment(SwingConstants.LEFT);
+			nombre.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
+			GridBagConstraints gnombre= new GridBagConstraints();
+			gnombre .gridx = 2;
+			gnombre .gridy = posicion+1;	
+			nombre.setVisible(true);
+			panel_1.add(nombre, gnombre);
+	        
 	        JLabel comentario = new JLabel();
 			comentario.setBounds(0,0,50,50);
 			comentario.setText("   "+coments.get(i).getContenido());
+			comentario.setFont(new Font("Helvetica Neue", Font.PLAIN, 18));
 			comentario.setHorizontalAlignment(SwingConstants.LEFT);
 			GridBagConstraints gco= new GridBagConstraints();
-			gco .gridx = 2;
+			gco .gridx = 3;
 			gco .gridy = posicion+1;	
 			comentario.setVisible(true);
 			panel_1.add(comentario, gco);
+			
+			if(coments.get(i).getId_user() == panelUser.getUsuario().getId())
+			{
+				JLabel borrar = new JLabel();
+				borrar.setBounds(0, 0, 50,50);
+				GridBagConstraints gborrar= new GridBagConstraints();
+				gborrar .gridx = 4;
+				gborrar .gridy = posicion+1;
+				ImageIcon borrado = new ImageIcon("Imagenes/System/Image_74.png");
+		        Image borradoEscalada = borrado.getImage().getScaledInstance(borrar.getWidth(),borrar.getHeight(), Image.SCALE_SMOOTH);
+		        Icon borradoiconEscalado = new ImageIcon(borradoEscalada);
+		        borrar.setIcon(borradoiconEscalado);
+			
+				panel_1.add(borrar, gborrar);
+			}
 			
 			posicion+=2;
 		}
