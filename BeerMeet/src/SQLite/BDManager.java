@@ -531,6 +531,19 @@ public class BDManager
 		}
 		return comentarios;	
 	}
+	public void DeleteComentario(Comentario coment) {
+		final String sql = "DELETE FROM Comentarios WHERE cod = ? AND id_user = ? AND comentario = ? AND fec= ?";
+		try {
+			PreparedStatement stm =conn.prepareStatement(sql);
+			stm.setInt(1, coment.getCod_fot());
+			stm.setInt(2, coment.getId_user());
+			stm.setString(3, coment.getContenido());
+			stm.setString(4, coment.getFec());
+			stm.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public Connection getConnection()
 	{
