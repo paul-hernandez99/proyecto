@@ -63,7 +63,12 @@ public class PanelPerfil extends JPanel
 		
 		this.panelUser = panel;
 		
-		if(usuario == null || panelUser.getUsuario().getNombreUsuario().equals(usuario.getNombreUsuario()))
+		boolean autentificacion = false;
+		if(panelUser.getAdminsitrador() == null) {
+			autentificacion=panelUser.getUsuario().getNombreUsuario().equals(usuario.getNombreUsuario());
+		}
+		
+		if(usuario == null || panelUser.getAdminsitrador() == null|| autentificacion)
 		{
 			user = panelUser.getUsuario();
 			esPerfilPropio = true;
@@ -108,7 +113,7 @@ public class PanelPerfil extends JPanel
 		}
 		JButton btnSeguir = new JButton("Seguir");
 		
-		if (esPerfilPropio) {
+		if (esPerfilPropio|| panelUser.getAdminsitrador() != null) {
 			btnSeguir.setVisible(false);
 			btnSeguir.setEnabled(false);
 		}else {

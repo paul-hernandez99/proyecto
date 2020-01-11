@@ -25,6 +25,7 @@ import javax.swing.border.AbstractBorder;
 import SQLite.BDManager;
 import comentario.Comentario;
 import foto.Foto;
+import usuarios.Administrador;
 import usuarios.Usuario;
 import usuarios.UsuarioNormal;
 import utilidades.BordeCircular;
@@ -98,7 +99,14 @@ public class PanelComentario extends JPanel {
 		
 		JLabel profile =new JLabel();
 		profile.setBounds(0,0,65,65);
-		ImageIcon pro = new ImageIcon(panelUser.getBdManager().selectPhotoPerfil(panelUser.getUsuario().getId()));
+		String direccionI;
+		if(panelUser.getAdminsitrador() != null) {
+			direccionI= "Imagenes\\System\\Wallpaper.png";
+		}else {
+			direccionI=panelUser.getBdManager().selectPhotoPerfil(panelUser.getUsuario().getId());
+		}
+		
+		ImageIcon pro = new ImageIcon(direccionI);
 		Image proEscalada = pro.getImage().getScaledInstance(profile.getWidth(),profile.getHeight(), Image.SCALE_SMOOTH);
         Icon proEscalado = new ImageIcon(proEscalada);
         profile.setBorder(bordeCircular);
@@ -109,7 +117,13 @@ public class PanelComentario extends JPanel {
         
 		 JTextField newComent =new JTextField();
 	        newComent.setBounds(0, 0, 600, 65);
-	        newComent.setText("Comentar como "+panelUser.getUsuario().getNombreUsuario()+"....                         ");
+	        String nombreComentador;
+	        if(panelUser.getAdminsitrador() == null) {
+	        	nombreComentador = panelUser.getUsuario().getNombreUsuario();
+	        }else {
+	        	nombreComentador = panelUser.getAdminsitrador().getNombreUsuario();
+	        }
+	        newComent.setText("Comentar como "+nombreComentador+"....                         ");
 	        newComent.setFont(new Font("Helvetica Neue", Font.PLAIN, 18));
 	        newComent.setForeground(new Color(220, 220, 220));
 	        newComent.addMouseListener(new MouseAdapter() {
@@ -135,7 +149,11 @@ public class PanelComentario extends JPanel {
 							Comentario comentario = new Comentario();
 							comentario.setCod_fot(foto.getCod());
 							comentario.setContenido(newComent.getText());
-							comentario.setId_user(panelUser.getUsuario().getId());
+							if(panelUser.getAdminsitrador() == null) {
+								comentario.setId_user(panelUser.getUsuario().getId());
+							}else {
+								comentario.setId_user(panelUser.getAdminsitrador().getId());
+							}
 							String fec = Utilidades.fechaDeAlta();
 							comentario.setFec(fec);
 							panelUser.getBdManager().createComent(comentario);
@@ -217,7 +235,12 @@ public class PanelComentario extends JPanel {
 			comentario.setVisible(true);
 			panel_1.add(comentario, gco);
 			
-			if(coments.get(i).getId_user() == panelUser.getUsuario().getId() || origen == 1)
+			boolean esElMismoUser = false;
+			if(panelUser.getAdminsitrador() ==null)
+			{
+				esElMismoUser = coments.get(i).getId_user() == panelUser.getUsuario().getId();
+			}
+			if(esElMismoUser|| panelUser.getAdminsitrador() != null|| origen == 1)
 			{
 				JLabel borrar = new JLabel();
 				borrar.setBounds(0, 0, 50,50);

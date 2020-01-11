@@ -25,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import SQLite.BDManager;
 import foto.Foto;
+import usuarios.Administrador;
 import usuarios.Usuario;
 import usuarios.UsuarioNormal;
 import utilidades.Utilidades;
@@ -39,6 +40,7 @@ public class PanelUser extends JPanel
 	private VentanaPrincipal ventanaPrincipal;
 	private BDManager bdManager;
 	private UsuarioNormal usuario;
+	private Administrador admin;
 	
 	private JPanel panelNorth;
 	private JPanel panelWest;
@@ -50,27 +52,51 @@ public class PanelUser extends JPanel
 	private PanelBusquedaUsuarios panelUsuarios;
 	private PanelPerfil panelUserProfile;
 	
-	private ArrayList<Foto> fotos_inicio;
+	private ArrayList<Foto> fotos_inicio = new ArrayList<Foto>();
 	private ArrayList<Foto> fotos_perfil;
 	private ArrayList<Usuario> seguidos;
 	private JLabel btnPaginaPrincipal = new JLabel();
 	
 	/**Creación del Panel user*/
 	
-	public PanelUser(VentanaPrincipal ventana) 
+	public PanelUser(VentanaPrincipal ventana, int tipo) 
 	{
 		BorderLayout borderlayout = new java.awt.BorderLayout();
         this.setLayout(borderlayout);
 		
 		ventanaPrincipal = ventana;
 		bdManager = ventanaPrincipal.getBdManager();
-		usuario = (UsuarioNormal)ventanaPrincipal.getUsuario();
+		if(tipo ==0) {
+			usuario = (UsuarioNormal)ventanaPrincipal.getUsuario();
+			
+			fotos_inicio = bdManager.loadInicioPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
+			fotos_perfil = bdManager.loadUsersPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
+			seguidos = bdManager.relationships(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
 		
-		fotos_inicio = bdManager.loadInicioPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
-		fotos_perfil = bdManager.loadUsersPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
-		seguidos = bdManager.relationships(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
+			panelPerfil = new PanelPerfil(this, null);
+			
+		}else if (tipo ==1) {
+			admin =(Administrador) ventanaPrincipal.getUsuario();
+			ArrayList <Usuario> Usuario =ventanaPrincipal.getUsuarios();
+			ArrayList <Usuario> UsuarioRefinado =new ArrayList<>();
+			ArrayList <Foto> ayudante=new ArrayList<>();
+			for(byte i=0;i<Usuario.size();i++) {
+				if(Usuario.get(i)instanceof UsuarioNormal) {
+					UsuarioRefinado.add(Usuario.get(i));
+				
+				}
+			}
+			for (byte n=0; n<UsuarioRefinado.size();n++) {
+				ayudante= bdManager.loadUsersPhotos(((UsuarioNormal)UsuarioRefinado.get(n)).getId());
+				
+				for(byte g=0; g<ayudante.size();g++) {
+					fotos_inicio.add(ayudante.get(g));
+				}
+			}
+					
+		}
+		
 	
-		panelPerfil = new PanelPerfil(this, null);
 		panelUsuarios = new PanelBusquedaUsuarios(this);
 		
 		panelNorth = new JPanel();
@@ -93,7 +119,13 @@ public class PanelUser extends JPanel
 		panelInicio.setBackground(Color.WHITE);
 		this.add(panelInicio, BorderLayout.CENTER);
 		
-		JLabel nombreReal = new JLabel(""+usuario.getNombreReal());
+		String contenido = null;
+		if(tipo == 0) {
+			contenido =""+usuario.getNombreReal();
+		}else {
+			contenido = ""+admin.getNombreReal();
+		}
+		JLabel nombreReal = new JLabel(""+contenido);
 		nombreReal.setForeground(new Color(153, 240, 153));
 		nombreReal.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
 		panelNorth.add(nombreReal);
@@ -112,11 +144,32 @@ public class PanelUser extends JPanel
 		btnPaginaPrincipal.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
 		panelSouth.add(btnPaginaPrincipal);
 		
-		JButton btnSubirFoto = new JButton("Subir foto");
-		btnSubirFoto.setForeground(Color.WHITE);
-		btnSubirFoto.setBackground(new Color(255, 102, 102));
-		btnSubirFoto.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		panelSouth.add(btnSubirFoto);
+		if(tipo ==0) {
+			JButton btnSubirFoto = new JButton("Subir foto");
+			btnSubirFoto.setForeground(Color.WHITE);
+			btnSubirFoto.setBackground(new Color(255, 102, 102));
+			btnSubirFoto.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
+			panelSouth.add(btnSubirFoto);
+			
+			btnSubirFoto.addActionListener(new ActionListener() 
+			{
+				public void actionPerformed(ActionEvent arg0) 
+				{
+					int id_user = ((UsuarioNormal)ventanaPrincipal.getUsuario()).getId();
+					String path = uploadPhotoAndGetPath();
+					String fec = Utilidades.fechaDeAlta();
+					
+					if(path != null)
+					{
+						Foto foto = new Foto(id_user, path, fec);
+						
+						bdManager.savePhoto(foto);
+						
+						fotos_perfil.add(foto);
+					}
+				}
+			});
+		}
 		
 		JButton btnUsuarios = new JButton("Usuarios");
 		btnUsuarios.setForeground(Color.WHITE);
@@ -124,11 +177,21 @@ public class PanelUser extends JPanel
 		btnUsuarios.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
 		panelSouth.add(btnUsuarios);
 		
-		JButton btnPerfil = new JButton("Perfil");
-		btnPerfil.setForeground(Color.WHITE);
-		btnPerfil.setBackground(new Color(255, 102, 102));
-		btnPerfil.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		panelSouth.add(btnPerfil);
+		if (tipo == 0) {
+			JButton btnPerfil = new JButton("Perfil");
+			btnPerfil.setForeground(Color.WHITE);
+			btnPerfil.setBackground(new Color(255, 102, 102));
+			btnPerfil.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
+			panelSouth.add(btnPerfil);
+			
+			btnPerfil.addActionListener(new ActionListener() 
+			{
+				public void actionPerformed(ActionEvent e) 
+				{
+					goToPanelPerfil();
+				}
+			});			
+		}
 		
 		JButton btnSalir = new JButton("Cerrar Sesion");
 		btnSalir.setForeground(Color.WHITE);
@@ -136,39 +199,12 @@ public class PanelUser extends JPanel
 		btnSalir.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
 		panelSouth.add(btnSalir);
 		
-		btnSubirFoto.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent arg0) 
-			{
-				int id_user = ((UsuarioNormal)ventanaPrincipal.getUsuario()).getId();
-				String path = uploadPhotoAndGetPath();
-				String fec = Utilidades.fechaDeAlta();
-				
-				if(path != null)
-				{
-					Foto foto = new Foto(id_user, path, fec);
-					
-					bdManager.savePhoto(foto);
-					
-					fotos_perfil.add(foto);
-				}
-			}
-		});
-		
 		btnUsuarios.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e)
 			{
 				goToPanelUsuarios();
 				
-			}
-		});
-		
-		btnPerfil.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e) 
-			{
-				goToPanelPerfil();
 			}
 		});
 		btnPaginaPrincipal.addMouseListener(new MouseAdapter() {
@@ -226,15 +262,19 @@ public class PanelUser extends JPanel
 		if (panelInicio.getPanelComentario() !=null){
 			panelInicio.getPanelComentario().setVisible(false);
 		}
-		if(panelPerfil.getPanelVisualizar() != null) {
-			panelPerfil.getPanelVisualizar().setVisible(false);
-			if(panelPerfil.getPanelVisualizar().getPanelComentario() != null)
-			{
-				panelPerfil.getPanelVisualizar().getPanelComentario().setVisible(false);	
+		if(panelPerfil != null) {
+			if(panelPerfil.getPanelVisualizar() != null) {
+				panelPerfil.getPanelVisualizar().setVisible(false);
+				if(panelPerfil.getPanelVisualizar().getPanelComentario() != null)
+				{
+					panelPerfil.getPanelVisualizar().getPanelComentario().setVisible(false);	
+				}
 			}
 		}
+		if(admin == null){
+			panelPerfil.setVisible(false);
+		}
 		panelUsuarios.setVisible(false);
-		panelPerfil.setVisible(false);
 		panelInicio.setBackground(Color.WHITE);
 		this.add(panelInicio, BorderLayout.CENTER);
 		panelInicio.setVisible(true);
@@ -251,15 +291,19 @@ public class PanelUser extends JPanel
 		if (panelInicio.getPanelComentario() !=null){
 			panelInicio.getPanelComentario().setVisible(false);
 		}
-		if(panelPerfil.getPanelVisualizar() != null) {
-			panelPerfil.getPanelVisualizar().setVisible(false);
-			if(panelPerfil.getPanelVisualizar().getPanelComentario() != null)
-			{
-				panelPerfil.getPanelVisualizar().getPanelComentario().setVisible(false);	
+		if(panelPerfil != null) {
+			if(panelPerfil.getPanelVisualizar() != null) {
+				panelPerfil.getPanelVisualizar().setVisible(false);
+				if(panelPerfil.getPanelVisualizar().getPanelComentario() != null)
+				{
+					panelPerfil.getPanelVisualizar().getPanelComentario().setVisible(false);	
+				}
 			}
 		}
+		if(admin == null) {
+			panelPerfil.setVisible(false);
+		}
 		panelInicio.setVisible(false);
-		panelPerfil.setVisible(false);
 		panelUsuarios.setVisible(true);
 		panelUsuarios.setBackground(Color.WHITE);
 		this.add(panelUsuarios, BorderLayout.CENTER);
@@ -324,6 +368,15 @@ public class PanelUser extends JPanel
 	public void setUsuario(UsuarioNormal usuario) 
 	{
 		this.usuario = usuario;
+	}
+	public Administrador getAdminsitrador() 
+	{
+		return admin;
+	}
+
+	public void setAdministrador(Administrador admin) 
+	{
+		this.admin = admin;
 	}
 	
 	public ArrayList<Foto> getFotos_inicio() 

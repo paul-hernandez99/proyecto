@@ -441,11 +441,11 @@ public class VentanaPrincipal extends JFrame
 					}
 					if (usuario instanceof Administrador) 
 					{
-						goToPanelAdmin();
+						goToPanelUser(1);
 					} 
 					else 
 					{
-						goToPanelUser();
+						goToPanelUser(0);
 					}
 					
 				} 
@@ -566,7 +566,7 @@ public class VentanaPrincipal extends JFrame
 			this.usuario = usuario;
 			usuarios.add(usuario);
 			
-			goToPanelUser();
+			goToPanelUser(0);
 		} 
 		catch (Exceptions e) 
 		{
@@ -648,9 +648,9 @@ public class VentanaPrincipal extends JFrame
 		year.setFocusable(false);
 	}
 	/***Este método crea un enlace entre el panel principal y el panelUser.*/
-	private void goToPanelUser()
+	private void goToPanelUser(int tipo)
 	{
-		PanelUser panelUser = new PanelUser(VentanaPrincipal.this);
+		PanelUser panelUser = new PanelUser(VentanaPrincipal.this, tipo);
 		setContentPane(panelUser);
 		revalidate();
 	}
@@ -661,13 +661,7 @@ public class VentanaPrincipal extends JFrame
 		setContentPane(panelRecuContraseña);
 		revalidate();
 	}
-	/***Este método crea un enlace entre el panel principal y el panelAdmin.*/
-	private void goToPanelAdmin()
-	{
-		PanelAdmin panelAdmin = new PanelAdmin(VentanaPrincipal.this);
-		setContentPane(panelAdmin);
-		revalidate();
-	}
+
 	/***Estamos ante un método lógico que tiene como función comprobar si el usuario introducido y su contraseña son correctas.*/
 	private void comprobarUsuarioLogin(String usuario, String password) throws Exceptions
 	{
