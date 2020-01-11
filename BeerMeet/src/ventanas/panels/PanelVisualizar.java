@@ -1,5 +1,6 @@
 package ventanas.panels;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -16,6 +17,8 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.AbstractBorder;
 
+import comentario.Comentario;
+
 import java.awt.GridBagConstraints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -31,6 +34,7 @@ public class PanelVisualizar extends JPanel
 {
 	private PanelUser panelUser;
 	public static AbstractBorder bordeCircular = new BordeCircular();  
+	public PanelComentario panelComentario;
 
 	public PanelVisualizar(PanelUser panel, Foto foto, Usuario user, String path)
 	{
@@ -86,9 +90,11 @@ public class PanelVisualizar extends JPanel
 		        imagen.setIcon(iconoEscalado);
 		        add(imagen);
 		        
+		        JLabel borrar = new JLabel("");
+		        
 		        if(panelUser.getUsuario().getId() ==foto.getId_user())
 		        {
-			        JLabel borrar = new JLabel("");
+			        
 			        borrar.addMouseListener(new MouseAdapter() {
 			        	@Override
 			        	public void mouseClicked(MouseEvent e) {
@@ -110,6 +116,29 @@ public class PanelVisualizar extends JPanel
 			        borrar.setIcon(new ImageIcon("Imagenes\\System\\Image_74.png"));
 			        borrar.setBounds(484, 99, 38, 36);
 			        add(borrar);
+			        
+			        JLabel comentarios=new JLabel();
+			        ArrayList<Comentario> list =panelUser.getBdManager().SelectComentarios(foto.getCod());
+			        comentarios.setText("Ver los "+list.size()+" comentarios");
+			       comentarios.setBounds(150, 530, 300, 50);
+					
+					comentarios.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseClicked(MouseEvent e) {
+								panelComentario= new PanelComentario(panelUser,list, 1, foto, user, path);
+								panelUser.getPanelPerfil().getPanelVisualizar().setVisible(false);
+								panelUser.add(panelComentario,BorderLayout.CENTER);
+								panelComentario.setVisible(true);
+						}
+					});
+					add(comentarios);
 		        }
+	}
+	public PanelComentario getPanelComentario() {
+		return this.panelComentario;
+	}
+	public void setPanelComentario(PanelComentario panel)
+	{
+		this.panelComentario = panel;
 	}
 }

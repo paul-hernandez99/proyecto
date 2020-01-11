@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -33,14 +34,19 @@ public class PanelComentario extends JPanel {
 	private PanelUser panelUser;
 	public static AbstractBorder bordeCircular = new BordeCircular();  
 	private BDManager bdManager;
-	private int contador;
-	
-	public PanelComentario(PanelUser panel, ArrayList<Comentario>coments) {
+	private Foto foto;
+	private Usuario user;
+	private String path;
+	private ArrayList <Comentario> cBerriak;
+	public PanelComentario(PanelUser panel, ArrayList<Comentario>coments ,int origen ,Foto foto, Usuario user, String path) {
 		
 		BorderLayout borderlayout = new java.awt.BorderLayout();
         this.setLayout(borderlayout);
 		
 		this.panelUser=panel;
+		this.foto = foto;
+		this.user= user;
+		this.path= path;
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(Color.WHITE);
@@ -60,9 +66,16 @@ public class PanelComentario extends JPanel {
         simbolo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				panelUser.goToPanelInicio();
-				panelUser.getPanelInicio().getPanelComentario().setVisible(false);
-				panelUser.getPanelInicio().setPanelComentario(null);
+				if (origen == 0) {
+					panelUser.goToPanelInicio();
+					panelUser.getPanelInicio().getPanelComentario().setVisible(false);
+					panelUser.getPanelInicio().setPanelComentario(null);
+				}else if (origen == 1) {
+					panelUser.getPanelPerfil().getPanelVisualizar().setVisible(true);
+					panelUser.getPanelPerfil().getPanelVisualizar().getPanelComentario().setVisible(false);
+					panelUser.getPanelPerfil().getPanelVisualizar().setPanelComentario(null);
+					
+				}
 			}
 		});
 		 panel_2.add(simbolo);
@@ -80,7 +93,7 @@ public class PanelComentario extends JPanel {
 	
 		JScrollPane scrollPane = new JScrollPane(panel_1,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setViewportView(panel_1);
-		scrollPane.setBounds(0,0,560,790);
+		scrollPane.setBounds(0,0,560,490);
 		add(scrollPane,BorderLayout.CENTER);
 		
 		JLabel profile =new JLabel();
@@ -120,32 +133,28 @@ public class PanelComentario extends JPanel {
 					public void mouseClicked(MouseEvent e) {
 						if (newComent.getText().length()>0) {
 							Comentario comentario = new Comentario();
-							comentario.setCod_fot(coments.get(0).getCod_fot());
+							comentario.setCod_fot(foto.getCod());
 							comentario.setContenido(newComent.getText());
 							comentario.setId_user(panelUser.getUsuario().getId());
 							String fec = Utilidades.fechaDeAlta();
 							comentario.setFec(fec);
 							panelUser.getBdManager().createComent(comentario);
+							cBerriak= panelUser.getBdManager().SelectComentarios(foto.getCod());
 							
-							PanelInicio inicio = new PanelInicio(panelUser);
-							panelUser.setPanelInicio(inicio);
-							PanelComentario nuevo = new PanelComentario(panelUser,coments);
-							panelUser.getPanelInicio().getPanelComentario().setVisible(false);
-							panelUser.getPanelInicio().setPanelComentario(nuevo);
-							panelUser.getPanelInicio().setVisible(false);
-							panelUser.add(nuevo,BorderLayout.CENTER);
-							nuevo.setVisible(true);
+							if(origen == 0) {
+								casoInicio();
+							}else {
+								casoVisualizar();
+							}
 						}
 					}
 				});
 		panel_3.add(publicar);
 		int posicion = 0;
 		bdManager = panelUser.getBdManager();
-		
+
 		for(int i=0; i<coments.size(); i++)
 		{
-			contador =i;
-			
 			JLabel fotoPerfil= new JLabel();
 			fotoPerfil.setBounds(0,0,65,65);
 			GridBagConstraints gfotoPerfil = new GridBagConstraints();
@@ -156,8 +165,8 @@ public class PanelComentario extends JPanel {
 		    	   fotoPath= "Imagenes/System/descarga.jpg";
 		       }
 			
-			ImageIcon foto = new ImageIcon(fotoPath);
-			Image fotoEscalada = foto.getImage().getScaledInstance(fotoPerfil.getWidth(),fotoPerfil.getHeight(), Image.SCALE_SMOOTH);
+			ImageIcon fotoP = new ImageIcon(fotoPath);
+			Image fotoEscalada = fotoP.getImage().getScaledInstance(fotoPerfil.getWidth(),fotoPerfil.getHeight(), Image.SCALE_SMOOTH);
 	        Icon iconEscalado = new ImageIcon(fotoEscalada);
 	        fotoPerfil.setBorder(bordeCircular);
 	        fotoPerfil.setIcon(iconEscalado);
@@ -167,7 +176,7 @@ public class PanelComentario extends JPanel {
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
 				ArrayList<Usuario> useers= bdManager.loadUsers();
-				ArrayList<UsuarioNormal>usuarios = new ArrayList();
+				ArrayList<UsuarioNormal>usuarios = new ArrayList<UsuarioNormal>();
 				for(byte i=0; i<useers.size();i++)
 				{
 					if(useers.get(i)instanceof UsuarioNormal) {
@@ -175,7 +184,7 @@ public class PanelComentario extends JPanel {
 					}
 				}
 				
-				String nombre= bdManager.SelectNombreUsuaruario(panelUser.getFotos_inicio().get(contador).getId_user());
+			//	String nombre= bdManager.SelectNombreUsuaruario(panelUser.getFotos_inicio().get(contador).getId_user());
 				List<Usuario> userr=usuarios.stream().filter(x -> x.getId() == coments.get(new Integer(fotoPerfil.getName())).getId_user()).collect(Collectors.toList());
 					
 					PanelPerfil panelPerfilUser = new PanelPerfil(panelUser, (UsuarioNormal)userr.get(0));
@@ -208,7 +217,7 @@ public class PanelComentario extends JPanel {
 			comentario.setVisible(true);
 			panel_1.add(comentario, gco);
 			
-			if(coments.get(i).getId_user() == panelUser.getUsuario().getId())
+			if(coments.get(i).getId_user() == panelUser.getUsuario().getId() || origen == 1)
 			{
 				JLabel borrar = new JLabel();
 				borrar.setBounds(0, 0, 50,50);
@@ -219,12 +228,57 @@ public class PanelComentario extends JPanel {
 		        Image borradoEscalada = borrado.getImage().getScaledInstance(borrar.getWidth(),borrar.getHeight(), Image.SCALE_SMOOTH);
 		        Icon borradoiconEscalado = new ImageIcon(borradoEscalada);
 		        borrar.setIcon(borradoiconEscalado);
+		        borrar.setName(i+"");
+		        borrar.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						Object[] options = {"Aceptar",
+			                    "Cancelar"};
+						int n = JOptionPane.showOptionDialog(null,
+						    "¿Deseas eliminar este comentario?",
+						    "Eliminación",
+						    JOptionPane.YES_NO_CANCEL_OPTION,
+						    JOptionPane.QUESTION_MESSAGE,
+						    null,options,options[1]);
+						
+						if(n == 0) {
+							panelUser.getBdManager().DeleteComentario(coments.get(new Integer(borrar.getName())));
+							cBerriak= panelUser.getBdManager().SelectComentarios(foto.getCod());
+							if(origen == 0) {
+								casoInicio();
+							}else {
+								casoVisualizar();
+							}
+						}
+					}
+				});
 			
 				panel_1.add(borrar, gborrar);
 			}
 			
-			posicion+=2;
+			posicion+=3;
 		}
+	}
+	public void casoInicio() {
+		PanelInicio inicio = new PanelInicio(panelUser);
+		panelUser.getPanelInicio().getPanelComentario().setVisible(false);
+		panelUser.setPanelInicio(inicio);
+		PanelComentario nuevo = new PanelComentario(panelUser,cBerriak, 0, foto, null, null);
+		panelUser.goToPanelInicio();
+		panelUser.getPanelInicio().setPanelComentario(nuevo);
+		panelUser.getPanelInicio().setVisible(false);
+		panelUser.add(nuevo,BorderLayout.CENTER);
+		nuevo.setVisible(true);
+	}
+	public void casoVisualizar() {
+		PanelVisualizar visualizar = new PanelVisualizar(panelUser, foto, user, path);
+		panelUser.getPanelPerfil().getPanelVisualizar().getPanelComentario().setVisible(false);
+		panelUser.getPanelPerfil().setPanelVisualizar(visualizar);
+		PanelComentario nuevo = new PanelComentario(panelUser,cBerriak, 1,foto, user,path);
+		panelUser.getPanelPerfil().getPanelVisualizar().setPanelComentario(null);
+		panelUser.getPanelPerfil().getPanelVisualizar().setPanelComentario(nuevo);
+		panelUser.add(nuevo,BorderLayout.CENTER);
+		panelUser.getPanelPerfil().getPanelVisualizar().getPanelComentario().setVisible(true);
 	}
 
 }

@@ -135,16 +135,14 @@ public class PanelInicio extends JPanel
 	        GridBagConstraints gcomentario= new GridBagConstraints();
 			gcomentario .gridx = 3;
 			gcomentario .gridy = 3+posicion;
-			
+			comentarios.setName(i+"");
 			comentarios.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					if(list.size()>0) {
-						panelComentario= new PanelComentario(panelUser,list);
+						panelComentario= new PanelComentario(panelUser,list,0, panelUser.getFotos_inicio().get(new Integer(comentarios.getName())), null, null);
 						panelUser.getPanelInicio().setVisible(false);
 						panelUser.add(panelComentario,BorderLayout.CENTER);
 						panelComentario.setVisible(true);
-					}
 				}
 			});
 			panel_1.add(comentarios,gcomentario);

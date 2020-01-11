@@ -198,6 +198,16 @@ public class PanelUser extends JPanel
 			panelUserProfile.setVisible(false);
 		}
 		btnPaginaPrincipal.setBackground(Color.WHITE);
+		if (panelInicio.getPanelComentario() !=null){
+			panelInicio.getPanelComentario().setVisible(false);
+		}
+		if(panelPerfil.getPanelVisualizar() != null) {
+			panelPerfil.getPanelVisualizar().setVisible(false);
+			if(panelPerfil.getPanelVisualizar().getPanelComentario() != null)
+			{
+				panelPerfil.getPanelVisualizar().getPanelComentario().setVisible(false);	
+			}
+		}
 		panelInicio.setVisible(false);
 		panelUsuarios.setVisible(false);
 		panelPerfil.setVisible(true);
@@ -213,6 +223,16 @@ public class PanelUser extends JPanel
 		}
 		btnPaginaPrincipal.setBackground(new Color(255, 102, 102));
 		panelInicio.setVisible(true);
+		if (panelInicio.getPanelComentario() !=null){
+			panelInicio.getPanelComentario().setVisible(false);
+		}
+		if(panelPerfil.getPanelVisualizar() != null) {
+			panelPerfil.getPanelVisualizar().setVisible(false);
+			if(panelPerfil.getPanelVisualizar().getPanelComentario() != null)
+			{
+				panelPerfil.getPanelVisualizar().getPanelComentario().setVisible(false);	
+			}
+		}
 		panelUsuarios.setVisible(false);
 		panelPerfil.setVisible(false);
 		panelInicio.setBackground(Color.WHITE);
@@ -228,6 +248,16 @@ public class PanelUser extends JPanel
 			panelUserProfile = null;
 		}
 		btnPaginaPrincipal.setBackground(Color.WHITE);
+		if (panelInicio.getPanelComentario() !=null){
+			panelInicio.getPanelComentario().setVisible(false);
+		}
+		if(panelPerfil.getPanelVisualizar() != null) {
+			panelPerfil.getPanelVisualizar().setVisible(false);
+			if(panelPerfil.getPanelVisualizar().getPanelComentario() != null)
+			{
+				panelPerfil.getPanelVisualizar().getPanelComentario().setVisible(false);	
+			}
+		}
 		panelInicio.setVisible(false);
 		panelPerfil.setVisible(false);
 		panelUsuarios.setVisible(true);
