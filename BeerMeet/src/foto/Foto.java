@@ -1,5 +1,9 @@
 package foto;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import interfaces.IComparable;
 
 /**La función de esta clase denominada foto, es definir el objeto foto. La clase contiene los distintos atributos del 
@@ -43,9 +47,43 @@ public class Foto implements IComparable
 	}
 	
 	@Override
-	public boolean comparar(Object t) 
+	public boolean despuesDe(Foto foto) 
 	{
-		return false;
+		try 
+		{
+			int hora1 = Integer.parseInt(this.getFec().substring(0, 2));
+			int minutos1 = Integer.parseInt(this.getFec().substring(3, 5));
+			
+			Date fecha1 = new SimpleDateFormat("dd/MM/yyyy").parse(this.getFec().substring(6));
+			
+			int hora2 = Integer.parseInt(foto.getFec().substring(0, 2));
+			int minutos2 = Integer.parseInt(foto.getFec().substring(3, 5));
+			Date fecha2 = new SimpleDateFormat("dd/MM/yyyy").parse(foto.getFec().substring(6));
+			
+			if(fecha1.compareTo(fecha2) < 0)
+			{
+				return false;
+			}
+			else if(fecha1.compareTo(fecha2) > 0)
+			{
+				return true;
+			}
+			else if(fecha1.compareTo(fecha2) == 0)
+			{
+				if()
+				{
+					
+				}
+				else if()
+				{
+					
+				}
+			}
+		} 
+		catch (ParseException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public int getCod() 

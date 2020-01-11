@@ -1,12 +1,17 @@
 package utilidades;
 
+import java.util.List;
+
+import foto.Foto;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import java.util.Date;
 /**Esta clase contiene los métodos necesaios para la transformación de datos de distinto tipo.
 *@author aritz eraun y Paul Hernandez*/
 
-public class Utilidades 
+public class Utilidades
 {
 	/**La función del método fechaDeAlta() es convertir un dato de tipo date a un String reconocible por la BD o otros métodos. */
 	
@@ -39,9 +44,27 @@ public class Utilidades
 		return fecha;
 	}
 	
-	public static void main(String[]args)
+	public static <T> List<T> MergeSort(List<T> list)
 	{
-		String fecha = Utilidades.fechaDeAlta();
-		System.out.println(fecha);
+		if(list.size() == 1)
+		{
+			return list;
+		}
+		else
+		{
+			return Merge(MergeSort(list.subList(0, list.size()/2)), MergeSort(list.subList(list.size()/2, list.size())));
+		}
 	}
+	
+	private static <T extends Foto> List<T> Merge(List<T> A, List<T> B)
+	{
+		while(!A.isEmpty() || !B.isEmpty())
+		{
+			if(A.get(0).comparar(B.get(0)))
+			{
+				
+			}
+		}
+	}
+	
 }

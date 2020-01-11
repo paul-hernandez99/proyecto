@@ -1,6 +1,8 @@
 package interfaces;
 
-public interface IComparable <T> 
+import foto.Foto;
+
+public interface IComparable <T extends Foto> 
 {
-	public abstract boolean comparar(T t);
+	public abstract boolean despuesDe(T t);
 }
