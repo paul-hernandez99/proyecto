@@ -47,7 +47,9 @@ public class BDManagerTest
 		
 		usuario1 = new UsuarioNormal("manuel", "manuel1", "Manuel", "Garcia", "manuel@opendeusto.es", "12-12-1999",null);
 		usuario2 = new UsuarioNormal("ander", "aderr", "Ander", "Etxekalte", "ander@opendeusto.es", "30-12-1999",null);
+		
 		administrador = new Administrador("josu", "josuel", "Josu", "Armendariz", "josu@opendeusto.es");
+		
 		foto1 = new Foto(3,"Imagenes/data/manuel_1.jpg", "16:00 02/01/2019");
 		foto2 = new Foto(5,"Imagenes/data/ander_1.jpg", "18:00 02/01/2019");
 		

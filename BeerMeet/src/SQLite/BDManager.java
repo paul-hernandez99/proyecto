@@ -35,7 +35,7 @@ public class BDManager
 		else
 			this.name = "database.db";
 		this.url = "jdbc:sqlite:" + this.name;
-		connect();
+		this.connect();
 	}
 	
 	/**Este método conecta la BD con la aplicación de BeerMeet.*/
@@ -218,11 +218,12 @@ public class BDManager
 		ArrayList<Usuario> users = new ArrayList<>();		
 		
         try
-                (
-                        Statement stmt  = conn.createStatement();
-                        ResultSet rs    = stmt.executeQuery(sql)
+                (		
+                		PreparedStatement pstmt = conn.prepareStatement(sql);
+        				ResultSet rs = pstmt.executeQuery();
                 )
         {
+        	
             while (rs.next())
             {
             	int id = rs.getInt("id");

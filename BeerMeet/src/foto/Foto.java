@@ -1,11 +1,13 @@
 package foto;
 
+import interfaces.IComparable;
+
 /**La función de esta clase denominada foto, es definir el objeto foto. La clase contiene los distintos atributos del 
  * objeto de tipo foto (el código, la identificación del usuario, etc.) además de los getters y setter que nos facilitan el acceso
  * y modificación de los datos.
 *@author aritz eraun y Paul Hernandez*/
 
-public class Foto 
+public class Foto implements IComparable
 {
 	private int cod;
 	private int id_user;
@@ -39,7 +41,12 @@ public class Foto
 		this.path = path;
 		this.fec = fec;
 	}
-
+	
+	@Override
+	public boolean comparar(Object t) 
+	{
+		return false;
+	}
 	
 	public int getCod() 
 	{
