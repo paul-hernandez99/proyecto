@@ -74,8 +74,8 @@ public class PanelUser extends JPanel
 		if(tipo ==0) {
 			usuario = (UsuarioNormal)ventanaPrincipal.getUsuario();
 			
-			fotos_inicio = bdManager.loadInicioPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
-			fotos_perfil = bdManager.loadUsersPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
+			fotos_inicio = Utilidades.MergeSort(bdManager.loadInicioPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId()));
+			fotos_perfil = Utilidades.MergeSort(bdManager.loadUsersPhotos(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId()));
 			seguidos = bdManager.relationships(((UsuarioNormal)ventanaPrincipal.getUsuario()).getId());
 		
 			panelPerfil = new PanelPerfil(this, null);

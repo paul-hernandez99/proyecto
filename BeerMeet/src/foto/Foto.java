@@ -70,13 +70,28 @@ public class Foto implements IComparable
 			}
 			else if(fecha1.compareTo(fecha2) == 0)
 			{
-				if()
+				if(hora1 < hora2)
 				{
-					
+					return false;
 				}
-				else if()
+				else if(hora1 > hora2)
 				{
-					
+					return true;
+				}
+				else if(hora1 == hora2)
+				{
+					if(minutos1 < minutos2)
+					{
+						return false;
+					}
+					else if(minutos1 > minutos2)
+					{
+						return true;
+					}
+					else if(minutos1 == minutos2)
+					{
+						return false;
+					}
 				}
 			}
 		} 
@@ -84,6 +99,8 @@ public class Foto implements IComparable
 		{
 			e.printStackTrace();
 		}
+		
+		return false;
 	}
 	
 	public int getCod() 
@@ -125,5 +142,4 @@ public class Foto implements IComparable
 	{
 		this.fec = fec;
 	}
-	
 }

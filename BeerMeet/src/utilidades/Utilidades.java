@@ -1,17 +1,14 @@
 package utilidades;
 
-import java.util.List;
-
 import foto.Foto;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-
 import java.util.Date;
+import java.util.List;
 /**Esta clase contiene los métodos necesaios para la transformación de datos de distinto tipo.
 *@author aritz eraun y Paul Hernandez*/
 
-public class Utilidades
+public class Utilidades <T extends Foto>
 {
 	/**La función del método fechaDeAlta() es convertir un dato de tipo date a un String reconocible por la BD o otros métodos. */
 	
@@ -44,27 +41,74 @@ public class Utilidades
 		return fecha;
 	}
 	
-	public static <T> List<T> MergeSort(List<T> list)
+	public static <T extends Foto> ArrayList<T> MergeSort(ArrayList<T> list)
 	{
-		if(list.size() == 1)
+		if(list.size() == 0)
 		{
 			return list;
 		}
 		else
 		{
-			return Merge(MergeSort(list.subList(0, list.size()/2)), MergeSort(list.subList(list.size()/2, list.size())));
+			if(list.size() == 1)
+			{
+				return list;
+			}
+			else
+			{
+				ArrayList<T> primero = new ArrayList<>();
+				List<T> list1 = list.subList(0, list.size()/2);
+				for(int i=0; i<list1.size(); i++)
+				{
+					primero.add(list1.get(i));
+				}
+				
+				ArrayList<T> segundo = new ArrayList<>();
+				List<T> list2 = list.subList(list.size()/2, list.size());
+				for(int i=0; i<list2.size(); i++)
+				{
+					segundo.add(list2.get(i));
+				}
+				
+				return Merge(MergeSort(primero), MergeSort(segundo));
+			}
 		}
 	}
 	
-	private static <T extends Foto> List<T> Merge(List<T> A, List<T> B)
+	private static <T extends Foto> ArrayList<T> Merge(ArrayList<T> A, ArrayList<T> B)
 	{
-		while(!A.isEmpty() || !B.isEmpty())
+		ArrayList<T> lista = new ArrayList<>();
+		
+		while(!A.isEmpty() && !B.isEmpty())
 		{
-			if(A.get(0).comparar(B.get(0)))
+			if((A.get(0)).despuesDe(B.get(0)))
 			{
+				lista.add(B.get(0));
 				
+				B.remove(0);
+			}
+			else
+			{
+				lista.add(A.get(0));
+				
+				A.remove(0);
 			}
 		}
+		
+		while(!A.isEmpty())
+		{
+			lista.add(A.get(0));
+			
+			A.remove(0);
+		}
+		
+		while(!B.isEmpty())
+		{
+			lista.add(B.get(0));
+			
+			B.remove(0);
+		}
+		
+		return lista;
 	}
 	
 }

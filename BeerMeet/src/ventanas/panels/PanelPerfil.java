@@ -19,6 +19,8 @@ import foto.Foto;
 import usuarios.Usuario;
 import usuarios.UsuarioNormal;
 import utilidades.BordeCircular;
+import utilidades.Utilidades;
+
 import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -339,7 +341,7 @@ public class PanelPerfil extends JPanel
 		if(esPerfilPropio){
 			fotos = panelUser.getFotos_perfil();
 		}else{
-			fotos = panelUser.getBdManager().loadUsersPhotos(user.getId());
+			fotos = Utilidades.MergeSort(panelUser.getBdManager().loadUsersPhotos(user.getId()));
 			
 		}
 		if(fotos.size()>0)
