@@ -237,19 +237,28 @@ public class PanelUser extends JPanel
 		if (panelInicio.getPanelComentario() !=null){
 			panelInicio.getPanelComentario().setVisible(false);
 		}
-		if(panelPerfil.getPanelVisualizar() != null) {
-			panelPerfil.getPanelVisualizar().setVisible(false);
-			if(panelPerfil.getPanelVisualizar().getPanelComentario() != null)
-			{
-				panelPerfil.getPanelVisualizar().getPanelComentario().setVisible(false);	
+		if(panelPerfil != null) {
+			if(panelPerfil.getPanelVisualizar() != null) {
+				panelPerfil.getPanelVisualizar().setVisible(false);
+				if(panelPerfil.getPanelVisualizar().getPanelComentario() != null)
+				{
+					panelPerfil.getPanelVisualizar().getPanelComentario().setVisible(false);	
+				}
 			}
 		}
 		panelInicio.setVisible(false);
 		panelUsuarios.setVisible(false);
-		panelPerfil.setVisible(true);
-		panelPerfil.setBackground(Color.WHITE);
-		this.add(panelPerfil, BorderLayout.CENTER);
-		panelPerfil.setVisible(true);
+		if(admin ==null) {
+			panelPerfil.setVisible(true);
+			panelPerfil.setBackground(Color.WHITE);
+			this.add(panelPerfil, BorderLayout.CENTER);
+			panelPerfil.setVisible(true);
+		}else {
+			panelUserProfile.setVisible(true);
+			panelUserProfile.setBackground(Color.WHITE);
+			this.add(panelUserProfile, BorderLayout.CENTER);
+			panelUserProfile.setVisible(true);
+		}
 	}
 	public void goToPanelInicio()
 	{

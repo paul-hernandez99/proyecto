@@ -7,6 +7,7 @@ import java.awt.Image;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import foto.Foto;
 import usuarios.Usuario;
@@ -107,19 +108,40 @@ public class PanelVisualizar extends JPanel
 			        borrar.addMouseListener(new MouseAdapter() {
 			        	@Override
 			        	public void mouseClicked(MouseEvent e) {
-			        		panel.getBdManager().deleteFoto(foto.getCod());
-			        		ArrayList<Foto> allFotos =panel.getFotos_inicio();
-			        		List<Foto> eliminacion =allFotos.stream().filter(x ->x.getCod()!=foto.getCod()).collect(Collectors.toList());
-			        		ArrayList<Foto> filtrado = new ArrayList<Foto>(eliminacion); 
-			        		panel.setFotos_inicio(filtrado);
-			        		 
-			        		panel.setFotos_perfil(panelUser.getBdManager().loadUsersPhotos(panelUser.getUsuario().getId()));
-			        					        		
-			        		panelUser.getPanelPerfil().getPanelVisualizar().setVisible(false);
-			        		PanelPerfil nuevo = new PanelPerfil(panelUser, null);
-			        		panelUser.setPanelPerfil(nuevo);
-			        		panelUser.getPanelPerfil().setVisible(true);
-			        		panelUser.goToPanelPerfil();
+			        		Object[] options = {"Aceptar",
+		                    "Cancelar"};
+							int n = JOptionPane.showOptionDialog(null,
+							    "¿Deseas eliminar este comentario?",
+							    "Eliminación",
+							    JOptionPane.YES_NO_CANCEL_OPTION,
+							    JOptionPane.QUESTION_MESSAGE,
+							    null,options,options[1]);
+							
+							if(n ==0) 
+							{
+				        		panel.getBdManager().deleteFoto(foto.getCod());
+				        		ArrayList<Foto> allFotos =panel.getFotos_inicio();
+				        		
+				        		List<Foto> eliminacion =allFotos.stream().filter(x ->x.getCod()!=foto.getCod()).collect(Collectors.toList());
+				        		
+				        		ArrayList<Foto> filtrado = new ArrayList<Foto>(eliminacion); 
+				        		panel.setFotos_inicio(filtrado);
+				        		 
+				        		panel.setFotos_perfil(panelUser.getBdManager().loadUsersPhotos(panelUser.getPanelUserProfile().getUser().getId()));
+				        		if(panelUser.getAdminsitrador() ==null) {		        		
+					        		panelUser.getPanelPerfil().getPanelVisualizar().setVisible(false);
+					        		PanelPerfil nuevo = new PanelPerfil(panelUser, null);
+					        		panelUser.setPanelPerfil(nuevo);
+					        		panelUser.getPanelPerfil().setVisible(true);
+					        		panelUser.goToPanelPerfil();
+				        		}else {
+				        			panelUser.getPanelUserProfile().getPanelVisualizar().setVisible(false);
+					        		PanelPerfil nuevo = new PanelPerfil(panelUser, panelUser.getPanelUserProfile().getUser());
+					        		panelUser.setPanelUserProfile(nuevo);
+					        		panelUser.getPanelUserProfile().setVisible(true);
+					        		panelUser.goToPanelPerfil();
+				        		}
+							}
 			        	}
 			        });
 			        borrar.setIcon(new ImageIcon("Imagenes\\System\\Image_74.png"));

@@ -48,7 +48,7 @@ public class PanelPerfil extends JPanel
 	PanelUser panelUser;
 	JLabel lblNewLabel = new JLabel();
 	String path = null;
-	UsuarioNormal user;
+	public UsuarioNormal user;
 	boolean esPerfilPropio;
 	int n_g;
 	PanelVisualizar panelV ;
@@ -64,7 +64,7 @@ public class PanelPerfil extends JPanel
 		this.panelUser = panel;
 		
 		boolean autentificacion = false;
-		if(panelUser.getAdminsitrador() == null) {
+		if(panelUser.getAdminsitrador() == null && usuario != null) {
 			autentificacion=panelUser.getUsuario().getNombreUsuario().equals(usuario.getNombreUsuario());
 		}
 		
@@ -416,7 +416,11 @@ public class PanelPerfil extends JPanel
 						panelV = new PanelVisualizar(panelUser,foto, user, path);
 						panelUser.add(panelV, BorderLayout.CENTER);
 						panelV.setVisible(true);
-						panelUser.getPanelPerfil().setVisible(false);
+						if (panelUser.getAdminsitrador() == null) {
+							panelUser.getPanelPerfil().setVisible(false);
+						}else {
+							panelUser.getPanelUserProfile().setVisible(false);
+						}
 					}
 		    	});
 		        panel_1.add(labeln,gimagen);
@@ -436,5 +440,11 @@ public class PanelPerfil extends JPanel
 	}
 	public PanelVisualizar getPanelVisualizar() {
 		return panelV;
+	}
+	public UsuarioNormal getUser() {
+		return this.user;
+	}
+	public void setUser(UsuarioNormal user) {
+		this.user = user;
 	}
 }

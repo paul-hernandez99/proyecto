@@ -207,8 +207,6 @@ public class PanelComentario extends JPanel {
 						usuarios.add((UsuarioNormal) useers.get(i));
 					}
 				}
-				
-			//	String nombre= bdManager.SelectNombreUsuaruario(panelUser.getFotos_inicio().get(contador).getId_user());
 				List<Usuario> userr=usuarios.stream().filter(x -> x.getId() == coments.get(new Integer(fotoPerfil.getName())).getId_user()).collect(Collectors.toList());
 					
 					PanelPerfil panelPerfilUser = new PanelPerfil(panelUser, (UsuarioNormal)userr.get(0));
