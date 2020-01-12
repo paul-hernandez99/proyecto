@@ -64,18 +64,12 @@ public class PanelVisualizar extends JPanel
 				});
 				
 				adaptador.setBounds(0,0,65,65);
-				ImageIcon back = new ImageIcon("Imagenes\\System\\j.png");
-		        Image backEscalada = back.getImage().getScaledInstance(adaptador.getWidth(),adaptador.getHeight(), Image.SCALE_SMOOTH);
-		        Icon backEscalado = new ImageIcon(backEscalada);
-		        adaptador.setIcon(backEscalado);
+		        adaptador.setIcon(panelUser.escalar("Imagenes\\System\\j.png", adaptador));
 				add(adaptador);
 		        
 		        JLabel fotoPerfil= new JLabel();
 		        fotoPerfil.setBounds(30,80,60,60);
-		        ImageIcon fotoIcon = new ImageIcon(path);
-		        Image fotoEscalada = fotoIcon.getImage().getScaledInstance(fotoPerfil.getWidth(),fotoPerfil.getHeight(), Image.SCALE_SMOOTH);
-		        Icon iconEscalado = new ImageIcon(fotoEscalada);
-		        fotoPerfil.setIcon(iconEscalado);
+		        fotoPerfil.setIcon(panelUser.escalar(path, fotoPerfil));
 		        fotoPerfil.setBorder(bordeCircular);
 		        add(fotoPerfil);
 		        
@@ -89,10 +83,7 @@ public class PanelVisualizar extends JPanel
 				
 				JLabel imagen = new JLabel();
 				imagen.setBounds(85,160,365,365);
-				ImageIcon imgIcon = new ImageIcon(foto.getPath());
-		        Image imgEscalada = imgIcon.getImage().getScaledInstance(imagen.getWidth(),imagen.getHeight(), Image.SCALE_SMOOTH);
-		        Icon iconoEscalado = new ImageIcon(imgEscalada);
-		        imagen.setIcon(iconoEscalado);
+		        imagen.setIcon(panelUser.escalar(foto.getPath(), imagen));
 		        add(imagen);
 		        
 		        JLabel borrar = new JLabel("");
@@ -111,7 +102,7 @@ public class PanelVisualizar extends JPanel
 			        		Object[] options = {"Aceptar",
 		                    "Cancelar"};
 							int n = JOptionPane.showOptionDialog(null,
-							    "¿Deseas eliminar este comentario?",
+							    "¿Deseas eliminar esta foto2?",
 							    "Eliminación",
 							    JOptionPane.YES_NO_CANCEL_OPTION,
 							    JOptionPane.QUESTION_MESSAGE,

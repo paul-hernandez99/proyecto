@@ -56,8 +56,11 @@ public class PanelUser extends JPanel
 	private ArrayList<Foto> fotos_perfil;
 	private ArrayList<Usuario> seguidos;
 	private JLabel btnPaginaPrincipal = new JLabel();
+	private JLabel btnUsuarios = new JLabel();
+	private JLabel btnPerfil = new JLabel();
+	private JLabel btnSubirFoto = new JLabel();
+	private JLabel btnSalir = new JLabel();
 	
-	/**Creación del Panel user*/
 	
 	public PanelUser(VentanaPrincipal ventana, int tipo) 
 	{
@@ -139,22 +142,23 @@ public class PanelUser extends JPanel
 	
 		btnPaginaPrincipal.setBounds(0, 0, 35,40);
 		btnPaginaPrincipal.setIcon(escalar("Imagenes\\System\\PaginaPrincipal.png",btnPaginaPrincipal));
-		btnPaginaPrincipal.setForeground(Color.WHITE);
-		btnPaginaPrincipal.setBackground(Color.BLACK);
+	
 		btnPaginaPrincipal.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
 		panelSouth.add(btnPaginaPrincipal);
 		
+		btnUsuarios.setForeground(Color.WHITE);
+		btnUsuarios.setBounds(0, 0, 45,60);
+		btnUsuarios.setIcon(escalar("Imagenes\\System\\lupaBlanca.jpg", btnUsuarios));
+		panelSouth.add(btnUsuarios);
+		
 		if(tipo ==0) {
-			JButton btnSubirFoto = new JButton("Subir foto");
-			btnSubirFoto.setForeground(Color.WHITE);
-			btnSubirFoto.setBackground(new Color(255, 102, 102));
-			btnSubirFoto.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
+			btnSubirFoto.setBounds(0,0,60,50);
+			btnSubirFoto.setIcon(escalar("Imagenes\\System\\SubirFotos.jpg", btnSubirFoto));
 			panelSouth.add(btnSubirFoto);
 			
-			btnSubirFoto.addActionListener(new ActionListener() 
-			{
-				public void actionPerformed(ActionEvent arg0) 
-				{
+			btnSubirFoto.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
 					int id_user = ((UsuarioNormal)ventanaPrincipal.getUsuario()).getId();
 					String path = uploadPhotoAndGetPath();
 					String fec = Utilidades.fechaDeAlta();
@@ -169,40 +173,25 @@ public class PanelUser extends JPanel
 					}
 				}
 			});
-		}
-		
-		JButton btnUsuarios = new JButton("Usuarios");
-		btnUsuarios.setForeground(Color.WHITE);
-		btnUsuarios.setBackground(new Color(255, 102, 102));
-		btnUsuarios.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
-		panelSouth.add(btnUsuarios);
-		
-		if (tipo == 0) {
-			JButton btnPerfil = new JButton("Perfil");
-			btnPerfil.setForeground(Color.WHITE);
-			btnPerfil.setBackground(new Color(255, 102, 102));
-			btnPerfil.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
+	
+			btnPerfil.setBounds(0, 0, 45, 50);
+			btnPerfil.setIcon(escalar("Imagenes\\System\\PerfilBlanco.jpg",btnPerfil));
 			panelSouth.add(btnPerfil);
 			
-			btnPerfil.addActionListener(new ActionListener() 
-			{
-				public void actionPerformed(ActionEvent e) 
-				{
+			btnPerfil.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
 					goToPanelPerfil();
 				}
 			});			
 		}
-		
-		JButton btnSalir = new JButton("Cerrar Sesion");
-		btnSalir.setForeground(Color.WHITE);
-		btnSalir.setBackground(new Color(153, 240, 153));
-		btnSalir.setFont(new Font("Gill Sans MT", Font.BOLD, 16));
+		btnSalir.setBounds(0,0,50,50);
+		btnSalir.setIcon(escalar("Imagenes\\System\\Salir.png", btnSalir));
 		panelSouth.add(btnSalir);
 		
-		btnUsuarios.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+		btnUsuarios.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				goToPanelUsuarios();
 				
 			}
@@ -214,10 +203,9 @@ public class PanelUser extends JPanel
 			}
 		});
 		
-		btnSalir.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent arg0) 
-			{
+		btnSalir.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				ventanaPrincipal.setContentPane(ventanaPrincipal.getPanel_principal());
 				ventanaPrincipal.setTexts();
 				ventanaPrincipal.revalidate();
@@ -266,7 +254,6 @@ public class PanelUser extends JPanel
 		{
 			panelUserProfile.setVisible(false);
 		}
-		btnPaginaPrincipal.setBackground(new Color(255, 102, 102));
 		panelInicio.setVisible(true);
 		if (panelInicio.getPanelComentario() !=null){
 			panelInicio.getPanelComentario().setVisible(false);
@@ -346,7 +333,7 @@ public class PanelUser extends JPanel
 	public Icon escalar(String path,JLabel imagen)
 	{
 		ImageIcon imgIcon = new ImageIcon(path);
-        Image imgEscalada = imgIcon.getImage().getScaledInstance(imagen.getWidth(),imagen.getHeight(), Image.SCALE_SMOOTH);
+        Image imgEscalada = imgIcon.getImage().getScaledInstance(imagen.getWidth(),imagen.getHeight(), Image.SCALE_REPLICATE);
         Icon iconoEscalado = new ImageIcon(imgEscalada);
 		return iconoEscalado;
 	}
