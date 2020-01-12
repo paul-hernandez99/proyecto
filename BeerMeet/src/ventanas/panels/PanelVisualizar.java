@@ -64,7 +64,7 @@ public class PanelVisualizar extends JPanel
 				});
 				
 				adaptador.setBounds(0,0,65,65);
-		        adaptador.setIcon(panelUser.escalar("Imagenes\\System\\j.png", adaptador));
+		        adaptador.setIcon(panelUser.escalar("Imagenes\\System\\1.png", adaptador));
 				add(adaptador);
 		        
 		        JLabel fotoPerfil= new JLabel();

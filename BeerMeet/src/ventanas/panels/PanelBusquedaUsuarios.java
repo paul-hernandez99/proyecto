@@ -9,6 +9,7 @@ import java.awt.event.FocusListener;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
@@ -42,9 +43,36 @@ public class PanelBusquedaUsuarios extends JPanel
 		this.add(listaUsuarios);
 		
 		JButton btnVisualizar = new JButton("Visualizar");
-		btnVisualizar.setBounds(300, 250, 100, 30);
+		btnVisualizar.setBounds(400, 250, 100, 30);
 		btnVisualizar.setVisible(false);
 		this.add(btnVisualizar);
+		
+		JButton btnEliminar = new JButton("Eliminar");
+		if(panelUser.getAdminsitrador() != null) {
+			btnEliminar.setBounds(400, 400, 100, 30);
+			btnVisualizar.setVisible(false);
+			this.add(btnVisualizar);
+			
+			btnEliminar.addActionListener(new ActionListener() 
+			{
+				@Override
+				public void actionPerformed(ActionEvent e) 
+				{
+					Object[] options = {"Aceptar",
+                    "Cancelar"};
+					int n = JOptionPane.showOptionDialog(null,
+				    "¿Deseas eliminar este Usuario?",
+					    "Eliminación",
+					    JOptionPane.YES_NO_CANCEL_OPTION,
+					    JOptionPane.QUESTION_MESSAGE,
+					    null,options,options[1]);
+					if (n==0 ) {
+						panelUser.getBdManager().DeleteUser(usuario);
+					}
+				}
+			});
+				
+			}
 		
 		txtUsername.addFocusListener(new FocusListener() 
 		{
@@ -87,6 +115,9 @@ public class PanelBusquedaUsuarios extends JPanel
 				usuario = listaUsuarios.getSelectedValue();
 			
 				btnVisualizar.setVisible(true);
+				if(panelUser.getAdminsitrador() != null) {
+					btnEliminar.setVisible(true);
+				}
 			}
 		});
 		

@@ -273,9 +273,9 @@ public class PanelUser extends JPanel
 		if(admin == null) {
 			panelPerfil.setVisible(false);
 		}else {
-			panelInicio.setVisible(false);
+			panelCrearAdmin.setVisible(false);	
 		}
-		panelCrearAdmin.setVisible(false);
+		panelInicio.setVisible(false);
 		panelUsuarios.setVisible(true);
 		panelUsuarios.setBackground(Color.WHITE);
 		this.add(panelUsuarios, BorderLayout.CENTER);

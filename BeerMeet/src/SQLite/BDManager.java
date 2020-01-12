@@ -546,7 +546,16 @@ public class BDManager
 			e.printStackTrace();
 		}
 	}
-
+	public void DeleteUser(UsuarioNormal user) {
+		final String sql = "DELETE FROM Usuarios WHERE id = ? ";
+		try {
+			PreparedStatement stm =conn.prepareStatement(sql);
+			stm.setInt(1,user.getId());
+			stm.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	public Connection getConnection()
 	{
 		return conn;
