@@ -7,7 +7,6 @@ import exceptions.Exceptions;
 import usuarios.Administrador;
 import usuarios.Usuario;
 import usuarios.UsuarioNormal;
-import ventanas.panels.PanelAdmin;
 import ventanas.panels.PanelRecuContraseña;
 import ventanas.panels.PanelUser;
 import javax.swing.JLabel;
