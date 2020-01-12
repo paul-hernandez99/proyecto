@@ -1,6 +1,7 @@
 package ventanas.panels;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,14 +45,16 @@ public class PanelBusquedaUsuarios extends JPanel
 		
 		JButton btnVisualizar = new JButton("Visualizar");
 		btnVisualizar.setBounds(400, 250, 100, 30);
+		btnVisualizar.setBackground(new Color(153, 240, 153));
 		btnVisualizar.setVisible(false);
 		this.add(btnVisualizar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
 		if(panelUser.getAdminsitrador() != null) {
-			btnEliminar.setBounds(400, 400, 100, 30);
-			btnVisualizar.setVisible(false);
-			this.add(btnVisualizar);
+			btnEliminar.setBounds(400,285, 100, 30);
+			btnEliminar.setBackground(new Color(255, 102, 102));
+			btnEliminar.setVisible(false);
+			this.add(btnEliminar);
 			
 			btnEliminar.addActionListener(new ActionListener() 
 			{
@@ -68,6 +71,8 @@ public class PanelBusquedaUsuarios extends JPanel
 					    null,options,options[1]);
 					if (n==0 ) {
 						panelUser.getBdManager().DeleteUser(usuario);
+						panelUser.getVentanaPrincipal().setUsuarios(panelUser.getBdManager().loadUsers());
+						cargarLista();
 					}
 				}
 			});

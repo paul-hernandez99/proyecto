@@ -190,7 +190,7 @@ public class PanelUser extends JPanel
 				}
 			});			
 		}
-		else if (tipo ==1) {
+		else {
 			btnCrearPerfil.setBounds(0, 0, 45, 50);
 			btnCrearPerfil.setIcon(escalar("Imagenes\\System\\descarga.png",btnCrearPerfil));
 			panelSouth.add(btnCrearPerfil);
@@ -202,6 +202,7 @@ public class PanelUser extends JPanel
 				}
 			});			
 		}
+		
 		btnSalir.setBounds(0,0,50,50);
 		btnSalir.setIcon(escalar("Imagenes\\System\\Salir.png", btnSalir));
 		panelSouth.add(btnSalir);
@@ -295,14 +296,21 @@ public class PanelUser extends JPanel
 	public void goToComun() {
 		if(panelUserProfile != null)
 		{
-			this.remove(panelUserProfile);
-			panelUserProfile = null;
+			panelUserProfile.setVisible(false);
+			if(panelUserProfile.getPanelVisualizar() != null) {
+				panelUserProfile.getPanelVisualizar().setVisible(false);
+				if(panelUserProfile.getPanelVisualizar().getPanelComentario() != null)
+				{
+					panelUserProfile.getPanelVisualizar().getPanelComentario().setVisible(false);	
+				}
+			}
 		}
 		btnPaginaPrincipal.setBackground(Color.WHITE);
 		if (panelInicio.getPanelComentario() !=null){
 			panelInicio.getPanelComentario().setVisible(false);
 		}
 		if(panelPerfil != null) {
+			panelPerfil.setVisible(false);
 			if(panelPerfil.getPanelVisualizar() != null) {
 				panelPerfil.getPanelVisualizar().setVisible(false);
 				if(panelPerfil.getPanelVisualizar().getPanelComentario() != null)

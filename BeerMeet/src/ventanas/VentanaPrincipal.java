@@ -556,8 +556,9 @@ public class VentanaPrincipal extends JFrame
 			String email = this.email.getText();
 			String fecNac = this.day.getText() +"-"+ this.month.getText() +"-"+ this.year.getText();
 			String description = null;
-			comprobarUsuarioRegistration(username, email);
 			
+			comprobarUsuarioRegistration(username, email);
+			comprobacionFecha();
 			UsuarioNormal usuario = new UsuarioNormal(username, password, name, apellidos, email, fecNac,description);
 			
 			bdManager.saveUser(usuario);
@@ -711,6 +712,19 @@ public class VentanaPrincipal extends JFrame
 				throw new Exceptions("Email existente");
 			}
 		}
+	}
+	public void comprobacionFecha() throws Exceptions {
+		if(day.getText().length() == 2 && month.getText().length() == 2 && year.getText().length() == 2) {
+			 try {
+				int n= new Integer(day.getText()) ;
+				int i = new Integer(month.getText()) ;
+				int j = new Integer(year.getText()) ;
+			 }catch(Exception e){
+				 throw new Exceptions("Introduzca en el formato adecuado la fecha.");
+			 }
+		 }else {
+			 throw new Exceptions("Introduzca en el formato adecuado la fecha.");
+		 }
 	}
 /** Este método es un retorno al panel principal*/
 	

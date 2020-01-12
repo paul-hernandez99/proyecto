@@ -65,22 +65,17 @@ public class PanelPerfil extends JPanel
 		
 		this.panelUser = panel;
 		
-		boolean autentificacion = false;
-		if(panelUser.getAdminsitrador() == null && usuario != null) {
-			autentificacion=panelUser.getUsuario().getNombreUsuario().equals(usuario.getNombreUsuario());
-		}
 		
-		if(usuario == null || panelUser.getAdminsitrador() == null|| autentificacion)
+		if(usuario == null)
 		{
 			user = panelUser.getUsuario();
 			esPerfilPropio = true;
 		}
-		else
+		else if(usuario != null || panelUser.getAdminsitrador() != null)
 		{
 			user = usuario;
 			esPerfilPropio = false;
 		}
-		
 		
 		path = panelUser.getBdManager().selectPhotoPerfil(user.getId());
 		
