@@ -132,7 +132,7 @@ public class VentanaPrincipal extends JFrame
 		
 	}
 	/***Este método crea los distintos Labels visibles en el panel principal.*/
-	private void createJlabels()
+	public  void createJlabels()
 	{
 		intro = new JLabel("Welcome to Beermeet:");
 		intro.setFont(new Font("Gill Sans MT", Font.BOLD, 20));
@@ -695,7 +695,7 @@ public class VentanaPrincipal extends JFrame
 		}
 	}
 	
-	private void comprobarUsuarioRegistration(String usuario, String email) throws Exceptions
+	public void comprobarUsuarioRegistration(String usuario, String email) throws Exceptions
 	{
 
 		for(Usuario a: usuarios)

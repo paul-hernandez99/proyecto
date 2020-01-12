@@ -102,7 +102,7 @@ public class PanelUser extends JPanel
 		}
 		panelUsuarios = new PanelBusquedaUsuarios(this);
 		if(tipo ==1) {
-			panelCrearAdmin= new PanelCrearAdmin();
+			panelCrearAdmin= new PanelCrearAdmin(this);
 		}
 		
 		

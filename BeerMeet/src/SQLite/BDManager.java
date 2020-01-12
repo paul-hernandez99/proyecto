@@ -77,6 +77,8 @@ public class BDManager
 		if(user instanceof UsuarioNormal)
 		{
 			((UsuarioNormal) user).setId(this.seleccionarIdUsuario(user));
+		}else {
+			((Administrador) user).setId(this.seleccionarIdUsuario(user));
 		}
 	}
 	
