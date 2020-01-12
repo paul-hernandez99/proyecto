@@ -51,6 +51,7 @@ public class PanelUser extends JPanel
 	private PanelPerfil panelPerfil;
 	private PanelBusquedaUsuarios panelUsuarios;
 	private PanelPerfil panelUserProfile;
+	private PanelCrearAdmin panelCrearAdmin;
 	
 	private ArrayList<Foto> fotos_inicio = new ArrayList<Foto>();
 	private ArrayList<Foto> fotos_perfil;
@@ -60,6 +61,7 @@ public class PanelUser extends JPanel
 	private JLabel btnPerfil = new JLabel();
 	private JLabel btnSubirFoto = new JLabel();
 	private JLabel btnSalir = new JLabel();
+	private JLabel btnCrearPerfil = new JLabel();
 	
 	
 	public PanelUser(VentanaPrincipal ventana, int tipo) 
@@ -98,9 +100,11 @@ public class PanelUser extends JPanel
 			}
 					
 		}
-		
-	
 		panelUsuarios = new PanelBusquedaUsuarios(this);
+		if(tipo ==1) {
+			panelCrearAdmin= new PanelCrearAdmin();
+		}
+		
 		
 		panelNorth = new JPanel();
 		panelNorth.setBackground(Color.WHITE);
@@ -121,6 +125,7 @@ public class PanelUser extends JPanel
 		panelInicio = new PanelInicio(this);
 		panelInicio.setBackground(Color.WHITE);
 		this.add(panelInicio, BorderLayout.CENTER);
+	
 		
 		String contenido = null;
 		if(tipo == 0) {
@@ -185,6 +190,18 @@ public class PanelUser extends JPanel
 				}
 			});			
 		}
+		else if (tipo ==1) {
+			btnCrearPerfil.setBounds(0, 0, 45, 50);
+			btnCrearPerfil.setIcon(escalar("Imagenes\\System\\descarga.png",btnCrearPerfil));
+			panelSouth.add(btnCrearPerfil);
+			
+			btnCrearPerfil.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					goToPanelCrearAdmin();
+				}
+			});			
+		}
 		btnSalir.setBounds(0,0,50,50);
 		btnSalir.setIcon(escalar("Imagenes\\System\\Salir.png", btnSalir));
 		panelSouth.add(btnSalir);
@@ -217,23 +234,8 @@ public class PanelUser extends JPanel
 	
 	public void goToPanelPerfil()
 	{
-		if(panelUserProfile != null)
-		{
-			panelUserProfile.setVisible(false);
-		}
-		btnPaginaPrincipal.setBackground(Color.WHITE);
-		if (panelInicio.getPanelComentario() !=null){
-			panelInicio.getPanelComentario().setVisible(false);
-		}
-		if(panelPerfil != null) {
-			if(panelPerfil.getPanelVisualizar() != null) {
-				panelPerfil.getPanelVisualizar().setVisible(false);
-				if(panelPerfil.getPanelVisualizar().getPanelComentario() != null)
-				{
-					panelPerfil.getPanelVisualizar().getPanelComentario().setVisible(false);	
-				}
-			}
-		}
+		goToComun();
+		
 		panelInicio.setVisible(false);
 		panelUsuarios.setVisible(false);
 		if(admin ==null) {
@@ -242,6 +244,7 @@ public class PanelUser extends JPanel
 			this.add(panelPerfil, BorderLayout.CENTER);
 			panelPerfil.setVisible(true);
 		}else {
+			panelCrearAdmin.setVisible(false);
 			panelUserProfile.setVisible(true);
 			panelUserProfile.setBackground(Color.WHITE);
 			this.add(panelUserProfile, BorderLayout.CENTER);
@@ -250,25 +253,12 @@ public class PanelUser extends JPanel
 	}
 	public void goToPanelInicio()
 	{
-		if(panelUserProfile != null)
-		{
-			panelUserProfile.setVisible(false);
-		}
-		panelInicio.setVisible(true);
-		if (panelInicio.getPanelComentario() !=null){
-			panelInicio.getPanelComentario().setVisible(false);
-		}
-		if(panelPerfil != null) {
-			if(panelPerfil.getPanelVisualizar() != null) {
-				panelPerfil.getPanelVisualizar().setVisible(false);
-				if(panelPerfil.getPanelVisualizar().getPanelComentario() != null)
-				{
-					panelPerfil.getPanelVisualizar().getPanelComentario().setVisible(false);	
-				}
-			}
-		}
+		goToComun();
+		
 		if(admin == null){
 			panelPerfil.setVisible(false);
+		}else {
+			panelCrearAdmin.setVisible(false);
 		}
 		panelUsuarios.setVisible(false);
 		panelInicio.setBackground(Color.WHITE);
@@ -278,6 +268,31 @@ public class PanelUser extends JPanel
 	
 	private void goToPanelUsuarios()
 	{
+		goToComun();
+		
+		if(admin == null) {
+			panelPerfil.setVisible(false);
+		}else {
+			panelInicio.setVisible(false);
+		}
+		panelCrearAdmin.setVisible(false);
+		panelUsuarios.setVisible(true);
+		panelUsuarios.setBackground(Color.WHITE);
+		this.add(panelUsuarios, BorderLayout.CENTER);
+	}
+	public void goToPanelCrearAdmin() {
+		goToComun();
+		
+		if(admin == null) {
+			panelPerfil.setVisible(false);
+		}
+		panelInicio.setVisible(false);
+		panelUsuarios.setVisible(false);
+		panelCrearAdmin.setVisible(true);
+		panelCrearAdmin.setBackground(Color.WHITE);
+		this.add(panelCrearAdmin, BorderLayout.CENTER);
+	}
+	public void goToComun() {
 		if(panelUserProfile != null)
 		{
 			this.remove(panelUserProfile);
@@ -296,13 +311,6 @@ public class PanelUser extends JPanel
 				}
 			}
 		}
-		if(admin == null) {
-			panelPerfil.setVisible(false);
-		}
-		panelInicio.setVisible(false);
-		panelUsuarios.setVisible(true);
-		panelUsuarios.setBackground(Color.WHITE);
-		this.add(panelUsuarios, BorderLayout.CENTER);
 	}
 	
 	private String uploadPhotoAndGetPath()
