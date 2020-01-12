@@ -153,7 +153,7 @@ public class PanelPerfil extends JPanel
 			}	
 		}
 		
-		if(esPerfilPropio) {
+		if(esPerfilPropio ||panelUser.getAdminsitrador() != null) {
 			cargarFotos();
 		}
 				

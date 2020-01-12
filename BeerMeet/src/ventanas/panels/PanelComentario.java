@@ -72,10 +72,16 @@ public class PanelComentario extends JPanel {
 					panelUser.getPanelInicio().getPanelComentario().setVisible(false);
 					panelUser.getPanelInicio().setPanelComentario(null);
 				}else if (origen == 1) {
-					panelUser.getPanelPerfil().getPanelVisualizar().setVisible(true);
-					panelUser.getPanelPerfil().getPanelVisualizar().getPanelComentario().setVisible(false);
-					panelUser.getPanelPerfil().getPanelVisualizar().setPanelComentario(null);
+					if(panelUser.getAdminsitrador() == null) {
+						panelUser.getPanelPerfil().getPanelVisualizar().setVisible(true);
+						panelUser.getPanelPerfil().getPanelVisualizar().getPanelComentario().setVisible(false);
+						panelUser.getPanelPerfil().getPanelVisualizar().setPanelComentario(null);
+					}else {
+						panelUser.getPanelUserProfile().getPanelVisualizar().setVisible(true);
+						panelUser.getPanelUserProfile().getPanelVisualizar().getPanelComentario().setVisible(false);
+						panelUser.getPanelUserProfile().getPanelVisualizar().setPanelComentario(null);
 					
+					}
 				}
 			}
 		});

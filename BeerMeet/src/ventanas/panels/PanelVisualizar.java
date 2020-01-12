@@ -46,7 +46,11 @@ public class PanelVisualizar extends JPanel
 				adaptador.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent arg0) {
-						if(panelUser.getUsuario().getId() ==foto.getId_user())
+						boolean comprobacion = false;
+						if(panelUser.getAdminsitrador() == null) {
+							comprobacion =panelUser.getUsuario().getId() ==foto.getId_user();
+						}
+						if(comprobacion)
 					        {
 								panel.getPanelPerfil().getPanelVisualizar().setVisible(false);
 								panel.getPanelPerfil().setVisible(true);
@@ -92,7 +96,12 @@ public class PanelVisualizar extends JPanel
 		        
 		        JLabel borrar = new JLabel("");
 		        
-		        if(panelUser.getUsuario().getId() ==foto.getId_user())
+		        boolean comprobacion = false;
+		        if (panelUser.getAdminsitrador() == null) {
+		        	comprobacion=panelUser.getUsuario().getId() ==foto.getId_user();
+		        }
+		        
+		        if(comprobacion ||panelUser.getAdminsitrador() != null )
 		        {
 			        
 			        borrar.addMouseListener(new MouseAdapter() {
@@ -126,7 +135,12 @@ public class PanelVisualizar extends JPanel
 						@Override
 						public void mouseClicked(MouseEvent e) {
 								panelComentario= new PanelComentario(panelUser,list, 1, foto, user, path);
-								panelUser.getPanelPerfil().getPanelVisualizar().setVisible(false);
+								if (panelUser.getAdminsitrador() != null) {
+									panelUser.getPanelUserProfile().getPanelVisualizar().setVisible(false);
+								}else {
+									panelUser.getPanelPerfil().getPanelVisualizar().setVisible(false);
+								}
+								
 								panelUser.add(panelComentario,BorderLayout.CENTER);
 								panelComentario.setVisible(true);
 						}
