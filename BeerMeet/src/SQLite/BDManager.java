@@ -17,14 +17,16 @@ import usuarios.UsuarioNormal;
 
 /**Esta clase contiene los distintos métodos para la cración y gestion de la base de datos que utilizaremos en nuestra aplicación BeerMeet.
  * Entre esos métodos se encuentran el método de creacion de la BD, la inserción de contenido en la DB y la extracción de datos de la DB.
-*@author aritz eraun y Paul Hernandez*/
+*@author aritz eraun y Paul Hernandez
+*@version 1.3*/
 public class BDManager 
 {
 	private String name;
 	private String url;
 	private Connection conn;
 	
-	/**Este método crea una base de datos en el caso de que no este previamente creado.*/
+	/**Este método crea una la dirección de la bases de datos, que estará previamente creada
+	 * @param esTest : variable booleana que indica que base de datos tomar. Utilizamos un BD para el test de Junit*/
 	
 	public BDManager(boolean esTest)
 	{
@@ -38,7 +40,7 @@ public class BDManager
 		this.connect();
 	}
 	
-	/**Este método conecta la BD con la aplicación de BeerMeet.*/
+	/**Este método conecta la BD con la aplicación de BeerMeet. Se crea la conecxión.*/
 	
 	public void connect()
 	{
@@ -69,7 +71,8 @@ public class BDManager
         }
 	}
 	
-	/**Este método guarda los datos de los distintos usuarios en la DB.*/
+	/**Este método guarda los datos de los distintos usuarios en la DB.
+	 * @param user: Usuario que se desea guardar en BD (Administrador o UsuarioNormal)*/
 	
 	public void saveUser(Usuario user)
 	{
@@ -90,8 +93,9 @@ public class BDManager
 		return usuarios;
 	}
 	
-	/**Este método selecciona las fotos guardas en la DB dependiendo del usuario y sus relaciones con otros usuarios.*/
-	
+	/**Este método selecciona las fotos guardas en la DB dependiendo del usuario y sus relaciones con otros usuarios.
+	 * @param id_user: id desl usuario del que hay buscar los amigos y sus respectivas fotos.
+	 * @return fotos: ArrayList de las fotos de los amigos del usuario.*/
 	public ArrayList<Foto> loadInicioPhotos(int id_user)
 	{
 		final String sql = "select * from Fotos join (SELECT id_followed FROM User_User WHERE id_follower = ?) B"
@@ -100,7 +104,9 @@ public class BDManager
 		ArrayList<Foto> fotos = this.selectPhotos(id_user, sql);
 		return fotos;
 	}
-	
+	/**Este método selecciona las relaciones del usuario (seguidores) para después contabilizarlos.
+	 * @param id_user: id del usuario del que hay buscar los amigos para contarlos.
+	 * @return seguidores.size(): número de seguidores que tiene el usuario*/
 	public int Seguidores(int id_user)
 	{
 		final String sql = "select * from Usuarios A join (select id_followed from User_User where id_follower = "+id_user+") B on B.id_followed = A.id;";
@@ -108,7 +114,9 @@ public class BDManager
 		ArrayList<Usuario> seguidores =this.selectUsuario(sql);
 		return seguidores.size();
 	}
-	
+	/**Este método selecciona las relaciones del usuario (segidos) para después contabilizarlos.
+	 * @param id_user: id del usuario del que hay buscar los amigos para contarlos.
+	 * @return seguidores.size(): número usuarios a los que sigue el usuario.*/
 	public int Seguidos(int id_user)
 	{
 		final String sql = "select * from Usuarios A join (select * from User_User where id_follower = "+id_user+") B on B.id_follower = A.id;";
@@ -117,7 +125,9 @@ public class BDManager
 		
 		return seguidores.size();
 	}
-	
+	/**Este método selecciona las relaciones del usuario con los otros usuarios existentes.
+	 * @param id_user: id del usuario del que hay buscar los amigos.
+	 * @return seguidores: ArrayList de los seguidores(personas que le siguen) del usuario.*/
 	public ArrayList<Usuario> relationships(int id_user)
 	{
 		final String sql = "select * from Usuarios A join (select id_followed from User_User where id_follower = "+ id_user +") B on B.id_followed = A.id;";
@@ -126,7 +136,8 @@ public class BDManager
 		return seguidores;
 	}
 	
-	/**Este método seleciona fotos desde la BD pedemdiendo del usuario.*/
+	/**Este método seleciona fotos desde la BD pedemdiendo del usuario.
+	 * @param id_user: id del usuario del que hay buscar las fotos*/
 	
 	public ArrayList<Foto> loadUsersPhotos(int id_user)
 	{
@@ -135,15 +146,16 @@ public class BDManager
 		return fotos;
 	}
 	
-	/**Este método guarda las fotos en la BD.*/
-	
+	/**Este método guarda las fotos en la BD.
+	 * @param foto: foto que se desea guardar en la BD*/
 	public void savePhoto(Foto foto)
 	{
 		this.insertPhoto(foto);
 		foto.setCod(this.selectCodPhoto(foto));
 	}
 	
-	/**Este método guarda en la BD los usuarios que se ahn reguistrado en nuestra aplicaión.*/
+	/**Este método guarda en la BD los usuarios que se han reguistrado en nuestra aplicaión.
+	 * @param user : Usuario a reguistrar en la BD. */
 	
 	private void insertUser(Usuario user)
 	{
@@ -180,7 +192,9 @@ public class BDManager
         }
 	}
 	
-	/**Este método seleciona usuarios BD pedemdiendo de su apellido.*/
+	/**Este método seleciona usuarios BD pedemdiendo de su Nombre de usuario.
+	 * @param user : usuario al que se desea buscar id.
+	 * @return id : id del usuario seleccionado.*/
 	
 	public int seleccionarIdUsuario(Usuario user)
 	{
@@ -205,7 +219,8 @@ public class BDManager
         return id;
 	}
 	
-	/**Este método seleciona todos los usuarios de la BD.*/
+	/**Este método seleciona todos los usuarios de la BD.
+	 * @return users : ArrayList de todos los usuarios( Administradores y UsuariosNormales) existentes en la BD.*/
 	
 	private ArrayList<Usuario> selectAllUsers()
 	{
@@ -214,6 +229,10 @@ public class BDManager
 		ArrayList<Usuario> users = selectUsuario(sql);
 		return users;
 	}
+	
+	/**Este método seleciona uno a uno los usuarios de la BD.
+	 * @return sql : el comando sql que se ejecutará en la BD para seleccionar los distintos Usuarios.
+	 * @return users : ArrayList de todos los usuarios( Administradores y UsuariosNormales) existentes en la BD.*/
 	
 	private ArrayList<Usuario> selectUsuario(String sql)
 	{
@@ -259,7 +278,10 @@ public class BDManager
         return users;
 	}
 	
-	/**Este método seleciona fotos desde la BD.*/
+	/**Este método seleciona fotos desde la BD.
+	 * @param id: id del usuario de la foto.
+	 * @param sql :  comndo sql que se ejecutará en la BD.
+	 * @return fotos: las fotos pertenecientes al usuario seleccionado.*/
 	
 	private ArrayList<Foto> selectPhotos(int id, String sql)
 	{
@@ -292,7 +314,8 @@ public class BDManager
         return fotos;
 	}
 	
-	/**Este método inserta objetos de tipo foto en la BD pedemdiendo del tipo de usuario.*/
+	/**Este método inserta objetos de tipo foto en la BD pedemdiendo del tipo de usuario.
+	 * @param foto: la foto que se desea guardar en la BD.*/
 	
 	private void insertPhoto(Foto foto)
 	{
@@ -316,7 +339,9 @@ public class BDManager
         }
 	}
 	
-	/**Este método seleciona todos los URls de las fotos guardas en la BD.*/
+	/**Este método seleciona todos los URls de las fotos guardas en la BD.
+	 * @param foto : foto al que se le quiere extraer lel código de identificación.
+	 * @return cod : código de identificación de la foto seleccionada.*/
 	
 	private int selectCodPhoto(Foto foto)
 	{
@@ -340,7 +365,8 @@ public class BDManager
         
         return cod;
 	}
-
+	/**Método que inserta un foto de tipo perfil en la tabla FotoPerfil.
+	 * @param foto: foto de perfil que se desea insertar.*/
 
 	public void insertPhotoPerfil(Foto foto)
 	{
@@ -362,7 +388,9 @@ public class BDManager
 	        System.out.println("BadAss error executing insert. " + e.getMessage());
 	    }
 	}
-	
+	/**Método que se quiere seleccionar de la tabla FotoPerfil,
+	 * @param id : id del usuario del que se quiere buscar la foto de perfil.
+	 * @return path: direccion o ruta relativa en la que se encuenra la foto de perfil del usuario.*/
 	public String selectPhotoPerfil(int id) 
 	{
 		String sql="SELECT path FROM FotoPerfil where id = ? ;";
@@ -385,7 +413,8 @@ public class BDManager
 	    
 	    return path;
 	}
-	
+	/**Método que se elimina el foto de perfil del usuario determinado de la tabla FotoPerfil,
+	 * @param id : id del usuario del que se quiere eliminar la foto de perfil.*/
 	public void deletePhotoPerfil(int id) 
 	{
 		String sql="DELETE FROM FotoPerfil where id = ? ;";
@@ -400,7 +429,9 @@ public class BDManager
 			System.out.println(e.getMessage());
 		}	    
 	}
-	
+	/**Método de busqueda de Nombre de usuario partiendo de la id del usuario.
+	 * @param id : id del usuario del que se quiere saber el Nombre de usuario.
+	 * @return username : nombre del usuario respecto a su id.*/
 	public String SelectNombreUsuaruario(int id)
 	{
 		String sql="SELECT username FROM Usuarios where id = ? ;";
@@ -411,7 +442,6 @@ public class BDManager
 	    {
 	    	pstmt.setInt(1, id);
 	    	ResultSet rs  = pstmt.executeQuery();
-	    	
 	        while (rs.next())
 	        {
 	        	username = rs.getString("username");
@@ -424,7 +454,9 @@ public class BDManager
 	    
 	    return username;
 	}
-	
+	/**Método que crea una relación de amistad ente usuarios.
+	 * @param id_follower : id del seguidor.
+	 * @param id_folloewd : id de la persona seguida.*/	
 	public void createRelationship(int id_follower, int id_followed)
 	{
 		final String sql = "INSERT INTO User_User(id_follower,id_followed) VALUES (?,?)";
@@ -440,7 +472,9 @@ public class BDManager
 	        System.out.println("BadAss error executing insert. " + e.getMessage());
 	    }
 	}
-	
+	/**Método que elimina una relación de amistad ente usuarios.
+	 * @param id_follower : id del seguidor.
+	 * @param id_folloewd : id de la persona seguida.*/
 	public void deleteRelationship(int id_follower, int id_followed)
 	{
 		final String sql = "DELETE FROM User_User WHERE (id_follower = ? AND id_followed=?)";
@@ -456,7 +490,9 @@ public class BDManager
 	        System.out.println("BadAss error executing insert. " + e.getMessage());
 	    }
 	}
-	
+	/**Método que modifica el atributo descripción de un usuario.
+	 * @param descripcion : la nueva descripcion que se quiere añadir.
+	 * @paran nombreUsuario : el username del usuario al que se desea modificar la descripción.*/	
 	public void ModifyDescription (String description, String nombreUsuario)
 	{
 		String sql="UPDATE Usuarios SET description = '"+description+"'  WHERE username='"+nombreUsuario+"';";
@@ -470,7 +506,10 @@ public class BDManager
 	        System.out.println("BadAss error executing insert. " + e.getMessage());
 	    }
 	}
-	
+	/** Método de eliminación de una foto.
+	 * 
+	 * @param cod : código de identificación de la foto que se desa eliminar.
+	 */
 	public void deleteFoto(int cod) 
 	{
 		String sql="DELETE FROM Fotos where cod = ? ;";
@@ -486,7 +525,10 @@ public class BDManager
 			System.out.println(e.getMessage());
 		}	    
 	}
-	
+	/**Método de creación de un comentario.
+	 * 	
+	 * @param comentario : comentario que se quiere insertar o crear.
+	 */
 	public void createComent(Comentario comentario)
 	{
 		final String sql = "INSERT INTO Comentarios(cod, id_user, comentario, fec) VALUES (?,?,?,?)";
@@ -504,7 +546,11 @@ public class BDManager
 	        System.out.println("BadAss error executing insert. " + e.getMessage());
 	    }
 	}
-	
+	/** Método de selección de un comentarios de una foto.
+	 * 
+	 * @param cod : código único de la foto del cual se quieren seleccionar fotos.
+	 * @return comentarios : ArrayList de comentarios de la foto seleccionada.
+	 */
 	public ArrayList<Comentario> SelectComentarios(int cod)
 	{
 		
@@ -533,6 +579,10 @@ public class BDManager
 		}
 		return comentarios;	
 	}
+	/**Método de eliminació de comentario.
+	 * 
+	 * @param coment : comentario que se desea eliminar.
+	 */
 	public void DeleteComentario(Comentario coment) {
 		final String sql = "DELETE FROM Comentarios WHERE cod = ? AND id_user = ? AND comentario = ? AND fec= ?";
 		try {
@@ -546,6 +596,10 @@ public class BDManager
 			e.printStackTrace();
 		}
 	}
+	/** Método de elimacion de un UsuarioNormal.
+	 * 
+	 * @param user: el usuario normal que se desea eliminar.
+	 */
 	public void DeleteUser(UsuarioNormal user) {
 		final String sql = "DELETE FROM Usuarios WHERE id = ? ";
 		try {
@@ -555,7 +609,11 @@ public class BDManager
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
+	} 
+	/**Método get de laa connecxión establecida con la BD.
+	 * 
+	 * @return conn: la conexión establecida con la BD.
+	 */
 	public Connection getConnection()
 	{
 		return conn;
