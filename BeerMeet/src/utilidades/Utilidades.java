@@ -10,7 +10,9 @@ import java.util.List;
 
 public class Utilidades <T extends Foto>
 {
-	/**La función del método fechaDeAlta() es convertir un dato de tipo date a un String reconocible por la BD o otros métodos. */
+	/**La función del método fechaDeAlta() es convertir un dato de tipo date a 
+	 * un String reconocible por la BD o otros métodos.
+	 * @return fecha: la fecha en el formato deseado.*/
 	
 	public static String fechaDeAlta()
 	{
@@ -40,7 +42,12 @@ public class Utilidades <T extends Foto>
 		
 		return fecha;
 	}
-	
+	/**Método de ordenación generico mediante el algoritmo MergeSort
+	 * 
+	 * @param list : lista de objetos (generico) a ordenar mediante MergeSort.
+	 * @param <T>: tipo de bjeto a tratar.
+	 * @return list: lista orddena de objetos.
+	 */
 	public static <T extends Foto> ArrayList<T> MergeSort(ArrayList<T> list)
 	{
 		if(list.size() == 0)
@@ -73,7 +80,12 @@ public class Utilidades <T extends Foto>
 			}
 		}
 	}
-	
+	/**Método de ordenación generico mediante el algoritmo MergeSort (segunda parte, una vez 
+	 * dividido en ArrayList original en dos). 
+	 * @param A : lista de objetos (generico) a ordenar mediante MergeSort.
+	 * @param B : lista de objetos (generico) a ordenar mediante MergeSort.
+	 * @return lista: lista orddena de objetos.
+	 */	
 	private static <T extends Foto> ArrayList<T> Merge(ArrayList<T> A, ArrayList<T> B)
 	{
 		ArrayList<T> lista = new ArrayList<>();

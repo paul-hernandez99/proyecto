@@ -85,7 +85,9 @@ public class BDManager
 		}
 	}
 	
-	/**Este método recibe información de la DB y crea un ArrayList para el uso en la aplicación.*/
+	/**Este método recibe información de la DB y crea un ArrayList para el uso en la aplicación.
+	 * @return usuarios : todos los usuarios reguistrados en la BD.
+	 */
 	
 	public ArrayList<Usuario> loadUsers()
 	{
@@ -137,7 +139,8 @@ public class BDManager
 	}
 	
 	/**Este método seleciona fotos desde la BD pedemdiendo del usuario.
-	 * @param id_user: id del usuario del que hay buscar las fotos*/
+	 * @param id_user: id del usuario del que hay buscar las fotos.
+	 * @return fotos : todas las fotos disponibles en la BD del usuario.*/
 	
 	public ArrayList<Foto> loadUsersPhotos(int id_user)
 	{
@@ -456,7 +459,7 @@ public class BDManager
 	}
 	/**Método que crea una relación de amistad ente usuarios.
 	 * @param id_follower : id del seguidor.
-	 * @param id_folloewd : id de la persona seguida.*/	
+	 * @param id_followed : id de la persona seguida.*/	
 	public void createRelationship(int id_follower, int id_followed)
 	{
 		final String sql = "INSERT INTO User_User(id_follower,id_followed) VALUES (?,?)";
@@ -474,7 +477,7 @@ public class BDManager
 	}
 	/**Método que elimina una relación de amistad ente usuarios.
 	 * @param id_follower : id del seguidor.
-	 * @param id_folloewd : id de la persona seguida.*/
+	 * @param id_followed : id de la persona seguida.*/
 	public void deleteRelationship(int id_follower, int id_followed)
 	{
 		final String sql = "DELETE FROM User_User WHERE (id_follower = ? AND id_followed=?)";
@@ -491,8 +494,8 @@ public class BDManager
 	    }
 	}
 	/**Método que modifica el atributo descripción de un usuario.
-	 * @param descripcion : la nueva descripcion que se quiere añadir.
-	 * @paran nombreUsuario : el username del usuario al que se desea modificar la descripción.*/	
+	 * @param description : la nueva descripcion que se quiere añadir.
+	 * @param nombreUsuario : el username del usuario al que se desea modificar la descripción.*/	
 	public void ModifyDescription (String description, String nombreUsuario)
 	{
 		String sql="UPDATE Usuarios SET description = '"+description+"'  WHERE username='"+nombreUsuario+"';";

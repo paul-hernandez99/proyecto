@@ -52,7 +52,7 @@ public class Foto implements IComparable
 	}
 	/**El método despuesDe ordena las fotos dependiendo de su fec (fecha de creación) mediante un
 	 * método genérico y la implementación de una interfaz.
-	 * @pram foto: es el objeto foto (con todos sus atributos).*/
+	 * @param foto: es el objeto foto (con todos sus atributos).*/
 	@Override
 	public boolean despuesDe(Foto foto) 
 	{
@@ -152,7 +152,7 @@ public class Foto implements IComparable
 		return fec;
 	}
 	/** Método set del atributo Fec.
-	 * @param Fec : indica la fecha de creación de la foto.*/
+	 * @param fec : indica la fecha de creación de la foto.*/
 	public void setFec(String fec) 
 	{
 		this.fec = fec;

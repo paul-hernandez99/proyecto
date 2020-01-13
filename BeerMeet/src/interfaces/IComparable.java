@@ -7,6 +7,7 @@ import foto.Foto;
 public interface IComparable <T extends Foto> 
 {
 	/**Método abstracto que retorna un booleano y recibe un generico (que tendremos que rellenarlo después.
-	 * @param t : objeto genérico ( se especificará después).*/
+	 * @param t : objeto genérico ( se especificará después).
+	 * @return : respuesta boolenana. */
 	public abstract boolean despuesDe(T t);
 }

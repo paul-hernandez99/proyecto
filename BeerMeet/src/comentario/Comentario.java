@@ -13,7 +13,13 @@ public class Comentario
 	{
 		
 	}
-	/**Constructor del objeto comentario.*/
+	/**Constructor del objeto comentario.
+	 * 
+	 * @param cod_fot : código ínico de la foto.
+	 * @param id_user : identificador único del usuario.
+	 * @param contenido : contenido del comentario.
+	 * @param fec : fecha de creación del comentario.
+	 */
 	public Comentario(int cod_fot, int id_user, String contenido, String fec) 
 	{
 		super();
@@ -65,7 +71,7 @@ public class Comentario
 		return fec;
 	}
 	/** Método set del atributo Fec.
-	 * @param Fec : indica la fecha de creación del comentario.*/
+	 * @param fec : indica la fecha de creación del comentario.*/
 	public void setFec(String fec) 
 	{
 		this.fec = fec;

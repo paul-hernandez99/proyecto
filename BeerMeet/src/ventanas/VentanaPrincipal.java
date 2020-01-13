@@ -407,7 +407,8 @@ public class VentanaPrincipal extends JFrame
 		});
 	
 	}
-	/***Este método crea los distintos Buttons visibles en el panel principal.*/
+	/***Este método crea los distintos Buttons visibles en el panel principal y sus
+	 * respectivas acciones y liseners.*/
 	private void createButtons()
 	{
 		btnSignIn = new JButton("Sign In");
@@ -523,7 +524,7 @@ public class VentanaPrincipal extends JFrame
 			}
 		});
 	}
-	/***Este método define las posiciones exactas de los componentes visibles en el panel principal dependiendo del tamaño del rame en cada momento.*/
+	/***Este método define las posiciones exactas de los componentes visibles en el panel principal dependiendo del tamaño del frame en cada momento.*/
 	private void setElementsSizePosition()
 	{
 		panel_principal.addComponentListener(new ComponentAdapter() 
@@ -544,7 +545,8 @@ public class VentanaPrincipal extends JFrame
 		});
 		
 	}
-	/***Este método es un método lógico para la creación de usuaraios.*/
+	/***Este método es un método lógico para la creación de usuaraios. Comprueba que los datos
+	 * sean correctos, y una vez comprobado, escribe el usuario en la BD.*/
 	private void createUser()
 	{
 		try 
@@ -574,7 +576,7 @@ public class VentanaPrincipal extends JFrame
 		}
 		
 	}
-	/***Este método pone visibles los distintos elementos en el panel principal.*/
+	/***Este método pone visibles los distintos elementos en el panel del panel principal.*/
 	private void registrationMenuVisible()
 	{
 		singUpMenu = true;
@@ -625,7 +627,7 @@ public class VentanaPrincipal extends JFrame
 		
 		setTexts();
 	}
-	/***Este método inserta los distintos textos a los labels localizados en el panel principal.*/
+	/***Este método inserta los distintos textos a los labels localizados en el panel del panel principal.*/
 	public void setTexts()
 	{
 		username.setText("Username");
