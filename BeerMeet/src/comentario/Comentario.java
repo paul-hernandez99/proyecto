@@ -33,15 +33,15 @@ public class Comentario
 	{
 		this.cod_fot = cod_fot;
 	}
-	/** Método get del atributo Id_user del objeto foto.
-	 * @return id_user : id del user que nos facilitaraa identificar a que usuario pertenece dicha foto.*/
+	/** Método get del atributo Id_user del objeto comentario.
+	 * @return id_user : id del user que nos facilitaraa identificar a que usuario pertenece dicho comentario.*/
 	public int getId_user()
 	{
 		return id_user;
 	}
 	
-	/** Método set del atributo Id_user del objeto foto.
-	 * @param id_user : id del user que nos facilitaraa identificar a que usuario pertenece dicha foto.*/
+	/** Método set del atributo Id_user del objeto comentario.
+	 * @param id_user : id del user que nos facilitaraa identificar a que usuario pertenece dicho comentario.*/
 	public void setId_user(int id_user)
 	{
 		this.id_user = id_user;
