@@ -19,14 +19,11 @@ public class Foto implements IComparable
 	private String fec;
 	
 	/**Constructor del objeto foto*/
-	
 	public Foto()
 	{		
-		
 	}
 	
 	/**Constructor del objeto foto*/
-	
 	public Foto(int id_user, String path, String fec) 
 	{ 
 		super();

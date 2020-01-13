@@ -13,7 +13,12 @@ import javax.mail.internet.MimeMessage;
 public class envioEmail {
 	/**La función de este metodo es enviar el email al usuario correspondiemte. Para ello utiliamos el servidor de correo de Gmail
 	 * y una cuenta previzmente creada para ello.
-	*@author aritz eraun y Paul Hernandez*/
+	*@author aritz eraun y Paul Hernandez
+	*@since 1.1
+	*@version 1.3
+	*@param destinatario : correo destino al que se debe enviar el mensaje.
+	*@param asunto : casunto del correo electrónico que se enviará al destinatario.
+	*@param cuerpo : contiene al completo el mensaja que se enviará al destinatario. */
 	public static void enviarConGMail(String destinatario, String asunto, String cuerpo) {
 		
 		// Esto es lo que va delante de @gmail.com en tu cuenta de correo. Es el remitente también.
@@ -46,7 +51,10 @@ public class envioEmail {
 	    }
 	}
 	
-	/**El metodo recibe las caracteristicas del usuario y crea el mensage para enbiarselo mediante el correo oficial de la aplicacion BeerMeet.*/
+	/**El metodo recibe las caracteristicas del usuario y crea el mensage para enviarselo mediante el correo oficial de la aplicacion BeerMeet.
+	 * @param destinatario : correo destino al que se debe enviar el mensaje.
+	 * @param nombre: Nombre personal del usuario del la cuent BEerMeeet y dueño del correo destinatario.
+	 * @param contraseña: contraseña antigua del usuario, para que la pueda recordar.*/
 	
 	public static void bienvenida(String destinatario, String nombre, String contraseña) {
 		String asunto = "Recuperación de contraseña - BeerMet";
