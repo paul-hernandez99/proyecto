@@ -19,7 +19,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import usuarios.Usuario;
 import usuarios.UsuarioNormal;
-
+/**Esta clase contiene los meétodos lógicos y visuales para la creación del panelBusquedaUsuarios
+ * y su correcto funcionamiento.
+ * @author Aritz E. y Paul H. 
+ * @version 1.3*/
 public class PanelBusquedaUsuarios extends JPanel
 {
 	private static final long serialVersionUID = 1L;
@@ -28,6 +31,10 @@ public class PanelBusquedaUsuarios extends JPanel
 	private JTextField txtUsername;
 	private UsuarioNormal usuario;
 	
+/**Método de creacion  del panel PanelBusquedaUsuarios
+ * 	
+ * @param panel :panel usuarios.
+ */
 	public PanelBusquedaUsuarios(PanelUser panel)
 	{
 		this.setLayout(null);
@@ -135,7 +142,7 @@ public class PanelBusquedaUsuarios extends JPanel
 		}
 		});
 	}
-	
+/**Método que carga la lista que se le mostrará al usuario*/	
 	private void cargarLista()
 	{
 		DefaultListModel<UsuarioNormal> lm = new DefaultListModel<>();

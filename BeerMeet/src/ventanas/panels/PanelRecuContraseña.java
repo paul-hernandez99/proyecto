@@ -25,9 +25,12 @@ import java.awt.event.MouseEvent;
 public class PanelRecuContraseña extends JPanel {
 	private JTextField textField;
 
-	/**
-	 * Este método crea el panel visible por el usuario.
+	/**Este método crea el panel visible por el usuario.
+	 * 
+	 * @param ventanaPrincipal : ventana Principal del programa,
+	 * @param usuarios : usuario al que se deberá de mandar el correo o email.
 	 */
+	 
 	public PanelRecuContraseña(VentanaPrincipal ventanaPrincipal, ArrayList <Usuario> usuarios) {
 		setBackground(Color.WHITE);
 		setLayout(null);

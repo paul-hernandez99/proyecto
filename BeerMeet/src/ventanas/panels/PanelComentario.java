@@ -25,12 +25,14 @@ import javax.swing.border.AbstractBorder;
 import SQLite.BDManager;
 import comentario.Comentario;
 import foto.Foto;
-import usuarios.Administrador;
 import usuarios.Usuario;
 import usuarios.UsuarioNormal;
 import utilidades.BordeCircular;
 import utilidades.Utilidades;
-
+/**Esta clase contiene los meétodos lógicos y visuales para la creación del panelComentario
+ * y su correcto funcionamiento.
+ * @author Aritz E. y Paul H. 
+ * @version 1.4*/
 public class PanelComentario extends JPanel {
 	private PanelUser panelUser;
 	public static AbstractBorder bordeCircular = new BordeCircular();  
@@ -39,6 +41,14 @@ public class PanelComentario extends JPanel {
 	private Usuario user;
 	private String path;
 	private ArrayList <Comentario> cBerriak;
+	/**Estamos ante la creación del panel Comentario
+	 * @param panel : panelUser recibido.
+	 * @param coments : ArrayList de comentarios a mostrar.
+	 * @param origen : identificdor de panel de origen desde el que se viene.
+	 * @param foto : foto al que pertenecen los comentarios.
+	 * @param user : usuario existente.
+	 * @param path : ruta.
+	 */
 	public PanelComentario(PanelUser panel, ArrayList<Comentario>coments ,int origen ,Foto foto, Usuario user, String path) {
 		
 		BorderLayout borderlayout = new java.awt.BorderLayout();
@@ -286,6 +296,7 @@ public class PanelComentario extends JPanel {
 			posicion+=3;
 		}
 	}
+	/**Método para  poner visible el panel origen (when origen == 0).*/
 	public void casoInicio() {
 		PanelInicio inicio = new PanelInicio(panelUser);
 		panelUser.getPanelInicio().getPanelComentario().setVisible(false);
@@ -297,6 +308,7 @@ public class PanelComentario extends JPanel {
 		panelUser.add(nuevo,BorderLayout.CENTER);
 		nuevo.setVisible(true);
 	}
+	/**Método para  poner visible el panel origen (when origen == 1).*/
 	public void casoVisualizar() {
 		PanelVisualizar visualizar = new PanelVisualizar(panelUser, foto, user, path);
 		panelUser.getPanelPerfil().getPanelVisualizar().getPanelComentario().setVisible(false);

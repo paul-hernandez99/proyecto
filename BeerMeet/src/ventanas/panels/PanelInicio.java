@@ -25,7 +25,10 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**Esta clase contiene los meétodos lógicos y visuales para la creación del panelInicio
+ * y su correcto funcionamiento.
+ * @author Aritz E. y Paul H. 
+ * @version 1.3*/
 public class PanelInicio extends JPanel
 {
 	private PanelUser panelUser;
@@ -33,7 +36,8 @@ public class PanelInicio extends JPanel
 	private int contador =0;
 	public static AbstractBorder bordeCircular = new BordeCircular(); 
 	public PanelComentario panelComentario;
-	
+	/**Estamos ante la creación del panel Incio
+	 * @param panel : panelUser recibido.*/ 
 	public PanelInicio(PanelUser panel)
 	{
 		this.panelUser=panel;
@@ -150,9 +154,15 @@ public class PanelInicio extends JPanel
 	        posicion+=3;
 		}
 	}
+	/**Método getter del panelComentario
+	 * @return panelComentario : panelComentario existenete en el momento (instancia).
+	 */
 	public PanelComentario getPanelComentario() {
 		return this.panelComentario;
 	}
+	/**Método setter del panelComentario
+	 * @param panel : panelComentario existenete en el momento (instancia).
+	 */
 	public void setPanelComentario(PanelComentario panel)
 	{
 		this.panelComentario = panel;

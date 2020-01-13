@@ -69,7 +69,8 @@ public class VentanaPrincipal extends JFrame
 	
 	private boolean singUpMenu = false;
 	
-	/**Este método es el método MAIN, el cual pone en funcionamiento toda la aplicación*/
+	/**Este método es el método MAIN, el cual pone en funcionamiento toda la aplicación
+	 * @param  args : pilla del programa.*/
 	
 	public static void main(String[] args) 
 	{
@@ -728,7 +729,8 @@ public class VentanaPrincipal extends JFrame
 			 throw new Exceptions("Introduzca en el formato adecuado la fecha.");
 		 }
 	}
-/** Este método es un retorno al panel principal*/
+/** Este método es un retorno al panel principal
+ * @return panel_principal : panelPrincipal.*/
 	
 	public JPanel getPanel_principal() 
 	{

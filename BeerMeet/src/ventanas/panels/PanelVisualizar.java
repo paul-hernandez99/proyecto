@@ -2,41 +2,38 @@ package ventanas.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridBagLayout;
-import java.awt.Image;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import foto.Foto;
 import usuarios.Usuario;
-import usuarios.UsuarioNormal;
 import utilidades.BordeCircular;
-
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
 import javax.swing.border.AbstractBorder;
-
 import comentario.Comentario;
-
-import java.awt.GridBagConstraints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.awt.Insets;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.Font;
+/**Esta clase contiene los meétodos lógicos y visuales para la creación del panelVisualizar
+ * y su correcto funcionamiento.
+ * @author Aritz E. y Paul H. 
+ * @version 1.3*/
 
 public class PanelVisualizar extends JPanel
 {
 	private PanelUser panelUser;
 	public static AbstractBorder bordeCircular = new BordeCircular();  
 	public PanelComentario panelComentario;
-
+	/**
+	 * Estamos ante el constructos o creación del PanelVisualizar
+	 * @param panel : panelUser recibido.
+	* @param foto : foto que se desea visualizar.
+	 * @param user : usuario existente al que pertenece la foto.
+	 * @param path : ruta.
+	 */
 	public PanelVisualizar(PanelUser panel, Foto foto, Usuario user, String path)
 	{
 		this.panelUser=panel;
@@ -161,9 +158,15 @@ public class PanelVisualizar extends JPanel
 					add(comentarios);
 		        }
 	}
+	/**Meto getter del PanelComentario existente.
+	 * @return panel :  panelComentarios existente (instancia).
+	 */
 	public PanelComentario getPanelComentario() {
 		return this.panelComentario;
 	}
+	/**Meto setter del PanelComentario existente.
+	 * @param panel : nuevo panelComentarios.
+	 */
 	public void setPanelComentario(PanelComentario panel)
 	{
 		this.panelComentario = panel;

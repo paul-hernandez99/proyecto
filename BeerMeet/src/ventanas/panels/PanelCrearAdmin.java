@@ -21,7 +21,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
+/**Esta clase contiene los meétodos lógicos y visuales para la creación del panelCrearAdmin
+ * y su correcto funcionamiento.
+ * @author Aritz E. y Paul H. 
+ * @version 1.3*/
 public class PanelCrearAdmin extends JPanel {
 
 	private JTextField username;
@@ -29,12 +32,12 @@ public class PanelCrearAdmin extends JPanel {
 	private JTextField name;
 	private JTextField apellidos;
 	private JTextField email;
-	private PanelUser panelUser;
 	private JLabel lblIntroduzcaLosDatos;
+	/**Estamos ante la creación del panel CrearAdmin
+	 * @param panelUser : panelUser recibido.*/ 
 	
 	public PanelCrearAdmin(PanelUser panelUser) {
 		setLayout(null);
-		this.panelUser = panelUser;
 		
 		username = new JTextField();
 		username.setFont(new Font("Tahoma", Font.ITALIC, 16));
@@ -240,6 +243,8 @@ public class PanelCrearAdmin extends JPanel {
 		
 
 	}
+	/**Este método pone texto a los TextFields definidos previamente el la clase*/
+	
 	public void ponerTexto() {
 		username.setText("Username");
 		password.setText("Password");

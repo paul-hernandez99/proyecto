@@ -42,7 +42,10 @@ import java.awt.GridBagConstraints;
 
 import javax.swing.JScrollPane;
 import java.awt.GridBagLayout;
-
+/**Esta clase contiene los meétodos lógicos y visuales para la creación del panelPerfil
+ * y su correcto funcionamiento.
+ * @author Aritz E. y Paul H. 
+ * @version 1.3*/
 
 public class PanelPerfil extends JPanel 
 {
@@ -58,7 +61,9 @@ public class PanelPerfil extends JPanel
 	JScrollPane scrollPane = new JScrollPane(panel_1,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	
 	public static AbstractBorder bordeCircular = new BordeCircular();       
-
+	/**Estamos ante la creación del panel Incio
+	 * @param panel : panelUser recibido.
+	 * @param usuario: usuario no propio del que se desea mostrar el perfil.*/ 
 	public PanelPerfil(PanelUser panel, UsuarioNormal usuario)
 	{
 		this.setBackground(Color.WHITE);
@@ -319,6 +324,7 @@ public class PanelPerfil extends JPanel
 		}
 		return path;
 	}
+	/**Ete método pone la foto de perfil en el sitio indicado*/
 	
 	private void ponerFotoPerfil()
 	{
@@ -329,7 +335,8 @@ public class PanelPerfil extends JPanel
         lblNewLabel.setIcon(iconoEscalado);
         lblNewLabel.setBorder(bordeCircular);
 	}
-
+/**Método de carga de fotos mediante threads en el panel habilitado para ello*/
+	
 	private  void cargarFotos()
 	{
 		ArrayList<Foto> fotos;
@@ -431,16 +438,28 @@ public class PanelPerfil extends JPanel
 		
 
 	}
+	/**Método setter del panelVisualizar
+	 * @param PanelV : panelVisualizar existenete en el momento (instancia).
+	 */
 	public void setPanelVisualizar(PanelVisualizar PanelV)
 	{
 		this.panelV=PanelV;
 	}
+	/**Método getter del panelVisualizar
+	 * @return panelVisualizar : panelVisualizar existenete en el momento (instancia).
+	 */
 	public PanelVisualizar getPanelVisualizar() {
 		return panelV;
 	}
+	/**Método getter de user utilizado
+	 * @return user : usuario externo del perfil.
+	 */
 	public UsuarioNormal getUser() {
 		return this.user;
 	}
+	/**Método setter de user utilizado
+	 * @param user : usuario externo del perfil.
+	 */
 	public void setUser(UsuarioNormal user) {
 		this.user = user;
 	}
