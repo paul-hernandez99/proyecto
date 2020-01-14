@@ -476,7 +476,7 @@ public class VentanaPrincipal extends JFrame
 				
 				logo.setBounds(((panel_principal.getBounds().width)/2)-185, 0, 370, 370);
 				intro.setBounds(((panel_principal.getBounds().width)/2)-115, 350, 230, 30);
-				lblhasOlvidadoTu.setBounds(((panel_principal.getBounds().width)/2)-200, 820, 230, 20);
+				lblhasOlvidadoTu.setBounds(((panel_principal.getBounds().width)/2)-100, 820, 230, 20);
 			}
 		});
 		

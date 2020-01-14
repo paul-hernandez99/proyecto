@@ -70,9 +70,12 @@ public class PanelPerfil extends JPanel
 		this.setBackground(Color.WHITE);
 		
 		this.panelUser = panel;
+		UsuarioNormal nuevo =new UsuarioNormal();
+		if (panelUser.getAdminsitrador() ==null) {
+			nuevo= panelUser.getUsuario();
+		}
 		
-		
-		if(usuario == null)
+		if(usuario == null||nuevo == usuario)
 		{
 			user = panelUser.getUsuario();
 			esPerfilPropio = true;
