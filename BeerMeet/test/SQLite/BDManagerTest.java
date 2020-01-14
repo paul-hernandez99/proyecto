@@ -65,7 +65,7 @@ public class BDManagerTest
 		foto2 = new Foto(5,"Imagenes/data/ander_1.jpg", "18:00 02/01/2019");
 		
 		ScriptRunner sr = new ScriptRunner(tester.getConnection(), false, true);
-		Reader reader = new BufferedReader(new FileReader(new File("SetUp.sql")));
+		Reader reader = new BufferedReader(new FileReader(new File("Scripts/SetUp.sql")));
 	    sr.runScript(reader);
 	    
 	}
@@ -79,7 +79,7 @@ public class BDManagerTest
 	public static void tearDown() throws Exception
 	{
 		ScriptRunner sr = new ScriptRunner(tester.getConnection(), false, true);
-		Reader reader = new BufferedReader(new FileReader(new File("DeleteScript.sql")));
+		Reader reader = new BufferedReader(new FileReader(new File("Scripts/DeleteScript.sql")));
 	    sr.runScript(reader);
 	    
 	    tester.disconnect();
