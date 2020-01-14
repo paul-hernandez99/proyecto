@@ -141,6 +141,7 @@ public class PanelVisualizar extends JPanel
 			        borrar.setIcon(new ImageIcon("Imagenes\\System\\Image_74.png"));
 			        borrar.setBounds(485,100, 38, 36);
 			        add(borrar);
+		        }
 			        
 			        JLabel likes = new JLabel();
 			        ArrayList<Integer> arrayLikes =panelUser.getBdManager().SelectLike(foto.getCod());
@@ -197,7 +198,6 @@ public class PanelVisualizar extends JPanel
 					});
 					add(comentarios);
 		        }
-	}
 	/**Meto getter del PanelComentario existente.
 	 * @return panel :  panelComentarios existente (instancia).
 	 */
@@ -216,8 +216,10 @@ public class PanelVisualizar extends JPanel
 	public void actualizaPantall() {
 		PanelVisualizar nuevo = new PanelVisualizar(panelUser, foto, user, path);
 		
-		if(panelUser.getPanelPerfil()  != null) {;
-		panelUser.getPanelPerfil().getPanelVisualizar().setVisible(false);
+		if(panelUser.getPanelPerfil()  != null) {
+			if(panelUser.getPanelPerfil().getPanelVisualizar() != null) {
+				panelUser.getPanelPerfil().getPanelVisualizar().setVisible(false);
+			}
 		panelUser.getPanelPerfil().setPanelVisualizar(nuevo);
 		panelUser.getPanelPerfil().getPanelVisualizar().setVisible(true);
 		panelUser.goToPanelPerfil();
