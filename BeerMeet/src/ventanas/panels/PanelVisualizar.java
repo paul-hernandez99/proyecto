@@ -133,8 +133,47 @@ public class PanelVisualizar extends JPanel
 			        	}
 			        });
 			        borrar.setIcon(new ImageIcon("Imagenes\\System\\Image_74.png"));
-			        borrar.setBounds(484, 99, 38, 36);
+			        borrar.setBounds(485,100, 38, 36);
 			        add(borrar);
+			        
+			        JLabel likes = new JLabel();
+			        likes.setBounds(100,530,50,50);
+			        
+			        ArrayList<Integer> arrayLikes =panelUser.getBdManager().SelectLike(foto.getCod());
+			        long existeLike =  arrayLikes.stream().filter(x->x == panelUser.getUsuario().getId()).count();
+			        if(existeLike ==0) {
+			        	likes.setIcon(panelUser.escalar("Imagenes\\System\\like.jpg", likes));
+			        }else {
+			        	likes.setIcon(panelUser.escalar("Imagenes\\System\\red.jpg", likes));
+			        }
+			        
+			        likes.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseClicked(MouseEvent e) {
+								if(existeLike ==0) {
+									panelUser.getBdManager().CreateLike(foto.getCod(), panelUser.getUsuario().getId());
+									PanelVisualizar nuevo = new PanelVisualizar(panel, foto, user, path);
+									if(panelUser.getPanelPerfil()  != null) {
+										panelUser.getPanelPerfil().setPanelVisualizar(nuevo); 
+										panelUser.goToPanelPerfil();
+										panelUser.getPanelPerfil().setVisible(false);
+										nuevo.setVisible(true);
+										panelUser.add(nuevo, BorderLayout.CENTER);
+									}else {
+										panelUser.getPanelUserProfile().setPanelVisualizar(nuevo); 
+										panelUser.goToPanelPerfil();
+										panelUser.getPanelUserProfile().setVisible(false);
+										nuevo.setVisible(true);
+										panelUser.add(nuevo, BorderLayout.CENTER);
+									}
+								}else {
+									panelUser.getBdManager().DeleteLike(foto.getCod(), panelUser.getUsuario().getId());
+								}
+						}
+					});
+			        add(likes);
+			        
+			        
 			        
 			        JLabel comentarios=new JLabel();
 			        ArrayList<Comentario> list =panelUser.getBdManager().SelectComentarios(foto.getCod());
