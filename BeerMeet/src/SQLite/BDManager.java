@@ -441,7 +441,7 @@ public class BDManager
 
 		String username = null;
 		
-	    try (PreparedStatement pstmt = conn.prepareStatement(sql);)
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql))
 	    {
 	    	pstmt.setInt(1, id);
 	    	ResultSet rs  = pstmt.executeQuery();
@@ -613,6 +613,56 @@ public class BDManager
 			e.printStackTrace();
 		}
 	} 
+	/**Método de eliminación de likes.
+	 * @param cod : código único de la foto al que pertenece el like.
+	 * @param id  : identificación ínica de la persona que ha dado el like.
+	 */
+	public void DeleteLike (int cod, int id) {
+		final String sql ="DELETE FROM Likes WHERE cod = ? AND id = ?";
+		try {
+			PreparedStatement sr = conn.prepareStatement(sql);
+			sr.setInt(1, cod);
+			sr.setInt(2, id);
+			sr.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	/**Método de creación de likes.
+	 * @param cod : código único de la foto al que pertenece el like.
+	 * @param id  : identificación ínica de la persona que ha dado el like.
+	 */
+	public void CreateLike (int cod, int id) {
+		final String sql ="INSERT INTO Likes VALUES(?,?)";
+		try {
+			PreparedStatement sr = conn.prepareStatement(sql);
+			sr.setInt(1, cod);
+			sr.setInt(2, id);
+			sr.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	/**Método de selección de todos los likes pertenecientes a una foto.
+	 * @param cod : código único de la foto al que pertenece el like.
+	 * @return likes : ArrayList de los id de los usuarios que han dado like a la foto.
+	 */
+		public ArrayList<Integer> SelectLike (int cod) {
+			final String sql ="SELECT * FROM Likes WHERE cod = ?";
+			ArrayList<Integer>  likes = new ArrayList<>();
+			try {
+				PreparedStatement sr = conn.prepareStatement(sql);
+				sr.setInt(1, cod);
+				ResultSet r=  sr.executeQuery();
+				while (r.next()) {
+					likes.add(r.getInt("id"));
+					
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return likes;
+	}
 	/**Método get de laa connecxión establecida con la BD.
 	 * 
 	 * @return conn: la conexión establecida con la BD.
