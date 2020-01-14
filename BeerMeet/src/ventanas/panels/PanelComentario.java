@@ -33,6 +33,7 @@ import utilidades.Utilidades;
  * y su correcto funcionamiento.
  * @author Aritz E. y Paul H. 
  * @version 1.4*/
+
 public class PanelComentario extends JPanel {
 	private PanelUser panelUser;
 	public static AbstractBorder bordeCircular = new BordeCircular();  
@@ -41,6 +42,7 @@ public class PanelComentario extends JPanel {
 	private Usuario user;
 	private String path;
 	private ArrayList <Comentario> cBerriak;
+	
 	/**Estamos ante la creación del panel Comentario
 	 * @param panel : panelUser recibido.
 	 * @param coments : ArrayList de comentarios a mostrar.

@@ -63,7 +63,11 @@ public class PanelUser extends JPanel
 	private JLabel btnSalir = new JLabel();
 	private JLabel btnCrearPerfil = new JLabel();
 	
-	
+	/**Constructor de la clase PanelUser
+	 * 
+	 * @param ventana Ventana principal en la que visualizara este panel
+	 * @param tipo tipo de Usuario. Si el 0 sera normal y si es 1 Administrador
+	 */
 	public PanelUser(VentanaPrincipal ventana, int tipo) 
 	{
 		BorderLayout borderlayout = new java.awt.BorderLayout();
@@ -252,6 +256,9 @@ public class PanelUser extends JPanel
 			panelUserProfile.setVisible(true);
 		}
 	}
+	
+	/**Este metodo permite al usuario visualizar el panel inicio donde se ubican las fotos de sus seguidos*/
+	
 	public void goToPanelInicio()
 	{
 		goToComun();
@@ -267,6 +274,8 @@ public class PanelUser extends JPanel
 		panelInicio.setVisible(true);
 	}
 	
+	/**Este metodo permite al usuario visualizar el panelBusqueda de usuarios donde se ubica la lista de usuarios para poder acceder a ellos*/
+	
 	private void goToPanelUsuarios()
 	{
 		goToComun();
@@ -281,7 +290,11 @@ public class PanelUser extends JPanel
 		panelUsuarios.setBackground(Color.WHITE);
 		this.add(panelUsuarios, BorderLayout.CENTER);
 	}
-	public void goToPanelCrearAdmin() {
+	
+	/**Este metodo permite a los administradores visualizar el panel de creacion de administradores*/
+	
+	public void goToPanelCrearAdmin() 
+	{
 		goToComun();
 		
 		if(admin == null) {
@@ -293,7 +306,9 @@ public class PanelUser extends JPanel
 		panelCrearAdmin.setBackground(Color.WHITE);
 		this.add(panelCrearAdmin, BorderLayout.CENTER);
 	}
-	public void goToComun() {
+	
+	public void goToComun() 
+	{
 		if(panelUserProfile != null)
 		{
 			panelUserProfile.setVisible(false);
@@ -321,6 +336,10 @@ public class PanelUser extends JPanel
 		}
 	}
 	
+	/**Este metodo crea un FileDialog donde el usuario elegira la foto que quiera subir a la aplicacion, 
+	 * y lo que hara es copiar esa foto desde la ubicacion propia del pc a una carpeta de fotos propia de la aplicacion
+	 * @return el path de la foto copiada en la carpeta de fotos de la aplicacion
+	 */
 	private String uploadPhotoAndGetPath()
 	{
 		FileDialog dialog = new FileDialog(ventanaPrincipal,"Select Image to upload", FileDialog.LOAD);
@@ -346,6 +365,13 @@ public class PanelUser extends JPanel
 		}
 		return path;
 	}
+	
+	/**Este metodo permite escalar una foto para su correcta visualizacion en la aplicacion
+	 * 
+	 * @param path el path de la foto a escalar
+	 * @param imagen el Jlabel donde se escala la foto
+	 * @return retorna el Icon ya escalado
+	 */
 	public Icon escalar(String path,JLabel imagen)
 	{
 		ImageIcon imgIcon = new ImageIcon(path);
@@ -353,6 +379,7 @@ public class PanelUser extends JPanel
         Icon iconoEscalado = new ImageIcon(imgEscalada);
 		return iconoEscalado;
 	}
+	
 	public void setPanelUserProfile(PanelPerfil panel)
 	{
 		panelUserProfile = panel;

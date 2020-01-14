@@ -59,11 +59,12 @@ public class PanelPerfil extends JPanel
 	PanelVisualizar panelV ;
 	JPanel panel_1 = new JPanel();
 	JScrollPane scrollPane = new JScrollPane(panel_1,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	public static AbstractBorder bordeCircular = new BordeCircular();
 	
-	public static AbstractBorder bordeCircular = new BordeCircular();       
 	/**Estamos ante la creación del panel Incio
 	 * @param panel : panelUser recibido.
-	 * @param usuario: usuario no propio del que se desea mostrar el perfil.*/ 
+	 * @param usuario: usuario no propio del que se desea mostrar el perfil.
+	 */
 	public PanelPerfil(PanelUser panel, UsuarioNormal usuario)
 	{
 		this.setBackground(Color.WHITE);
@@ -180,9 +181,7 @@ public class PanelPerfil extends JPanel
 		
 		JLabel label_1 = new JLabel("");
 		label_1.setText(""+bdManager.Seguidores(user.getId()));
-		
-		
-		
+
 		JLabel lblPublicaciones = new JLabel("Publicaciones");
 		
 		JLabel label_2 = new JLabel();
@@ -297,6 +296,7 @@ public class PanelPerfil extends JPanel
 			e.printStackTrace();
 		}
 	}
+	
 	/**Este método actualiza las fotos de la bandeja de la entrada del panel dependiendo de la fecha de publicación de cad foto*/
 	
 	private String uploadPhotoAndGetPathPerfil()
@@ -335,7 +335,8 @@ public class PanelPerfil extends JPanel
         lblNewLabel.setIcon(iconoEscalado);
         lblNewLabel.setBorder(bordeCircular);
 	}
-/**Método de carga de fotos mediante threads en el panel habilitado para ello*/
+	
+	/**Método de carga de fotos mediante threads en el panel habilitado para ello*/
 	
 	private  void cargarFotos()
 	{

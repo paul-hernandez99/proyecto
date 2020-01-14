@@ -76,8 +76,10 @@ public class PanelRecuContraseña extends JPanel {
 		add(lblNewLabel_1);
 		
 		JButton btnVolver = new JButton("Volver");
-		btnVolver.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		btnVolver.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
 				ventanaPrincipal.setContentPane(ventanaPrincipal.getPanel_principal());
 				ventanaPrincipal.setTexts();
 				ventanaPrincipal.revalidate();

@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import javax.swing.DefaultListModel;
@@ -57,42 +58,36 @@ public class PanelBusquedaUsuarios extends JPanel
 		this.add(btnVisualizar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
-		if(panelUser.getAdminsitrador() != null) {
+		if(panelUser.getAdminsitrador() != null) 
+		{
 			btnEliminar.setBounds(400,285, 100, 30);
 			btnEliminar.setBackground(new Color(255, 102, 102));
 			btnEliminar.setVisible(false);
 			this.add(btnEliminar);
 			
-			btnEliminar.addActionListener(new ActionListener() 
-			{
-				@Override
-				public void actionPerformed(ActionEvent e) 
-				{
-					Object[] options = {"Aceptar",
-                    "Cancelar"};
-					int n = JOptionPane.showOptionDialog(null,
-				    "¿Deseas eliminar este Usuario?",
-					    "Eliminación",
-					    JOptionPane.YES_NO_CANCEL_OPTION,
-					    JOptionPane.QUESTION_MESSAGE,
-					    null,options,options[1]);
-					if (n==0 ) {
-						panelUser.getBdManager().DeleteUser(usuario);
-						panelUser.getVentanaPrincipal().setUsuarios(panelUser.getBdManager().loadUsers());
-						cargarLista();
-					}
+			btnEliminar.addActionListener(e -> {
+				
+				Object[] options = {"Aceptar",
+                "Cancelar"};
+				int n = JOptionPane.showOptionDialog(null,
+			    "¿Deseas eliminar este Usuario?",
+				    "Eliminación",
+				    JOptionPane.YES_NO_CANCEL_OPTION,
+				    JOptionPane.QUESTION_MESSAGE,
+				    null,options,options[1]);
+				if (n==0 ) {
+					panelUser.getBdManager().DeleteUser(usuario);
+					panelUser.getVentanaPrincipal().setUsuarios(panelUser.getBdManager().loadUsers());
+					cargarLista();
 				}
 			});
 				
-			}
+		}
 		
-		txtUsername.addFocusListener(new FocusListener() 
+		txtUsername.addFocusListener(new FocusAdapter() 
 		{
 			@Override
-			public void focusLost(FocusEvent e) {}
-			
-			@Override
-			public void focusGained(FocusEvent e) 
+			public void focusGained(FocusEvent e)
 			{
 				txtUsername.setText("");
 			}
@@ -119,30 +114,22 @@ public class PanelBusquedaUsuarios extends JPanel
 			}
 		});
 		
-		listaUsuarios.addListSelectionListener(new ListSelectionListener() 
-		{
-			@Override
-			public void valueChanged(ListSelectionEvent arg0)
-			{
-				usuario = listaUsuarios.getSelectedValue();
+		listaUsuarios.addListSelectionListener(e -> {
 			
-				btnVisualizar.setVisible(true);
-				if(panelUser.getAdminsitrador() != null) {
-					btnEliminar.setVisible(true);
-				}
+			usuario = listaUsuarios.getSelectedValue();
+			
+			btnVisualizar.setVisible(true);
+			if(panelUser.getAdminsitrador() != null) {
+				btnEliminar.setVisible(true);
 			}
 		});
 		
-		btnVisualizar.addActionListener(new ActionListener() 
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) 
-			{
-				goToUserProfil();
-		}
-		});
+		btnVisualizar.addActionListener(e -> goToUserProfil());
 	}
-/**Método que carga la lista que se le mostrará al usuario*/	
+	
+	/**Método que carga la lista que se le mostrará al usuario
+	 * 	
+	 */
 	private void cargarLista()
 	{
 		DefaultListModel<UsuarioNormal> lm = new DefaultListModel<>();
@@ -159,6 +146,9 @@ public class PanelBusquedaUsuarios extends JPanel
 		}
 	}
 	
+	/**Este metodo crea un panel perfil con el usuario seleccionado en la lista. Asi mismo, mediante este panel, se podra visualizar el perfil del usuario seleccionado
+	 * 
+	 */
 	private void goToUserProfil()
 	{
 		PanelPerfil panelPerfilUser = new PanelPerfil(panelUser, usuario);

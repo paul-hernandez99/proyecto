@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
  * y su correcto funcionamiento.
  * @author Aritz E. y Paul H. 
  * @version 1.3*/
+
 public class PanelInicio extends JPanel
 {
 	private PanelUser panelUser;
@@ -36,8 +37,10 @@ public class PanelInicio extends JPanel
 	private int contador =0;
 	public static AbstractBorder bordeCircular = new BordeCircular(); 
 	public PanelComentario panelComentario;
+	
 	/**Estamos ante la creación del panel Incio
 	 * @param panel : panelUser recibido.*/ 
+	
 	public PanelInicio(PanelUser panel)
 	{
 		this.panelUser=panel;

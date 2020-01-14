@@ -21,6 +21,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
@@ -31,9 +32,11 @@ import java.awt.Font;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseEvent;
 import javax.swing.border.Border;
+
 /**Estamos ante la clase que define la ventana con la que el usuario podrá interactuar con la aplicación y realizar 
  * las distintas funciones que se le ofrecen.
 *@author aritz eraun y Paul Hernandez*/
+
 public class VentanaPrincipal extends JFrame 
 {
 	private static final long serialVersionUID = 1L;
@@ -90,7 +93,8 @@ public class VentanaPrincipal extends JFrame
 			}
 		});
 	}
-/**Este métoo crea el primer panel, el cual da la bienvenida al usuario.*/
+	
+	/**Este métoo crea el primer panel, el cual da la bienvenida al usuario.*/
 	
 	public VentanaPrincipal() 
 	{
@@ -109,7 +113,9 @@ public class VentanaPrincipal extends JFrame
 		this.setTexts();
 		this.loginMenuVisible();
 	}
+	
 	/**Este método pone en funcionaminto el layout elegido*/
+	
 	private void createPanels()
 	{
 		panel_principal = new JPanel();
@@ -125,7 +131,9 @@ public class VentanaPrincipal extends JFrame
 		
 		this.add(panel_principal);
 	}
+	
 	/***Este método crea el icono del fondo de la aplicación.*/
+	
 	private void createIcon()
 	{
 		logo = new JLabel(new ImageIcon("Imagenes/System/Wallpaper.png"));
@@ -133,6 +141,7 @@ public class VentanaPrincipal extends JFrame
 		
 	}
 	/***Este método crea los distintos Labels visibles en el panel principal.*/
+	
 	public  void createJlabels()
 	{
 		intro = new JLabel("Welcome to Beermeet:");
@@ -149,19 +158,23 @@ public class VentanaPrincipal extends JFrame
 		infoFecha.setBounds(65, 284, 180, 10);
 		panel.add(infoFecha);
 		
-	
-		lblhasOlvidadoTu.addMouseListener(new MouseAdapter() {
+		lblhasOlvidadoTu.addMouseListener(new MouseAdapter() 
+		{
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent e) 
+			{
 				goToPanelRecuContraseña();
 			}
 		});
+		
 		lblhasOlvidadoTu.setFont(new Font("Tahoma", Font.ITALIC, 17));
 		lblhasOlvidadoTu.setBounds(200, 817, 229, 20);
 		panel_principal.add(lblhasOlvidadoTu);
 
 	}
+	
 	/***Este método crea los distintos textFields visibles en el panel principal.*/
+	
 	private void createJtextfields()
 	{
 		username = new JTextField();
@@ -169,27 +182,19 @@ public class VentanaPrincipal extends JFrame
 		username.setBounds(65, 50, 220, 30);
 		panel.add(username);
 		
-		username.addMouseMotionListener(new MouseMotionListener() 
+		username.addMouseMotionListener(new MouseAdapter()
 		{
-			
 			@Override
 			public void mouseMoved(MouseEvent e) 
 			{
 				username.setFocusable(true);
 			}
-
-			@Override
-			public void mouseDragged(MouseEvent e) {}
-			
 		});
 		
-		username.addFocusListener(new FocusListener() 
+		username.addFocusListener(new FocusAdapter() 
 		{
 			@Override
-			public void focusLost(FocusEvent e) {}
-			
-			@Override
-			public void focusGained(FocusEvent e) 
+			public void focusGained(FocusEvent e)
 			{
 				username.setText("");
 				username.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -201,25 +206,19 @@ public class VentanaPrincipal extends JFrame
 		password.setBounds(65, 100, 220, 30);
 		panel.add(password);
 
-		password.addMouseMotionListener(new MouseMotionListener() 
+		password.addMouseMotionListener(new MouseAdapter()
 		{
 			@Override
 			public void mouseMoved(MouseEvent e) 
 			{
 				password.setFocusable(true);
 			}
-			
-			@Override
-			public void mouseDragged(MouseEvent e) {}
 		});
 		
-		password.addFocusListener(new FocusListener()
+		password.addFocusListener(new FocusAdapter()
 		{
 			@Override
-			public void focusLost(FocusEvent arg0) {}
-			
-			@Override
-			public void focusGained(FocusEvent arg0) 
+			public void focusGained(FocusEvent e) 
 			{
 				password.setText("");
 				password.setEchoChar('*');
@@ -232,23 +231,17 @@ public class VentanaPrincipal extends JFrame
 		name.setBounds(65, 150, 110, 30);
 		panel.add(name);
 		
-		name.addMouseMotionListener(new MouseMotionListener() 
+		name.addMouseMotionListener(new MouseAdapter() 
 		{
 			@Override
 			public void mouseMoved(MouseEvent e) 
 			{
 				name.setFocusable(true);
 			}
-			
-			@Override
-			public void mouseDragged(MouseEvent e) {}
 		});
 		
-		name.addFocusListener(new FocusListener() 
+		name.addFocusListener(new FocusAdapter()
 		{
-			@Override
-			public void focusLost(FocusEvent e) {}
-			
 			@Override
 			public void focusGained(FocusEvent e) 
 			{
@@ -262,23 +255,17 @@ public class VentanaPrincipal extends JFrame
 		apellidos.setBounds(205, 150, 110, 30);
 		panel.add(apellidos);
 		
-		apellidos.addMouseMotionListener(new MouseMotionListener() 
+		apellidos.addMouseMotionListener(new MouseAdapter() 
 		{
 			@Override
 			public void mouseMoved(MouseEvent e) 
 			{
 				apellidos.setFocusable(true);
 			}
-			
-			@Override
-			public void mouseDragged(MouseEvent e) {}
 		});
 		
-		apellidos.addFocusListener(new FocusListener() 
+		apellidos.addFocusListener(new FocusAdapter()
 		{
-			@Override
-			public void focusLost(FocusEvent e) {}
-			
 			@Override
 			public void focusGained(FocusEvent e) 
 			{
@@ -292,23 +279,17 @@ public class VentanaPrincipal extends JFrame
 		email.setBounds(65, 200, 220, 30);
 		panel.add(email);
 		
-		email.addMouseMotionListener(new MouseMotionListener() 
+		email.addMouseMotionListener(new MouseAdapter()
 		{
 			@Override
 			public void mouseMoved(MouseEvent e) 
 			{
 				email.setFocusable(true);
 			}
-			
-			@Override
-			public void mouseDragged(MouseEvent e) {}
 		});
 		
-		email.addFocusListener(new FocusListener() 
+		email.addFocusListener(new FocusAdapter()
 		{
-			@Override
-			public void focusLost(FocusEvent e) {}
-			
 			@Override
 			public void focusGained(FocusEvent e) 
 			{
@@ -322,23 +303,17 @@ public class VentanaPrincipal extends JFrame
 		day.setBounds(65, 250, 40, 30);
 		panel.add(day);
 		
-		day.addMouseMotionListener(new MouseMotionListener() 
+		day.addMouseMotionListener(new MouseAdapter() 
 		{
 			@Override
 			public void mouseMoved(MouseEvent e) 
 			{
 				day.setFocusable(true);
 			}
-			
-			@Override
-			public void mouseDragged(MouseEvent e) {}
 		});
 		
-		day.addFocusListener(new FocusListener() 
+		day.addFocusListener(new FocusAdapter()
 		{
-			@Override
-			public void focusLost(FocusEvent e) {}
-			
 			@Override
 			public void focusGained(FocusEvent e) 
 			{
@@ -352,23 +327,17 @@ public class VentanaPrincipal extends JFrame
 		month.setBounds(155, 250, 40, 30);
 		panel.add(month);
 		
-		month.addMouseMotionListener(new MouseMotionListener() 
+		month.addMouseMotionListener(new MouseAdapter()
 		{
 			@Override
 			public void mouseMoved(MouseEvent e) 
 			{
 				month.setFocusable(true);
 			}
-			
-			@Override
-			public void mouseDragged(MouseEvent e) {}
 		});
 		
-		month.addFocusListener(new FocusListener() 
+		month.addFocusListener(new FocusAdapter()
 		{
-			@Override
-			public void focusLost(FocusEvent e) {}
-			
 			@Override
 			public void focusGained(FocusEvent e) 
 			{
@@ -382,23 +351,17 @@ public class VentanaPrincipal extends JFrame
 		year.setBounds(245, 250, 40, 30);
 		panel.add(year);
 		
-		year.addMouseMotionListener(new MouseMotionListener() 
+		year.addMouseMotionListener(new MouseAdapter()
 		{
 			@Override
 			public void mouseMoved(MouseEvent e) 
 			{
 				year.setFocusable(true);
 			}
-			
-			@Override
-			public void mouseDragged(MouseEvent e) {}
 		});
 		
-		year.addFocusListener(new FocusListener() 
+		year.addFocusListener(new FocusAdapter() 
 		{
-			@Override
-			public void focusLost(FocusEvent e) {}
-			
 			@Override
 			public void focusGained(FocusEvent e) 
 			{
@@ -408,8 +371,10 @@ public class VentanaPrincipal extends JFrame
 		});
 	
 	}
+	
 	/***Este método crea los distintos Buttons visibles en el panel principal y sus
 	 * respectivas acciones y liseners.*/
+	
 	private void createButtons()
 	{
 		btnSignIn = new JButton("Sign In");
@@ -420,40 +385,36 @@ public class VentanaPrincipal extends JFrame
 		btnSignIn.setBounds(125, 180, 100, 40);
 		panel.add(btnSignIn);
 		
-		btnSignIn.addActionListener(new ActionListener() 
-		{
-			@Override
-			public void actionPerformed(ActionEvent arg0) 
+		btnSignIn.addActionListener(arg0 -> {
+			
+			String user = username.getText();
+			String pass = password.getText();
+			
+			try 
 			{
-				String user = username.getText();
-				String pass = password.getText();
+				comprobarUsuarioLogin(user, pass);
 				
-				try 
+				for (Usuario a : usuarios) 
 				{
-					comprobarUsuarioLogin(user, pass);
-					
-					for (Usuario a : usuarios) 
+					if (a.getContraseña().equals(pass))
 					{
-						if (a.getContraseña().equals(pass))
-						{
-							usuario = a;
-							break;
-						}
+						usuario = a;
+						break;
 					}
-					if (usuario instanceof Administrador) 
-					{
-						goToPanelUser(1);
-					} 
-					else 
-					{
-						goToPanelUser(0);
-					}
-					
-				} 
-				catch (Exceptions e) 
-				{
-					JOptionPane.showMessageDialog(VentanaPrincipal.this, e.getMessage());
 				}
+				if (usuario instanceof Administrador) 
+				{
+					goToPanelUser(1);
+				} 
+				else 
+				{
+					goToPanelUser(0);
+				}
+				
+			} 
+			catch (Exceptions e) 
+			{
+				JOptionPane.showMessageDialog(VentanaPrincipal.this, e.getMessage());
 			}
 		});
 		
@@ -465,14 +426,7 @@ public class VentanaPrincipal extends JFrame
 		btnSignUp.setBounds(125, 240, 100, 40);
 		panel.add(btnSignUp);
 		
-		btnSignUp.addActionListener(new ActionListener() 
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) 
-			{
-				registrationMenuVisible();
-			}
-		});
+		btnSignUp.addActionListener(e -> registrationMenuVisible());
 		
 		btnExit = new JButton("Exit");
 		btnExit.setForeground(Color.WHITE);
@@ -482,14 +436,7 @@ public class VentanaPrincipal extends JFrame
 		btnExit.setBounds(125, 300, 100, 40);
 		panel.add(btnExit);
 		
-		btnExit.addActionListener(new ActionListener() 
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) 
-			{
-				VentanaPrincipal.this.dispose();
-			}
-		});
+		btnExit.addActionListener(e -> VentanaPrincipal.this.dispose());
 		
 		btnConfirm = new JButton("Confirm");
 		btnConfirm.setForeground(Color.WHITE);
@@ -499,14 +446,7 @@ public class VentanaPrincipal extends JFrame
 		btnConfirm.setBounds(125, 320, 100, 40);
 		panel.add(btnConfirm);
 		
-		btnConfirm.addActionListener(new ActionListener() 
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) 
-			{
-				createUser();
-			}
-		});
+		btnConfirm.addActionListener(e -> createUser());
 		
 		btnBack = new JButton("Back");
 		btnBack.setForeground(Color.WHITE);
@@ -516,16 +456,11 @@ public class VentanaPrincipal extends JFrame
 		btnBack.setBounds(125, 380, 100, 40);
 		panel.add(btnBack);
 		
-		btnBack.addActionListener(new ActionListener() 
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) 
-			{
-				loginMenuVisible();
-			}
-		});
+		btnBack.addActionListener(e -> loginMenuVisible());
 	}
+	
 	/***Este método define las posiciones exactas de los componentes visibles en el panel principal dependiendo del tamaño del frame en cada momento.*/
+	
 	private void setElementsSizePosition()
 	{
 		panel_principal.addComponentListener(new ComponentAdapter() 
@@ -546,8 +481,10 @@ public class VentanaPrincipal extends JFrame
 		});
 		
 	}
+	
 	/***Este método es un método lógico para la creación de usuaraios. Comprueba que los datos
 	 * sean correctos, y una vez comprobado, escribe el usuario en la BD.*/
+	
 	private void createUser()
 	{
 		try 
@@ -577,7 +514,9 @@ public class VentanaPrincipal extends JFrame
 		}
 		
 	}
+	
 	/***Este método pone visibles los distintos elementos en el panel del panel principal.*/
+	
 	private void registrationMenuVisible()
 	{
 		singUpMenu = true;
@@ -603,7 +542,9 @@ public class VentanaPrincipal extends JFrame
 		
 		panel.setBounds(((panel_principal.getBounds().width)/2)-175, 405, 350, 440);
 	}
+	
 	/***Este método pone visibles los distintos elementos en el panel principal.*/
+	
 	private void loginMenuVisible()
 	{
 		singUpMenu = false;
@@ -628,7 +569,9 @@ public class VentanaPrincipal extends JFrame
 		
 		setTexts();
 	}
+	
 	/***Este método inserta los distintos textos a los labels localizados en el panel del panel principal.*/
+	
 	public void setTexts()
 	{
 		username.setText("Username");
@@ -650,14 +593,18 @@ public class VentanaPrincipal extends JFrame
 		month.setFocusable(false);
 		year.setFocusable(false);
 	}
+	
 	/***Este método crea un enlace entre el panel principal y el panelUser.*/
+	
 	private void goToPanelUser(int tipo)
 	{
 		PanelUser panelUser = new PanelUser(VentanaPrincipal.this, tipo);
 		setContentPane(panelUser);
 		revalidate();
 	}
+	
 	/***Este método crea un enlace entre el panel principal y el panelRecuContraseña.*/
+	
 	private void goToPanelRecuContraseña()
 	{
 		PanelRecuContraseña panelRecuContraseña = new PanelRecuContraseña(VentanaPrincipal.this, usuarios);
@@ -666,6 +613,7 @@ public class VentanaPrincipal extends JFrame
 	}
 
 	/***Estamos ante un método lógico que tiene como función comprobar si el usuario introducido y su contraseña son correctas.*/
+	
 	private void comprobarUsuarioLogin(String usuario, String password) throws Exceptions
 	{
 		boolean encontrado = false;
@@ -679,6 +627,7 @@ public class VentanaPrincipal extends JFrame
 				break;
 			}
 		}
+		
 		username.setFocusable(false);
 		this.password.setFocusable(false);
 		this.password.setText("Password");
@@ -716,19 +665,28 @@ public class VentanaPrincipal extends JFrame
 			}
 		}
 	}
-	public void comprobacionFecha() throws Exceptions {
-		if(day.getText().length() == 2 && month.getText().length() == 2 && year.getText().length() == 2) {
-			 try {
+	
+	public void comprobacionFecha() throws Exceptions 
+	{
+		if(day.getText().length() == 2 && month.getText().length() == 2 && year.getText().length() == 2) 
+		{
+			 try 
+			 {
 				int n= new Integer(day.getText()) ;
 				int i = new Integer(month.getText()) ;
 				int j = new Integer(year.getText()) ;
-			 }catch(Exception e){
+			 }
+			 catch(Exception e)
+			 {
 				 throw new Exceptions("Introduzca en el formato adecuado la fecha.");
 			 }
-		 }else {
+		}
+		else 
+		{
 			 throw new Exceptions("Introduzca en el formato adecuado la fecha.");
-		 }
+		}
 	}
+	
 /** Este método es un retorno al panel principal
  * @return panel_principal : panelPrincipal.*/
 	

@@ -25,6 +25,11 @@ import usuarios.Administrador;
 import usuarios.Usuario;
 import usuarios.UsuarioNormal;
 
+/**
+ * Constructor de la clase BDManagerTest. Los test estan ordenados alfabeticamente para poder controlar su orden de ejecucion. 
+ * Asi mismo, iremos ejecutando los test prioritarios para poder testear luego los demas.
+ * @author Aritz eta Paul
+ */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class BDManagerTest 
 {
@@ -38,6 +43,12 @@ public class BDManagerTest
 	private static Foto foto1;
 	private static Foto foto2;
 	
+	/**
+	 * Se trata del setUp pero con @BeforeClass. Es decir, solo se ejecuta una vez antes de empezar con los testeos a diferencia del @Before que lo ejecuta antes de cada test.
+	 * Crea distintas istancias de los objetos de nuestra aplicacion para posteriormente testearlas. Ademas, hemos añadido un script sql que inserta ciertos a la bd
+	 * test.db para la correcta ejecucion de los tests.
+	 * @throws Exception
+	 */
 	@BeforeClass
 	public static void setUp() throws Exception
 	{
@@ -58,7 +69,12 @@ public class BDManagerTest
 	    sr.runScript(reader);
 	    
 	}
-
+	
+	/**
+	 * Se trata del tearDown pero con @AfterClass. Es decir, solo se ejecuta una vez despues de todos los testeos a diferencia del @After que lo ejecuta despues de cada test.
+	 * Ejecuta el script sql que hemos añadido para la finalizacion de los test y deconecta la bd. Lo que hace el script es borrar todo el contenido de test.db
+	 * @throws Exception
+	 */
 	@AfterClass
 	public static void tearDown() throws Exception
 	{
@@ -68,7 +84,15 @@ public class BDManagerTest
 	    
 	    tester.disconnect();
 	}
-
+	/**
+	 * Testeo del metodo selectUsuario de la clase BDManager. Como el metodo es privado hemos usado reflexion para acceder a el desde el test.
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
 	@Test
 	public void testA_SelectUsuario() throws NoSuchMethodException, SecurityException, ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
@@ -95,7 +119,15 @@ public class BDManagerTest
 		assertEquals("30-01-1999",user.getFechaNacimiento());
 		assertEquals(20,user.getEdad());
 	}
-	
+	/**
+	 * Testeo del metodo selectAllUsers de la clase BDManager. Como el metodo es privado hemos usado reflexion para acceder a el desde el test.
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
 	@Test
 	public void testB_SelectAllUsers() throws NoSuchMethodException, SecurityException, ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
@@ -106,7 +138,6 @@ public class BDManagerTest
 		method.setAccessible(true);
 		
 		users = (ArrayList<Usuario>) method.invoke(tester);
-		
 		
 		if(users.get(1) instanceof Administrador)
 			fail();
@@ -122,7 +153,9 @@ public class BDManagerTest
 		assertEquals("30-01-1998",user.getFechaNacimiento());
 		assertEquals(19,user.getEdad());
 	}
-	
+	/**
+	 * Testeo del metodo loadUsers de la clase BDManager.
+	 */
 	@Test
 	public void testC_LoadUsers() 
 	{
@@ -146,7 +179,15 @@ public class BDManagerTest
 		assertEquals(20,user.getEdad());
 		
 	}
-	
+	/**
+	 * Testeo del metodo insertUser de la clase BDManager. Como el metodo es privado hemos usado reflexion para acceder a el desde el test.
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws ClassNotFoundException
+	 */
 	@Test
 	public void testD_InsertUser() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException
 	{
@@ -186,7 +227,15 @@ public class BDManagerTest
 		assertEquals("josu@opendeusto.es",admin.getEmail());
 		
 	}
-
+	/**
+	 * Testeo del metodo seleccionarIdUsuario de la clase BDManager. Como el metodo es privado hemos usado reflexion para acceder a el desde el test.
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
 	@Test
 	public void testE_SeleccionarIdUsuario() throws NoSuchMethodException, SecurityException, ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
@@ -198,14 +247,24 @@ public class BDManagerTest
 		
 		assertEquals(3,id_user);
 	}
-
+	/**
+	 * Testeo del metodo saveUser de la clase BDManager.
+	 */
 	@Test
 	public void testF_SaveUser() 
 	{
 		tester.saveUser(usuario2);
 		assertEquals(5,((UsuarioNormal)usuario2).getId());
 	}
-	
+	/**
+	 * Testeo del metodo selectPhotos de la clase BDManager. Como el metodo es privado hemos usado reflexion para acceder a el desde el test.
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
 	@Test
 	public void testG_SelectPhotos() throws NoSuchMethodException, SecurityException, ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
@@ -228,7 +287,15 @@ public class BDManagerTest
 		assertEquals("14:00 02/01/2019",foto.getFec());
 
 	}
-	
+	/**
+	 * Testeo del metodo insertPhoto de la clase BDManager. Como el metodo es privado hemos usado reflexion para acceder a el desde el test.
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
 	@Test
 	public void testH_InsertPhoto() throws NoSuchMethodException, SecurityException, ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
@@ -253,7 +320,15 @@ public class BDManagerTest
 		assertEquals("Imagenes/data/manuel_1.jpg",foto.getPath());
 		assertEquals("16:00 02/01/2019", foto.getFec());
 	}
-	
+	/**
+	 * Testeo del metodo selectCodPhoto de la clase BDManager. Como el metodo es privado hemos usado reflexion para acceder a el desde el test.
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
 	@Test
 	public void testI_SelectCodPhoto() throws NoSuchMethodException, SecurityException, ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
@@ -266,7 +341,9 @@ public class BDManagerTest
 		
 		assertEquals(2,cod);
 	}
-	
+	/**
+	 * Testeo del metodo relationships de la clase BDManager.
+	 */
 	@Test
 	public void testJ_Relationships()
 	{
@@ -274,7 +351,9 @@ public class BDManagerTest
 		
 		assertEquals(seguidos.get(0).getNombreUsuario(),"paul");
 	}
-	
+	/**
+	 * Testeo del metodo createRelationships de la clase BDManager.
+	 */
 	@Test
 	public void testK_CreateRelationship()
 	{
@@ -284,7 +363,9 @@ public class BDManagerTest
 		
 		assertEquals(seguidos.get(0).getNombreUsuario(), "manuel");
 	}
-
+	/**
+	 * Testeo del metodo loadInicioPhotos de la clase BDManager.
+	 */
 	@Test
 	public void testL_LoadInicioPhotos() 
 	{
@@ -299,7 +380,9 @@ public class BDManagerTest
 		assertEquals("Imagenes/data/manuel_1.jpg",foto1.getPath());
 		assertEquals("16:00 02/01/2019",foto1.getFec());
 	}
-
+	/**
+	 * Testeo del metodo loadUsersPhotos de la clase BDManager.
+	 */
 	@Test
 	public void testM_LoadUsersPhotos() 
 	{
@@ -314,7 +397,9 @@ public class BDManagerTest
 		assertEquals("Imagenes/data/paul_1.jpg",foto1.getPath());
 		assertEquals("14:00 02/01/2019",foto1.getFec());	
 	}
-
+	/**
+	 * Testeo del metodo savePhoto de la clase BDManager.
+	 */
 	@Test
 	public void testN_SavePhoto() 
 	{

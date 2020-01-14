@@ -53,6 +53,4 @@ public class Administrador extends Usuario
 	{
 		this.id = id;
 	}
-	
-	
 }
