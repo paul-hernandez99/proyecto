@@ -27,6 +27,9 @@ public class PanelVisualizar extends JPanel
 	private PanelUser panelUser;
 	public static AbstractBorder bordeCircular = new BordeCircular();  
 	public PanelComentario panelComentario;
+	private Foto foto;
+	private Usuario user;
+	private String path;
 	/**
 	 * Estamos ante el constructos o creación del PanelVisualizar
 	 * @param panel : panelUser recibido.
@@ -37,6 +40,9 @@ public class PanelVisualizar extends JPanel
 	public PanelVisualizar(PanelUser panel, Foto foto, Usuario user, String path)
 	{
 		this.panelUser=panel;
+		this.foto = foto;
+		this.user = user;
+		this.path = path;
 		setBackground(Color.WHITE);
 		setLayout(null); 
 									
@@ -137,48 +143,43 @@ public class PanelVisualizar extends JPanel
 			        add(borrar);
 			        
 			        JLabel likes = new JLabel();
-			        likes.setBounds(100,530,50,50);
-			        
 			        ArrayList<Integer> arrayLikes =panelUser.getBdManager().SelectLike(foto.getCod());
 			        long existeLike =  arrayLikes.stream().filter(x->x == panelUser.getUsuario().getId()).count();
-			        if(existeLike ==0) {
-			        	likes.setIcon(panelUser.escalar("Imagenes\\System\\like.jpg", likes));
-			        }else {
-			        	likes.setIcon(panelUser.escalar("Imagenes\\System\\red.jpg", likes));
-			        }
 			        
-			        likes.addMouseListener(new MouseAdapter() {
-						@Override
-						public void mouseClicked(MouseEvent e) {
-								if(existeLike ==0) {
-									panelUser.getBdManager().CreateLike(foto.getCod(), panelUser.getUsuario().getId());
-									PanelVisualizar nuevo = new PanelVisualizar(panel, foto, user, path);
-									if(panelUser.getPanelPerfil()  != null) {
-										panelUser.getPanelPerfil().setPanelVisualizar(nuevo); 
-										panelUser.goToPanelPerfil();
-										panelUser.getPanelPerfil().setVisible(false);
-										nuevo.setVisible(true);
-										panelUser.add(nuevo, BorderLayout.CENTER);
+			        if(panelUser.getAdminsitrador() == null) {
+				        likes.setBounds(100,530,40,40);
+				        
+				        if(existeLike ==0) {
+				        	likes.setIcon(panelUser.escalar("Imagenes\\System\\like.jpg", likes));
+				        }else {
+				        	likes.setIcon(panelUser.escalar("Imagenes\\System\\red.jpg", likes));
+				        }
+				        
+				        likes.addMouseListener(new MouseAdapter() {
+							@Override
+							public void mouseClicked(MouseEvent e) {
+									if(existeLike ==0) {
+										panelUser.getBdManager().CreateLike(foto.getCod(), panelUser.getUsuario().getId());
+										actualizaPantall();
 									}else {
-										panelUser.getPanelUserProfile().setPanelVisualizar(nuevo); 
-										panelUser.goToPanelPerfil();
-										panelUser.getPanelUserProfile().setVisible(false);
-										nuevo.setVisible(true);
-										panelUser.add(nuevo, BorderLayout.CENTER);
+										panelUser.getBdManager().DeleteLike(foto.getCod(), panelUser.getUsuario().getId());
+										actualizaPantall();
 									}
-								}else {
-									panelUser.getBdManager().DeleteLike(foto.getCod(), panelUser.getUsuario().getId());
-								}
-						}
-					});
-			        add(likes);
-			        
-			        
+							}
+						});
+				        add(likes);
+		        	}
+			        JLabel nuemeroLikes =new JLabel();
+			        nuemeroLikes.setText(arrayLikes.size()+ " likes.");
+			        nuemeroLikes.setFont(new Font("Helvetica Neue", Font.PLAIN, 18));
+			        nuemeroLikes.setBounds(150, 530, 300, 50);
+			        add(nuemeroLikes);
 			        
 			        JLabel comentarios=new JLabel();
 			        ArrayList<Comentario> list =panelUser.getBdManager().SelectComentarios(foto.getCod());
 			        comentarios.setText("Ver los "+list.size()+" comentarios");
-			       comentarios.setBounds(150, 530, 300, 50);
+			       comentarios.setBounds(150, 580, 300, 50);
+			       comentarios.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
 					
 					comentarios.addMouseListener(new MouseAdapter() {
 						@Override
@@ -209,5 +210,29 @@ public class PanelVisualizar extends JPanel
 	public void setPanelComentario(PanelComentario panel)
 	{
 		this.panelComentario = panel;
+	}
+	/**Método que actualiza el panel en el que nos encontramos (crando uno nuevo y eliminado el viejo*/
+	
+	public void actualizaPantall() {
+		PanelVisualizar nuevo = new PanelVisualizar(panelUser, foto, user, path);
+		
+		if(panelUser.getPanelPerfil()  != null) {;
+		panelUser.getPanelPerfil().getPanelVisualizar().setVisible(false);
+		panelUser.getPanelPerfil().setPanelVisualizar(nuevo);
+		panelUser.getPanelPerfil().getPanelVisualizar().setVisible(true);
+		panelUser.goToPanelPerfil();
+		panelUser.getPanelPerfil().setVisible(false);
+		panelUser.add(nuevo, BorderLayout.CENTER);
+		nuevo.setVisible(true);
+	
+	}else {
+		panelUser.getPanelUserProfile().setVisible(false);
+		panelUser.getPanelUserProfile().setPanelVisualizar(nuevo); 
+		panelUser.getPanelUserProfile().setVisible(true);
+		panelUser.goToPanelPerfil();
+		panelUser.getPanelPerfil().setVisible(false);
+		nuevo.setVisible(true);
+		panelUser.add(nuevo, BorderLayout.CENTER);
+	}
 	}
 }

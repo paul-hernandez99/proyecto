@@ -2,6 +2,7 @@ package ventanas.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import javax.swing.Icon;
@@ -133,12 +134,51 @@ public class PanelInicio extends JPanel
 	        imagen.setIcon(iconoEscalado);
 	        panel_1.add(imagen, gimagen);
 	        
+	        if(panelUser.getAdminsitrador() == null) {
+		        JLabel likes = new JLabel();
+		        likes.setBounds(0,0,40,40);
+		        GridBagConstraints glikes = new GridBagConstraints();
+				glikes .gridx = 3;
+				glikes .gridy = 3+posicion;
+		        
+		        ArrayList<Integer> arrayLikes =panelUser.getBdManager().SelectLike(panelUser.getFotos_inicio().get(i).getCod());
+		        long existeLike =  arrayLikes.stream().filter(x->x == panelUser.getUsuario().getId()).count();
+		        if(existeLike ==0) {
+		        	likes.setIcon(panelUser.escalar("Imagenes\\System\\like.jpg", likes));
+		        }else {
+		        	likes.setIcon(panelUser.escalar("Imagenes\\System\\red.jpg", likes));
+		        }
+		        likes.setName(""+i);
+		        likes.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+							if(existeLike ==0) {
+								panelUser.getBdManager().CreateLike(panelUser.getFotos_inicio().get(new Integer(likes.getName())).getCod(), panelUser.getUsuario().getId());
+								actualizaPantall();
+							}else {
+								panelUser.getBdManager().DeleteLike(panelUser.getFotos_inicio().get(new Integer(likes.getName())).getCod(), panelUser.getUsuario().getId());
+								actualizaPantall();
+							}
+					}
+				});
+		        panel_1.add(likes, glikes);
+		        
+		        JLabel nuemeroLikes =new JLabel();
+		        nuemeroLikes.setText("                      "+arrayLikes.size()+ " likes.");
+		        nuemeroLikes.setFont(new Font("Helvetica Neue", Font.PLAIN, 18));
+		        nuemeroLikes.setBounds(150, 530, 300, 50);
+		        GridBagConstraints gnuemeroLikes= new GridBagConstraints();
+				gnuemeroLikes .gridx = 3;
+				gnuemeroLikes .gridy = 3+posicion;
+		        panel_1.add(nuemeroLikes, gnuemeroLikes);
+			}
 	        JLabel comentarios=new JLabel();
 	        ArrayList<Comentario> list =panelUser.getBdManager().SelectComentarios(panelUser.getFotos_inicio().get(i).getCod());
 	        comentarios.setText("Ver los "+list.size()+" comentarios");
+	        comentarios.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
 	        GridBagConstraints gcomentario= new GridBagConstraints();
 			gcomentario .gridx = 3;
-			gcomentario .gridy = 3+posicion;
+			gcomentario .gridy = 4+posicion;
 			comentarios.setName(i+"");
 			comentarios.addMouseListener(new MouseAdapter() {
 				@Override
@@ -151,7 +191,7 @@ public class PanelInicio extends JPanel
 			});
 			panel_1.add(comentarios,gcomentario);
 	        
-	        posicion+=3;
+	        posicion+=4;
 		}
 	}
 	/**Método getter del panelComentario
@@ -166,5 +206,15 @@ public class PanelInicio extends JPanel
 	public void setPanelComentario(PanelComentario panel)
 	{
 		this.panelComentario = panel;
+	}
+	/**Método que actualiza el panel en el que nos encontramos (crando uno nuevo y eliminado el viejo*/
+	
+	public void actualizaPantall() {
+		
+		panelUser.getPanelInicio().setVisible(false);
+		PanelInicio inicio = new PanelInicio(panelUser);
+		panelUser.setPanelInicio(inicio);
+		panelUser.getPanelInicio().setVisible(true);
+		panelUser.add(inicio,  BorderLayout.CENTER);
 	}
 }
