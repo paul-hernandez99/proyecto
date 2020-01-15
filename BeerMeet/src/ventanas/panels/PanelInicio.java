@@ -53,7 +53,7 @@ public class PanelInicio extends JPanel
 	
 		JScrollPane scrollPane = new JScrollPane(panel_1,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setViewportBorder(null);
-		scrollPane.setBounds(0,0,560,790);
+		scrollPane.setBounds(0,0,560,750);
 		add(scrollPane);
 		scrollPane.setViewportView(panel_1);
 		
@@ -77,7 +77,11 @@ public class PanelInicio extends JPanel
 			GridBagConstraints gfotoPerfil = new GridBagConstraints();
 			gfotoPerfil .gridx =  1;
 			gfotoPerfil .gridy = 1+posicion;
-			ImageIcon foto = new ImageIcon( panelUser.getBdManager().selectPhotoPerfil(panelUser.getFotos_inicio().get(i).getId_user()));
+			String lt=panelUser.getBdManager().selectPhotoPerfil(panelUser.getFotos_inicio().get(i).getId_user());
+			if(panelUser.getBdManager().selectPhotoPerfil(panelUser.getFotos_inicio().get(i).getId_user()) == null) {
+				lt= "Imagenes\\System\\descarga.jpg";
+			}
+			ImageIcon foto = new ImageIcon( lt);
 	        Image fotoEscalada = foto.getImage().getScaledInstance(fotoPerfil.getWidth(),fotoPerfil.getHeight(), Image.SCALE_SMOOTH);
 	        Icon iconEscalado = new ImageIcon(fotoEscalada);
 	        fotoPerfil.setBorder(bordeCircular);
